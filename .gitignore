@@ -1,0 +1,7 @@
+# https://git-scm.com/docs/gitignore
+
+/build/
+/doxygen/
+/yotta_modules/
+/yotta_targets/
+.DS_Store
