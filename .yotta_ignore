@@ -1,0 +1,4 @@
+# http://docs.yottabuild.org/reference/ignore.html
+
+/doxygen/
+/microbit-dal-ext-kit/

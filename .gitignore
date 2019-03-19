@@ -2,6 +2,8 @@
 
 /build/
 /doxygen/
+/microbit-dal-ext-kit/
 /yotta_modules/
 /yotta_targets/
 .DS_Store
+.yotta.json
