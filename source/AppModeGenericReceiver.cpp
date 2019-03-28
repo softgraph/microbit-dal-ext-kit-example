@@ -13,14 +13,7 @@ using namespace microbit_dal_ext_kit;
 /*	@class	AppModeGenericReceiver
 */
 
-struct ButtonsState {
-	Buttons		latest	= button::kNone;
-	Buttons		last	= button::kNone;
-};
-
 static const Features kAppMode = appMode::kGenericReceiver;
-
-static ButtonsState		remoteButtons;
 
 /* Component */ bool AppModeGenericReceiver::isConfigured()
 {
@@ -30,18 +23,15 @@ static ButtonsState		remoteButtons;
 AppModeGenericReceiver::AppModeGenericReceiver()
 	: AppModeBase("AppModeGenericReceiver")
 {
-}
+	static const EventDef events[] = {
+		{ messageBusID::kLocalEvent,  messageBusEvent::kLocalAppStarted },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltedLeft },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltedRight },
+		{ MICROBIT_ID_ANY, MICROBIT_EVT_ANY }	// END OF TABLE
+	};
+	selectEvents(events);
 
-/* Component */ void AppModeGenericReceiver::start()
-{
-	AppModeBase::start();
-	mRadio.start();
-}
-
-/* Component */ void AppModeGenericReceiver::stop()
-{
-	mRadio.stop();
-	AppModeBase::stop();
+	addChild(mReceiver);
 }
 
 /* AppModeBase */ void AppModeGenericReceiver::doHandleEvent(const MicroBitEvent& event)
@@ -63,23 +53,14 @@ AppModeGenericReceiver::AppModeGenericReceiver()
 	}
 }
 
-/* AppModeBase */ void AppModeGenericReceiver::doHandleRadioDatagramReceived(const ManagedString& /* received */)
-{
-	Buttons buttons = checkLatestRemoteButtons();
-	if(buttons != button::kInvalid) {
-		remoteButtons.latest = buttons;
-	}
-}
-
 /* AppModeBase */ void AppModeGenericReceiver::doHandlePeriodic100ms(uint32_t /* count */)
 {
-	//	check remote buttons
+	// Check Remote Buttons
 	{
-		ButtonsState& b = remoteButtons;
-		if(b.last != b.latest) {
-			display::showButton(b.latest);
-			debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Buttons: 0x", string::hex(b.latest).toCharArray());
-			b.last = b.latest;
+		Buttons b;
+		if(mReceiverForButtons.buttons.read(b)) {
+			display::showButton(b);
+			debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Buttons: 0x", string::hex(b).toCharArray());
 		}
 	}
 }

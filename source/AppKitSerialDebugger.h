@@ -14,14 +14,14 @@
 class AppSerialDebugger : public microbit_dal_ext_kit::SerialDebugger
 {
 public:
-	/// Constructor.
+	/// Constructor
 	AppSerialDebugger();
 
 protected:
-	/// Inherited.
+	/// Inherited
 	/* SerialDebugger */ void debug_sendConfig();
 
-	/// Inherited.
+	/// Inherited
 	/* SerialDebugger */ void debug_sendDeviceInfo();
 
 };	// AppSerialDebugger

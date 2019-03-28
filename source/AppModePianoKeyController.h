@@ -8,39 +8,42 @@
 #ifndef APP_MODE_PIANO_KEY_CONTROLLER_H
 #define APP_MODE_PIANO_KEY_CONTROLLER_H
 
-#include "ExtKitRadio.h"
+#include "ExtKitRemoteState.h"
 #include "ExtKitTouchPiano.h"
 
+#include "AppKitRemoteState.h"
+#include "AppKitState.h"
 #include "AppModeBase.h"
 
 /// App Mode for Piano Key Controller
 class AppModePianoKeyController : public AppModeBase
 {
 public:
-	/// Inherited.
+	/// Inherited
 	static /* Component */ bool isConfigured();
 
-	/// Constructor.
+	/// Constructor
 	AppModePianoKeyController();
 
-	/// Inherited.
-	/* Component */ void start();
-
-	/// Inherited.
-	/* Component */ void stop();
-
 protected:
-	/// Inherited.
+	/// Inherited
 	/* AppModeBase */ void doHandleEvent(const MicroBitEvent& event);
 
-	/// Inherited.
+	/// Inherited
 	/* AppModeBase */ void doHandlePeriodic100ms(uint32_t count);
 
 private:
-	microbit_dal_ext_kit::TouchPiano			mTouchPiano;
+	microbit_dal_ext_kit::TouchPiano	mTouchPiano;
+
 	microbit_dal_ext_kit::NeoPixelForTouchPiano	mNeoPixel;
+
 	microbit_dal_ext_kit::BuzzerForTouchPiano	mBuzzer;
-	microbit_dal_ext_kit::Radio					mRadio;
+
+	microbit_dal_ext_kit::RemoteState::Transmitter	mTransmitter;
+
+	RemoteStateTransmitterForPianoKeys	mTransmitterForPianoKeys;
+
+	StateForButtons	mButtons;
 
 };	// AppModePianoKeyController
 

@@ -9,35 +9,38 @@
 #define APP_MODE_PIANO_PLAYER_H
 
 #include "ExtKitTouchPiano.h"
+#include "AppKitState.h"
 #include "AppModeBase.h"
 
 /// App Mode for Piano Player
 class AppModePianoPlayer : public AppModeBase
 {
 public:
-	/// Inherited.
+	/// Inherited
 	static /* Component */ bool isConfigured();
 
-	/// Constructor.
+	/// Constructor
 	AppModePianoPlayer();
 
-	/// Inherited.
-	/* Component */ void start();
-
-	/// Inherited.
-	/* Component */ void stop();
-
 protected:
-	/// Inherited.
+	/// Inherited
 	/* AppModeBase */ void doHandleEvent(const MicroBitEvent& event);
 
-	/// Inherited.
+	/// Inherited
 	/* AppModeBase */ void doHandlePeriodic100ms(uint32_t count);
 
 private:
-	microbit_dal_ext_kit::TouchPiano			mTouchPiano;
+	microbit_dal_ext_kit::TouchPiano	mTouchPiano;
+
 	microbit_dal_ext_kit::NeoPixelForTouchPiano	mNeoPixel;
+
 	microbit_dal_ext_kit::BuzzerForTouchPiano	mBuzzer;
+
+	StateForButtons	mButtons;
+
+	StateForPianoKeys	mPianoKeys;
+
+	StateForOctave	mOctave;
 
 };	// AppModePianoPlayer
 

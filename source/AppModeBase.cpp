@@ -14,79 +14,121 @@ using namespace microbit_dal_ext_kit;
 */
 
 AppModeBase::AppModeBase(const char* name)
-	: Component(name)
+	: CompositeComponent(name)
+	, mEvents(0)
+	, mRadioEvents(0)
 {
 }
 
-/* Component */ void AppModeBase::start()
+void AppModeBase::selectEvents(const EventDef* def)
 {
-	// start listening to message bus events
-	{
-		listen(messageBusID::kLocalEvent, messageBusEvent::kLocalAppStarted);
-	}
-	if(feature::isConfigured(feature::kRemoteEventTx)) {
-		// observe a remote event to be forwarded to the receiver
-		MicroBitRadio* r = ExtKit::global().radio();
-		if(r) {
-			r->event.listen(messageBusID::kRemoteEvent, MICROBIT_EVT_ANY);
+	mEvents = def;
+}
+
+void AppModeBase::selectRadioEvents(const EventDef* def)
+{
+	mRadioEvents = def;
+}
+
+/* CompositeComponent */ void AppModeBase::doStart()
+{
+	// Start Base classes
+	CompositeComponent::doStart();
+
+	// Start Children
+	startChildren();
+
+	// Listen to Selected Events
+	if(mEvents) {
+		const EventDef* p = mEvents;
+		while((p->id) || (p->value)) {
+			listen(p->id, p->value);
+			p++;
 		}
 	}
-	if(feature::isConfigured(feature::kRemoteEventRx)) {
-		// receive a remote event sent from the transmitter
-		listen(messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltedLeft);
-		listen(messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltedRight);
+
+	// Listen to Selected Radio Events to be forwarded to the receiver
+	if(mRadioEvents) {
+		MicroBitRadio* r = ExtKit::global().radio();
+		if(r) {
+			const EventDef* p = mRadioEvents;
+			while((p->id) || (p->value)) {
+				r->event.listen(p->id, p->value);
+				p++;
+			}
+		}
 	}
-	if(feature::isConfigured(feature::kRemoteStateTx) || feature::isConfigured(feature::kRemoteStateRx)) {
-		// receive a radio received event from the receiver or transmitter
-		listen(MICROBIT_ID_RADIO, MICROBIT_RADIO_EVT_DATAGRAM);
+
+	// Listen Periodic Observer
+	PeriodicObserver::Handler::listen(PeriodicObserver::kUnit100ms, *this);
+}
+
+/* CompositeComponent */ void AppModeBase::doStop()
+{
+	// Ignore Periodic Observer
+	PeriodicObserver::Handler::ignore(PeriodicObserver::kUnit100ms, *this);
+
+	// Ignore Radio Events
+	if(mRadioEvents) {
+		MicroBitRadio* r = ExtKit::global().radio();
+		if(r) {
+			const EventDef* p = mRadioEvents;
+			while((p->id) || (p->value)) {
+				r->event.ignore(p->id, p->value);
+				p++;
+			}
+		}
 	}
 
-	// register periodic handler
-	PeriodicListener::registerHandler(PeriodicListener::kUnit100ms, this);
-}
+	// Ignore Events
+	if(mEvents) {
+		const EventDef* p = mEvents;
+		while((p->id) || (p->value)) {
+			ignore(p->id, p->value);
+			p++;
+		}
+	}
 
-/* Component */ void AppModeBase::stop()
-{
-	// nothing to do
-}
+	// Stop Children
+	stopChildren();
 
-/* to be overridden */ void AppModeBase::doHandleEvent(const MicroBitEvent& /* event */)
-{
-	// nothing to do
-}
-
-/* to be overridden */ void AppModeBase::doHandleRadioDatagramReceived(const ManagedString& /* received */)
-{
-	// nothing to do
-}
-
-/* to be overridden */ void AppModeBase::doHandlePeriodic100ms(uint32_t /* count */)
-{
-	// nothing to do
+	// Stop Base classes
+	CompositeComponent::doStop();
 }
 
 void AppModeBase::listen(int id, int value)
 {
 	MicroBitMessageBus& mb = ExtKit::global().messageBus();
+	mb.listen(id, value,  this, &AppModeBase::handleEvent);
 	if(id == messageBusID::kLocalEvent) {
-		debug_sendLine(EXT_KIT_DEBUG_TRACE "AppModeBase::listen() handleLocalEvent");
-		mb.listen(id, value,  this, &AppModeBase::handleEvent);
+	//	debug_sendLine(EXT_KIT_DEBUG_TRACE "AppModeBase::listen() messageBusID::kLocalEvent");
 	}
 	else if(id == messageBusID::kRemoteEvent) {
-		debug_sendLine(EXT_KIT_DEBUG_TRACE "AppModeBase::listen() handleRemoteEvent");
-		mb.listen(id, value,  this, &AppModeBase::handleEvent);
+	//	debug_sendLine(EXT_KIT_DEBUG_TRACE "AppModeBase::listen() messageBusID::kRemoteEvent");
 	}
 	else if(id == MICROBIT_ID_GESTURE) {
-		debug_sendLine(EXT_KIT_DEBUG_TRACE "AppModeBase::listen() handleGestureEvent");
-		mb.listen(id, value,  this, &AppModeBase::handleEvent);
-	}
-	else if(id == MICROBIT_ID_RADIO && value == MICROBIT_RADIO_EVT_DATAGRAM) {
-		debug_sendLine(EXT_KIT_DEBUG_TRACE "AppModeBase::listen() handleRadioDatagramReceived");
-		mb.listen(id, value,  this, &AppModeBase::handleRadioDatagramReceived);
+	//	debug_sendLine(EXT_KIT_DEBUG_TRACE "AppModeBase::listen() MICROBIT_ID_GESTURE");
 	}
 	else {
-		debug_sendLine(EXT_KIT_DEBUG_TRACE "AppModeBase::listen() handleOtherEvent");
-		mb.listen(id, value,  this, &AppModeBase::handleEvent);
+	//	debug_sendLine(EXT_KIT_DEBUG_TRACE "AppModeBase::listen() Others");
+	}
+}
+
+void AppModeBase::ignore(int id, int value)
+{
+	MicroBitMessageBus& mb = ExtKit::global().messageBus();
+	mb.ignore(id, value,  this, &AppModeBase::handleEvent);
+	if(id == messageBusID::kLocalEvent) {
+	//	debug_sendLine(EXT_KIT_DEBUG_TRACE "AppModeBase::ignore() messageBusID::kLocalEvent");
+	}
+	else if(id == messageBusID::kRemoteEvent) {
+	//	debug_sendLine(EXT_KIT_DEBUG_TRACE "AppModeBase::ignore() messageBusID::kRemoteEvent");
+	}
+	else if(id == MICROBIT_ID_GESTURE) {
+	//	debug_sendLine(EXT_KIT_DEBUG_TRACE "AppModeBase::ignore() MICROBIT_ID_GESTURE");
+	}
+	else {
+	//	debug_sendLine(EXT_KIT_DEBUG_TRACE "AppModeBase::ignore() Others");
 	}
 }
 
@@ -158,25 +200,7 @@ void AppModeBase::handleEvent(MicroBitEvent event)
 	/* virtual */ doHandleEvent(event);
 }
 
-void AppModeBase::handleRadioDatagramReceived(MicroBitEvent /* event */)
-{
-	ManagedString received = recvFromRadio();
-	if(received.length() <= 0) {
-		return;
-	}
-	if(feature::isConfigured(feature::kRemoteStateTx)) {
-		// receive a request sent from the receiver
-		receiveRemoteRequestFromRadio(received);
-	}
-	else if(feature::isConfigured(feature::kRemoteStateRx)) {
-		// receive a notification or response sent from the transmitter
-		receiveRemoteStatesFromRadio(received);
-	}
-
-	/* virtual */ doHandleRadioDatagramReceived(received);
-}
-
-/* PeriodicListener::HandlerProtocol */ void AppModeBase::handlePeriodicEvent(uint32_t count, PeriodicListener::PeriodUnit /* unit */)
+/* PeriodicObserver::HandlerProtocol */ void AppModeBase::handlePeriodicEvent(uint32_t count, PeriodicObserver::PeriodUnit /* unit */)
 {
 	/* virtual */ doHandlePeriodic100ms(count);
 

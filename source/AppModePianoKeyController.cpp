@@ -13,26 +13,7 @@ using namespace microbit_dal_ext_kit;
 /*	@class	AppModePianoKeyController
 */
 
-struct ButtonsState {
-	Buttons		latest	= button::kNone;
-	Buttons		last	= button::kNone;
-};
-
-struct PianoKeysState {
-	PianoKeys	latest	= pianoKey::kNone;
-	PianoKeys	last	= pianoKey::kNone;
-};
-
-struct OctaveState {
-	Octave	latest		= octave::kCenter;
-	Octave	last		= octave::kCenter;
-};
-
 static const Features kAppMode = appMode::kPianoKeyController;
-
-static ButtonsState		localButtons;
-static PianoKeysState	localPianoKeys;
-static OctaveState		localOctave;
 
 /* Component */ bool AppModePianoKeyController::isConfigured()
 {
@@ -42,28 +23,23 @@ static OctaveState		localOctave;
 AppModePianoKeyController::AppModePianoKeyController()
 	: AppModeBase("AppModePianoKeyController")
 {
-}
+	static const EventDef events[] = {
+		{ messageBusID::kLocalEvent, messageBusEvent::kLocalAppStarted },
+		{ MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_TILT_LEFT },
+		{ MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_TILT_RIGHT },
+		{ MICROBIT_ID_ANY, MICROBIT_EVT_ANY }	// END OF TABLE
+	};
+	static const EventDef radioEvents[] = {
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltedLeft },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltedRight },
+		{ MICROBIT_ID_ANY, MICROBIT_EVT_ANY }	// END OF TABLE
+	};
+	selectEvents(events);
+	selectRadioEvents(radioEvents);
 
-/* Component */ void AppModePianoKeyController::start()
-{
-	AppModeBase::start();
-	mTouchPiano.start();
-	mNeoPixel.start();
-	mRadio.start();
-
-	if(feature::isConfigured(feature::kRemoteEventTx)) {
-		// observe local events to trigger remote events
-		listen(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_TILT_LEFT);
-		listen(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_TILT_RIGHT);
-	}
-}
-
-/* Component */ void AppModePianoKeyController::stop()
-{
-	mRadio.stop();
-	mNeoPixel.stop();
-	mTouchPiano.stop();
-	AppModeBase::stop();
+	addChild(mTouchPiano);
+	addChild(mNeoPixel);
+	addChild(mTransmitter);
 }
 
 /* AppModeBase */ void AppModePianoKeyController::doHandleEvent(const MicroBitEvent& event)
@@ -73,8 +49,8 @@ AppModePianoKeyController::AppModePianoKeyController()
 	if(source == messageBusID::kLocalEvent) {
 		if(value == messageBusEvent::kLocalAppStarted) {
 			mNeoPixel.setColorMapForIndicator(Color::black, Color::white);
-			mNeoPixel.fillColorWithIndicatorRange(localOctave.latest);
-			display::showBits(localPianoKeys.latest);
+			mNeoPixel.fillColorWithIndicatorRange(octave::kCenter);
+			display::showBits(pianoKey::kNone);
 		}
 	}
 	else if(source == MICROBIT_ID_GESTURE) {
@@ -91,49 +67,41 @@ AppModePianoKeyController::AppModePianoKeyController()
 
 /* AppModeBase */ void AppModePianoKeyController::doHandlePeriodic100ms(uint32_t /* count */)
 {
-	//	check local buttons for local octave
+	// The current Octave
+	Octave o = mTransmitterForPianoKeys.octave.value();
+
+	// Check Local Buttons and update the latest Octave
 	{
-		ButtonsState& b = localButtons;
-		OctaveState& o = localOctave;
-		b.latest = button::readMicroBitButtons();
-		if(b.last != b.latest) {
-			//	check octave
-			Octave octave = o.last;
-			if((b.latest & button::kLR) == button::kLR) {
-				octave = octave::kCenter;
+		Buttons b = button::readMicroBitButtons();
+		if(mButtons.set(b)) {
+			if((b & button::kLR) == button::kLR) {
+				o = octave::kCenter;
 			}
-			else if(b.latest & button::kL) {
-				if(octave::kLowest < octave) {
-					octave--;
+			else if(b & button::kL) {
+				if(octave::kLowest < o) {
+					o--;
 				}
 			}
-			else if(b.latest & button::kR) {
-				if(octave < octave::kHighest) {
-					octave++;
+			else if(b & button::kR) {
+				if(o < octave::kHighest) {
+					o++;
 				}
 			}
-			o.latest = octave;
-			b.last = b.latest;
 		}
 	}
 
-	//	check local piano keys and octave
+	// Update Remote PianoKeys and Octave
 	{
-		PianoKeysState& p = localPianoKeys;
-		OctaveState& o = localOctave;
-		mTouchPiano.read(/* OUT */ &p.latest);
-		if((p.last != p.latest) || (o.last != o.latest)) {
-			updateRemotePianoKeysToRadio(p.latest, o.latest);
-			if(p.last != p.latest) {
-				display::showBits(p.latest);
-				p.last = p.latest;
-				debug_sendLine(EXT_KIT_DEBUG_ACTION "Local Piano Keys: 0x", string::hex(p.latest).toCharArray());
-			}
-			if(o.last != o.latest) {
-				mNeoPixel.fillColorWithIndicatorRange(o.latest);
-				o.last = o.latest;
-				debug_sendLine(EXT_KIT_DEBUG_ACTION "Local Octave: 0x", string::hex(o.latest).toCharArray());
-			}
+		PianoKeys p;
+		mTouchPiano.read(/* OUT */ &p);
+		if(mTransmitterForPianoKeys.pianoKeys.set(p)) {
+			display::showBits(p);
+		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote PianoKeys: 0x", string::hex(p).toCharArray());
 		}
+		if(mTransmitterForPianoKeys.octave.set(o)) {
+			mNeoPixel.fillColorWithIndicatorRange(o);
+		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Octave: 0x", string::hex(o).toCharArray());
+		}
+		mTransmitterForPianoKeys.updateRemoteState();
 	}
 }

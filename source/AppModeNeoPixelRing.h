@@ -11,47 +11,52 @@
 #include "ExtKitButton.h"
 #include "ExtKitBuzzer.h"
 #include "ExtKitDirection.h"
-#include "ExtKitRadio.h"
+#include "ExtKitRemoteState.h"
 #include "ExtKitZipHalo.h"
 
+#include "AppKitRemoteState.h"
+#include "AppKitState.h"
 #include "AppModeBase.h"
 
 /// App Mode for NeoPixel Ring
 class AppModeNeoPixelRing : public AppModeBase
 {
 public:
-	/// Inherited.
+	/// Inherited
 	static /* Component */ bool isConfigured();
 
-	/// Constructor.
+	/// Constructor
 	AppModeNeoPixelRing();
 
-	/// Destructor.
+	/// Destructor
 	~AppModeNeoPixelRing();
 
-	/// Inherited.
-	/* Component */ void start();
-
-	/// Inherited.
-	/* Component */ void stop();
-
 protected:
-	/// Inherited.
+	/// Inherited
 	/* AppModeBase */ void doHandleEvent(const MicroBitEvent& event);
 
-	/// Inherited.
+	/// Inherited
 	/* AppModeBase */ void doHandleRadioDatagramReceived(const ManagedString& received);
 
-	/// Inherited.
+	/// Inherited
 	/* AppModeBase */ void doHandlePeriodic100ms(uint32_t count);
 
 private:
 	void setNeoPixelMode(char mode);
 
 	microbit_dal_ext_kit::ZipHalo	mZipHalo;
+
 	microbit_dal_ext_kit::NeoPixelForZipHalo	mNeoPixel;
+
 	microbit_dal_ext_kit::Buzzer*	mBuzzer;
-	microbit_dal_ext_kit::Radio		mRadio;
+
+	microbit_dal_ext_kit::RemoteState::Receiver	mReceiver;
+
+	RemoteStateReceiverForButtons	mReceiverForButtons;
+
+	RemoteStateReceiverForPianoKeys	mReceiverForPianoKeys;
+
+	StateForButtons	mButtons;
 
 };	// AppModeNeoPixelRing
 

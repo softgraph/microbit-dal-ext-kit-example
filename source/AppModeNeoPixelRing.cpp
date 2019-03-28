@@ -13,34 +13,8 @@ using namespace microbit_dal_ext_kit;
 /*	@class	AppModeNeoPixelRing
 */
 
-struct ButtonsState {
-	Buttons		latest	= button::kNone;
-	Buttons		last	= button::kNone;
-};
-
-struct DirectionState {
-	Direction	latest	= direction::kCenter;
-	Direction	last	= direction::kCenter;
-};
-
-struct PianoKeysState {
-	PianoKeys	latest	= pianoKey::kNone;
-	PianoKeys	last	= pianoKey::kNone;
-};
-
-struct OctaveState {
-	Octave	latest		= octave::kCenter;
-	Octave	last		= octave::kCenter;
-};
-
 static const Features kAppMode1	= appMode::kNeoPixelRing;
 static const Features kAppMode2	= appMode::kZipHalo;
-
-static ButtonsState		localButtons;
-static ButtonsState		remoteButtons;
-static DirectionState	remoteDirection;
-static PianoKeysState	remotePianoKeys;
-static OctaveState		remoteOctave;
 
 /* Component */ bool AppModeNeoPixelRing::isConfigured()
 {
@@ -52,37 +26,29 @@ AppModeNeoPixelRing::AppModeNeoPixelRing()
 	: AppModeBase("AppModeNeoPixelRing")
 	, mBuzzer(0)
 {
+	static const EventDef events[] = {
+		{ messageBusID::kLocalEvent, messageBusEvent::kLocalAppStarted },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltedLeft },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltedRight },
+		{ MICROBIT_ID_ANY, MICROBIT_EVT_ANY }	// END OF TABLE
+	};
+	selectEvents(events);
+
+	addChild(mZipHalo);
+	addChild(mNeoPixel);
+	addChild(mReceiver);
 	if(feature::isConfigured(feature::kBuzzer)) {
 		ExtKit& g = ExtKit::global();
 		mBuzzer = new Buzzer("BuzzerForNeoPixelRing", /* analogPort */ g.p2());
+		EXT_KIT_ASSERT_OR_PANIC(mBuzzer, kPanicOutOfMemory);
+
+		addChild(*mBuzzer);
 	}
 }
 
 AppModeNeoPixelRing::~AppModeNeoPixelRing()
 {
 	delete mBuzzer;
-}
-
-/* Component */ void AppModeNeoPixelRing::start()
-{
-	AppModeBase::start();
-	mZipHalo.start();
-	mNeoPixel.start();
-	if(mBuzzer) {
-		mBuzzer->start();
-	}
-	mRadio.start();
-}
-
-/* Component */ void AppModeNeoPixelRing::stop()
-{
-	mRadio.stop();
-	if(mBuzzer) {
-		mBuzzer->stop();
-	}
-	mNeoPixel.stop();
-	mZipHalo.stop();
-	AppModeBase::stop();
 }
 
 /* AppModeBase */ void AppModeNeoPixelRing::doHandleEvent(const MicroBitEvent& event)
@@ -111,120 +77,91 @@ AppModeNeoPixelRing::~AppModeNeoPixelRing()
 	}
 }
 
-/* AppModeBase */ void AppModeNeoPixelRing::doHandleRadioDatagramReceived(const ManagedString& /* received */)
-{
-	Buttons buttons = checkLatestRemoteButtons();
-	if(buttons != button::kInvalid) {
-		remoteButtons.latest = buttons;
-	}
-
-	Direction direction = checkLatestRemoteDirection();
-	if(direction != direction::kInvalid) {
-		remoteDirection.latest = direction;
-	}
-
-	PianoKeys pianoKeys = checkLatestRemotePianoKeys();
-	if(pianoKeys != pianoKey::kInvalid) {
-		remotePianoKeys.latest = pianoKeys;
-	}
-
-	Octave octave = checkLatestRemoteOctave();
-	if(octave != octave::kInvalid) {
-		remoteOctave.latest = octave;
-	}
-}
-
 /* AppModeBase */ void AppModeNeoPixelRing::doHandlePeriodic100ms(uint32_t /* count */)
 {
-	//	check local buttons
+	// Check Local Buttons
 	{
-		ButtonsState& b = localButtons;
-		b.latest = button::readMicroBitButtons();
-		if(b.last != b.latest) {
-			if(b.latest & button::kL) {
+		Buttons b = button::readMicroBitButtons();
+		if(mButtons.set(b)) {
+			if(b & button::kL) {
 				mNeoPixel.rotateLeft();
 				mNeoPixel.show();
 			}
-			else if(b.latest & button::kR) {
+			else if(b & button::kR) {
 				mNeoPixel.rotateRight();
 				mNeoPixel.show();
 			}
-			debug_sendLine(EXT_KIT_DEBUG_ACTION "Loclal Buttons: 0x", string::hex(b.latest).toCharArray());
-			b.last = b.latest;
+		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Loclal Buttons: 0x", string::hex(b).toCharArray());
 		}
 	}
 
-	//	check remote buttons
+	// Check Remote Buttons
 	{
-		ButtonsState& b = remoteButtons;
-		if(b.last != b.latest) {
-			if((b.latest & button::kLR) == button::kLR) {
+		Buttons b;
+		if(mReceiverForButtons.buttons.read(/* OUT */ b)) {
+			if((b & button::kLR) == button::kLR) {
 				mNeoPixel.resetMaxBrightness();
 				mNeoPixel.show();
 			}
-			else if(b.latest & button::kL) {
+			else if(b & button::kL) {
 				mNeoPixel.changeMaxBrightness(-5);
 				mNeoPixel.show();
 			}
-			else if(b.latest & button::kR) {
+			else if(b & button::kR) {
 				mNeoPixel.changeMaxBrightness(5);
 				mNeoPixel.show();
 			}
-			else if(b.latest & button::kA) {
+			else if(b & button::kA) {
 				setNeoPixelMode('A');
 			}
-			else if(b.latest & button::kB) {
+			else if(b & button::kB) {
 				setNeoPixelMode('B');
 			}
-			else if(b.latest & button::kC) {
+			else if(b & button::kC) {
 				setNeoPixelMode('C');
 			}
-			else if(b.latest & button::kD) {
+			else if(b & button::kD) {
 				setNeoPixelMode('D');
 			}
-			else if(b.latest & button::kE) {
+			else if(b & button::kE) {
 				setNeoPixelMode('E');
 			}
-			else if(b.latest & button::kF) {
+			else if(b & button::kF) {
 				setNeoPixelMode('F');
 			}
-			display::showButton(b.latest);
-			debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Buttons: 0x", string::hex(b.latest).toCharArray());
-			b.last = b.latest;
+			display::showButton(b);
+		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Buttons: 0x", string::hex(b).toCharArray());
 		}
 	}
 
-	//	check remote direction
+	// Check Remote Direction
 	{
-		DirectionState& d = remoteDirection;
-		if(d.last != d.latest) {
-			{
-				mNeoPixel.fillColorWithFocusDirection(d.latest);
-				mNeoPixel.show();
-			}
-			display::showDirection(d.latest);
-			debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Direction: 0x", string::hex(d.latest).toCharArray());
-			d.last = d.latest;
+		Direction d;
+		if(mReceiverForButtons.direction.read(/* OUT */ d)) {
+			mNeoPixel.fillColorWithFocusDirection(d);
+			mNeoPixel.show();
+			display::showDirection(d);
+		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Direction: 0x", string::hex(d).toCharArray());
 		}
 	}
 
-	//	check remote piano keys
+	// Check Remote PianoKeys and Octave
 	{
-		PianoKeysState& p = remotePianoKeys;
-		OctaveState& o = remoteOctave;
-		if((p.last != p.latest) || (o.last != o.latest)) {
+		PianoKeys p;
+		Octave o;
+		bool pChanged = mReceiverForPianoKeys.pianoKeys.read(/* OUT */ p);
+		bool oChanged = mReceiverForPianoKeys.octave.read(/* OUT */ o);
+		if(pChanged || oChanged) {
 			if(mBuzzer) {
-				mBuzzer->playTone(/* INOUT */ p.latest, o.latest);
+				mBuzzer->playTone(/* INOUT */ p, o);
 			}
-			display::showBits(p.latest);
-			if(p.last != p.latest) {
-				debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Piano Keys: 0x", string::hex(p.latest).toCharArray());
-			}
-			if(o.last != o.latest) {
-				debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Octave: 0x", string::hex(o.latest).toCharArray());
-			}
-			p.last = p.latest;
-			o.last = o.latest;
+			display::showBits(p);
+		//	if(pChanged) {
+		//		debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Piano Keys: 0x", string::hex(p).toCharArray());
+		//	}
+		//	if(oChanged) {
+		//		debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Octave: 0x", string::hex(o).toCharArray());
+		//	}
 		}
 	}
 }

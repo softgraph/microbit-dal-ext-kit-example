@@ -9,36 +9,34 @@
 #define APP_MODE_JOYSTICK_CONTROLLER_H
 
 #include "ExtKitJoystickBit.h"
-#include "ExtKitRadio.h"
+#include "ExtKitRemoteState.h"
 
+#include "AppKitRemoteState.h"
 #include "AppModeBase.h"
 
 /// App Mode for Joystick Controller
 class AppModeJoystickController : public AppModeBase
 {
 public:
-	/// Inherited.
+	/// Inherited
 	static /* Component */ bool isConfigured();
 
-	/// Constructor.
+	/// Constructor
 	AppModeJoystickController();
 
-	/// Inherited.
-	/* Component */ void start();
-
-	/// Inherited.
-	/* Component */ void stop();
-
 protected:
-	/// Inherited.
+	/// Inherited
 	/* AppModeBase */ void doHandleEvent(const MicroBitEvent& event);
 
-	/// Inherited.
+	/// Inherited
 	/* AppModeBase */ void doHandlePeriodic100ms(uint32_t count);
 
 private:
 	microbit_dal_ext_kit::JoystickBit	mJoystickBit;
-	microbit_dal_ext_kit::Radio			mRadio;
+
+	microbit_dal_ext_kit::RemoteState::Transmitter	mTransmitter;
+
+	RemoteStateTransmitterForButtons	mTransmitterForButtons;
 
 };	// AppModeJoystickController
 

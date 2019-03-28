@@ -13,20 +13,7 @@ using namespace microbit_dal_ext_kit;
 /*	@class	AppModeJoystickController
 */
 
-struct ButtonsState {
-	Buttons		latest	= button::kNone;
-	Buttons		last	= button::kNone;
-};
-
-struct DirectionState {
-	Direction	latest	= direction::kCenter;
-	Direction	last	= direction::kCenter;
-};
-
 static const Features kAppMode = appMode::kJoystickController;
-
-static ButtonsState		localButtons;
-static DirectionState	localDirection;
 
 /* Component */ bool AppModeJoystickController::isConfigured()
 {
@@ -36,26 +23,22 @@ static DirectionState	localDirection;
 AppModeJoystickController::AppModeJoystickController()
 	: AppModeBase("AppModeJoystickController")
 {
-}
+	static const EventDef events[] = {
+		{ messageBusID::kLocalEvent, messageBusEvent::kLocalAppStarted },
+		{ MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_TILT_LEFT },
+		{ MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_TILT_RIGHT },
+		{ MICROBIT_ID_ANY, MICROBIT_EVT_ANY }	// END OF TABLE
+	};
+	static const EventDef radioEvents[] = {
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltedLeft },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltedRight },
+		{ MICROBIT_ID_ANY, MICROBIT_EVT_ANY }	// END OF TABLE
+	};
+	selectEvents(events);
+	selectRadioEvents(radioEvents);
 
-/* Component */ void AppModeJoystickController::start()
-{
-	AppModeBase::start();
-	mJoystickBit.start();
-	mRadio.start();
-
-	if(feature::isConfigured(feature::kRemoteEventTx)) {
-		// observe local events to trigger remote events
-		listen(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_TILT_LEFT);
-		listen(MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_TILT_RIGHT);
-	}
-}
-
-/* Component */ void AppModeJoystickController::stop()
-{
-	mRadio.stop();
-	mJoystickBit.stop();
-	AppModeBase::stop();
+	addChild(mJoystickBit);
+	addChild(mTransmitter);
 }
 
 /* AppModeBase */ void AppModeJoystickController::doHandleEvent(const MicroBitEvent& event)
@@ -81,24 +64,18 @@ AppModeJoystickController::AppModeJoystickController()
 
 /* AppModeBase */ void AppModeJoystickController::doHandlePeriodic100ms(uint32_t /* count */)
 {
-	//	check local buttons and direction
+	// Update Remote Buttons and Direction
 	{
-		ButtonsState& b = localButtons;
-		DirectionState& d = localDirection;
-		b.latest = mJoystickBit.readJoystickButtons();
-		d.latest = mJoystickBit.readJoystickDirection();
-		if((b.last != b.latest) || (d.last != d.latest)) {
-			updateRemoteButtonsToRadio(b.latest, d.latest);
-			if(b.last != b.latest) {
-				display::showButton(b.latest);
-				debug_sendLine(EXT_KIT_DEBUG_ACTION "Buttons: 0x", string::hex(b.latest).toCharArray());
-			}
-			if(d.last != d.latest) {
-				display::showDirection(d.latest);
-				debug_sendLine(EXT_KIT_DEBUG_ACTION "Direction: 0x", string::hex(d.latest).toCharArray());
-			}
-			b.last = b.latest;
-			d.last = d.latest;
+		Buttons b = mJoystickBit.readJoystickButtons();
+		if(mTransmitterForButtons.buttons.set(b)) {
+			display::showButton(b);
+		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Buttons: 0x", string::hex(b).toCharArray());
 		}
+		Direction d = mJoystickBit.readJoystickDirection();
+		if(mTransmitterForButtons.direction.set(d)) {
+			display::showDirection(d);
+		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Direction: 0x", string::hex(d).toCharArray());
+		}
+		mTransmitterForButtons.updateRemoteState();
 	}
 }

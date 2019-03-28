@@ -13,26 +13,7 @@ using namespace microbit_dal_ext_kit;
 /*	@class	AppModePianoPlayer
 */
 
-struct ButtonsState {
-	Buttons		latest	= button::kNone;
-	Buttons		last	= button::kNone;
-};
-
-struct PianoKeysState {
-	PianoKeys	latest	= pianoKey::kNone;
-	PianoKeys	last	= pianoKey::kNone;
-};
-
-struct OctaveState {
-	Octave	latest		= octave::kCenter;
-	Octave	last		= octave::kCenter;
-};
-
 static const Features kAppMode = appMode::kPianoPlayer;
-
-static ButtonsState		localButtons;
-static PianoKeysState	localPianoKeys;
-static OctaveState		localOctave;
 
 /* Component */ bool AppModePianoPlayer::isConfigured()
 {
@@ -42,20 +23,14 @@ static OctaveState		localOctave;
 AppModePianoPlayer::AppModePianoPlayer()
 	: AppModeBase("AppModePianoPlayer")
 {
-}
+	static const EventDef events[] = {
+		{ messageBusID::kLocalEvent, messageBusEvent::kLocalAppStarted },
+		{ MICROBIT_ID_ANY, MICROBIT_EVT_ANY }	// END OF TABLE
+	};
+	selectEvents(events);
 
-/* Component */ void AppModePianoPlayer::start()
-{
-	AppModeBase::start();
-	mTouchPiano.start();
-	mNeoPixel.start();
-}
-
-/* Component */ void AppModePianoPlayer::stop()
-{
-	mNeoPixel.stop();
-	mTouchPiano.stop();
-	AppModeBase::stop();
+	addChild(mTouchPiano);
+	addChild(mNeoPixel);
 }
 
 /* AppModeBase */ void AppModePianoPlayer::doHandleEvent(const MicroBitEvent& event)
@@ -65,56 +40,52 @@ AppModePianoPlayer::AppModePianoPlayer()
 	if(source == messageBusID::kLocalEvent) {
 		if(value == messageBusEvent::kLocalAppStarted) {
 			mNeoPixel.setColorMapForIndicator(Color::black, Color::white);
-			mNeoPixel.fillColorWithIndicatorRange(localOctave.latest);
-			display::showBits(localPianoKeys.latest);
+			mNeoPixel.fillColorWithIndicatorRange(octave::kCenter);
+			display::showBits(pianoKey::kNone);
 		}
 	}
 }
 
 /* AppModeBase */ void AppModePianoPlayer::doHandlePeriodic100ms(uint32_t /* count */)
 {
-	//	check local buttons for local octave
+	// The current Octave
+	Octave o = mOctave.value();
+
+	// Check Buttons and update the latest Octave
 	{
-		ButtonsState& b = localButtons;
-		OctaveState& o = localOctave;
-		b.latest = button::readMicroBitButtons();
-		if(b.last != b.latest) {
-			//	check octave
-			Octave octave = o.last;
-			if((b.latest & button::kLR) == button::kLR) {
-				octave = octave::kCenter;
+		Buttons b = button::readMicroBitButtons();
+		if(mButtons.set(b)) {
+			if((b & button::kLR) == button::kLR) {
+				o = octave::kCenter;
 			}
-			else if(b.latest & button::kL) {
-				if(octave::kLowest < octave) {
-					octave--;
+			else if(b & button::kL) {
+				if(octave::kLowest < o) {
+					o--;
 				}
 			}
-			else if(b.latest & button::kR) {
-				if(octave < octave::kHighest) {
-					octave++;
+			else if(b & button::kR) {
+				if(o < octave::kHighest) {
+					o++;
 				}
 			}
-			o.latest = octave;
-			b.last = b.latest;
 		}
 	}
 
-	//	check local piano keys and octave
+	// Check PianoKeys and Octave
 	{
-		PianoKeysState& p = localPianoKeys;
-		OctaveState& o = localOctave;
-		mTouchPiano.read(/* OUT */ &p.latest);
-		if((p.last != p.latest) || (o.last != o.latest)) {
-			mBuzzer.playTone(/* INOUT */ p.latest, o.latest);
-			if(p.last != p.latest) {
-				display::showBits(p.latest);
-				p.last = p.latest;
-				debug_sendLine(EXT_KIT_DEBUG_ACTION "Local Piano Keys: 0x", string::hex(p.latest).toCharArray());
+		PianoKeys p;
+		mTouchPiano.read(/* OUT */ &p);
+		bool changedP = mPianoKeys.set(p);
+		bool changedO = mOctave.set(o);
+		if(changedP || changedO) {
+			mBuzzer.playTone(/* INOUT */ p, o);
+			if(changedP) {
+				display::showBits(p);
+			//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Local Piano Keys: 0x", string::hex(p).toCharArray());
 			}
-			if(o.last != o.latest) {
-				mNeoPixel.fillColorWithIndicatorRange(o.latest);
-				o.last = o.latest;
-				debug_sendLine(EXT_KIT_DEBUG_ACTION "Local Octave: 0x", string::hex(o.latest).toCharArray());
+			if(changedO) {
+				mNeoPixel.fillColorWithIndicatorRange(o);
+			//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Local Octave: 0x", string::hex(o).toCharArray());
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-/// AppKit Generic Header. A handy header file to include all microbit-dal-ext-kit-example interfaces.
+/// AppKit Generic Header - A handy header file to include all microbit-dal-ext-kit-example interfaces
 /**	@file
 	@author	Copyright (c) 2019 Tomoyuki Nakashima.<br>
 			This code is licensed under MIT license. See `LICENSE` in the project root for more information.
@@ -9,21 +9,31 @@
 	The interfaces of `microbit-dal-ext-kit-example` are provided by the following header files.
 
 	# App Modes
-		- AppMode.h (App Mode values)
-		- AppModeBase.h (the base class)
-		- AppModeGenericReceiver.h
-		- AppModeGenericTransmitter.h
-		- AppModeJoystickController.h
-		- AppModeMotors.h
-		- AppModeNeoPixelRing.h
-		- AppModePianoKeyController.h
-		- AppModePianoPlayer.h
+		- AppMode.h <br>
+			App Mode values
+		- AppModeBase.h <br>
+			the base class
+		- AppModeGenericReceiver.h <br>
+			a generic receiver using micro:bit only
+		- AppModeGenericTransmitter.h <br>
+			a generic transmitter using micro:bit only
+		- AppModeJoystickController.h <br>
+			a transmitter using ElecFreaks' Joystick:bit
+		- AppModeMotors.h <br>
+			a receiver using SparkFun's moto:bit
+		- AppModeNeoPixelRing.h <br>
+			a receiver using Kitronik's Zip Halo with or without a Buzzer
+		- AppModePianoKeyController.h <br>
+			a transmitter using Waveshare's Mini Piano Module
+		- AppModePianoPlayer.h <br>
+			a player using Waveshare's Mini Piano Module
 		.
 	# Utilities
 		- AppKitError.h
 		- AppKitEvent.h
-		- AppKitRadio.h
+		- AppKitRemoteState.h
 		- AppKitSerialDebugger.h
+		- AppKitState.h
 		.
 	# Others
 		- AppKit_Common.h
@@ -46,8 +56,9 @@
 
 #include "AppKitError.h"
 #include "AppKitEvent.h"
-#include "AppKitRadio.h"
+#include "AppKitRemoteState.h"
 #include "AppKitSerialDebugger.h"
+#include "AppKitState.h"
 #include "AppMode.h"
 #include "AppModeBase.h"
 #include "AppModeGenericReceiver.h"

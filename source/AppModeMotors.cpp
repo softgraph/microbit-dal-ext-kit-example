@@ -13,27 +13,7 @@ using namespace microbit_dal_ext_kit;
 /*	@class	AppModeMotors
 */
 
-struct ButtonsState {
-	Buttons		latest	= button::kNone;
-	Buttons		last	= button::kNone;
-};
-
-struct DirectionState {
-	Direction	latest	= direction::kCenter;
-	Direction	last	= direction::kCenter;
-};
-
-struct SonarDurationState {
-	int			latest	= 0;
-	int			last	= 0;
-};
-
 static const Features kAppMode = appMode::kMotors;
-
-static ButtonsState			localButtons;
-static ButtonsState			remoteButtons;
-static DirectionState		remoteDirection;
-static SonarDurationState	sonarDurationInMs;
 
 /* Component */ bool AppModeMotors::isConfigured()
 {
@@ -44,22 +24,17 @@ AppModeMotors::AppModeMotors()
 	: AppModeBase("AppModeMotors")
 	, mSonar(ExtKit::global().p1(), ExtKit::global().p0(), MICROBIT_ID_IO_P0, *this)
 {
-}
+	static const EventDef events[] = {
+		{ messageBusID::kLocalEvent,  messageBusEvent::kLocalAppStarted },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltedLeft },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltedRight },
+		{ MICROBIT_ID_ANY, MICROBIT_EVT_ANY }	// END OF TABLE
+	};
+	selectEvents(events);
 
-/* Component */ void AppModeMotors::start()
-{
-	AppModeBase::start();
-	mMotoBit.start();
-	mSonar.start();
-	mRadio.start();
-}
-
-/* Component */ void AppModeMotors::stop()
-{
-	mRadio.stop();
-	mSonar.stop();
-	mMotoBit.stop();
-	AppModeBase::stop();
+	addChild(mMotoBit);
+	addChild(mSonar);
+	addChild(mReceiver);
 }
 
 /* AppModeBase */ void AppModeMotors::doHandleEvent(const MicroBitEvent& event)
@@ -81,82 +56,66 @@ AppModeMotors::AppModeMotors()
 	}
 }
 
-/* AppModeBase */ void AppModeMotors::doHandleRadioDatagramReceived(const ManagedString& /* received */)
-{
-	Buttons buttons = checkLatestRemoteButtons();
-	if(buttons != button::kInvalid) {
-		remoteButtons.latest = buttons;
-	}
-
-	Direction direction = checkLatestRemoteDirection();
-	if(direction != direction::kInvalid) {
-		remoteDirection.latest = direction;
-	}
-}
-
 /* Sonar::HandlerProtocol */ void AppModeMotors::handleSonarEcho(uint64_t durationInMs)
 {
-	sonarDurationInMs.latest = (int) durationInMs;
-	debug_sendLine(EXT_KIT_DEBUG_EVENT "Sonar Echo");
+	uint32_t value = durationInMs >> 8;
+	mSonarDuration.set(value);
+	//	debug_sendLine(EXT_KIT_DEBUG_EVENT "Sonar Echo");
 }
 
 /* AppModeBase */ void AppModeMotors::doHandlePeriodic100ms(uint32_t /* count */)
 {
+	// Check Sonar Echo
 	if(Sonar::isConfigured()) {
-		SonarDurationState& s = sonarDurationInMs;
-		if(s.last != s.latest) {
+		uint32_t value;
+		if(mSonarDuration.read(/* OUT */ value)) {
 #if 0		/// @todo	to be implemented
-			if(s.latest < 10) {
+			if(value < 10) {
 				...
 			}
 #endif
-			display::showNumber(s.latest);
-			s.last = s.latest;
-			debug_sendLine(EXT_KIT_DEBUG_ACTION "Sonar Duration: 0x", string::hex(s.latest).toCharArray());
+			display::showNumber(value);
+		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Sonar Duration: ", ManagedString((int) value).toCharArray());
 		}
 		mSonar.trigger();
 	}
 
-	//	update remote direction
+	// Check Remote Buttons
 	{
-		DirectionState& d = remoteDirection;
-		if(d.last != d.latest) {
-			controlMotoBitUsingDirection(d.latest);
-			display::showDirection(d.latest);
-			//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Direction: 0x", string::hex(d.latest).toCharArray());
-			d.last = d.latest;
+		Buttons b;
+		if(mReceiverForButtons.buttons.read(/* OUT */ b)) {
+			display::showButton(b);
+		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Buttons: 0x", string::hex(b).toCharArray());
 		}
 	}
 
-	//	update remote buttons
+	// Check Remote Direction
 	{
-		ButtonsState& b = remoteButtons;
-		if(b.last != b.latest) {
-			display::showButton(b.latest);
-			//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Buttons: 0x", string::hex(b.latest).toCharArray());
-			b.last = b.latest;
+		Direction d;
+		if(mReceiverForButtons.direction.read(/* OUT */ d)) {
+			controlMotoBitUsingDirection(d);
+			display::showDirection(d);
+		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Direction: 0x", string::hex(d).toCharArray());
 		}
 	}
 
-	//	update local buttons
+	// Check Local Buttons
 	{
-		ButtonsState& b = localButtons;
-		b.latest = button::readMicroBitButtons();
-		if(b.last != b.latest) {
-			Direction direction = direction::kCenter;
-			if((b.latest & button::kLR) == button::kLR) {
-				direction = direction::kN;
+		Buttons b = button::readMicroBitButtons();
+		if(mButtons.set(b)) {
+			Direction d = direction::kCenter;
+			if((b & button::kLR) == button::kLR) {
+				d = direction::kN;
 			}
-			else if(b.latest & button::kL) {
-				direction = direction::kLF;
+			else if(b & button::kL) {
+				d = direction::kLF;
 			}
-			else if(b.latest & button::kR) {
-				direction = direction::kRF;
+			else if(b & button::kR) {
+				d = direction::kRF;
 			}
-			controlMotoBitUsingDirection(direction);
-			display::showDirection(direction);
-			//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Loclal Buttons: 0x", string::hex(b.latest).toCharArray());
-			b.last = b.latest;
+			controlMotoBitUsingDirection(d);
+			display::showDirection(d);
+		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Local Buttons: 0x", string::hex(b).toCharArray());
 		}
 	}
 }

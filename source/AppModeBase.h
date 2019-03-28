@@ -9,35 +9,54 @@
 #define APP_MODE_BASE_H
 
 #include "ExtKitComponent.h"
-#include "ExtKitPeriodicListener.h"
+#include "ExtKitPeriodicObserver.h"
 
 class ManagedString;
 class MicroBitEvent;
 
-/// App Mode Base Component
-/* abstract */ class AppModeBase : public microbit_dal_ext_kit::Component, microbit_dal_ext_kit::PeriodicListener::HandlerProtocol
+/// App Mode Base Composite Component
+/* abstract */ class AppModeBase : public microbit_dal_ext_kit::CompositeComponent, microbit_dal_ext_kit::PeriodicObserver::Handler::Protocol
 {
-public:
-	/// Constructor.
+protected:
+	/// Constructor
 	AppModeBase(const char* name);
 
-	/// Inherited.
-	/* Component */ void start();
+	struct EventDef {
+	public:
+		uint16_t	id;
+		uint16_t	value;
+	};
 
-	/// Inherited.
-	/* Component */ void stop();
+	/// Select Events
+	void selectEvents(const EventDef* def);
 
-protected:
-	virtual /* to be overridden */ void doHandleEvent(const MicroBitEvent& event);
-	virtual /* to be overridden */ void doHandleRadioDatagramReceived(const ManagedString& received);
-	virtual /* to be overridden */ void doHandlePeriodic100ms(uint32_t count);
+	/// Select Radio Events
+	void selectRadioEvents(const EventDef* def);
+
+	/// Inherited
+	/* CompositeComponent */ void doStart();
+
+	/// Inherited
+	/* CompositeComponent */ void doStop();
 
 	void listen(int id, int value);
 
+	void ignore(int id, int value);
+
+	/// Do Handle Event
+	virtual /* to be overridden */ void doHandleEvent(const MicroBitEvent& /* event */)	{ /* nothing to do */ }
+
+	/// Do Handle Periodic 100 ms
+	virtual /* to be overridden */ void doHandlePeriodic100ms(uint32_t /* count */)	{ /* nothing to do */ }
+
 private:
 	void handleEvent(MicroBitEvent event);
-	void handleRadioDatagramReceived(MicroBitEvent event);
-	/* PeriodicListener::HandlerProtocol */ void handlePeriodicEvent(uint32_t count, microbit_dal_ext_kit::PeriodicListener::PeriodUnit unit);
+
+	/* PeriodicObserver::Handler::Protocol */ void handlePeriodicEvent(uint32_t count, microbit_dal_ext_kit::PeriodicObserver::PeriodUnit unit);
+
+	const EventDef*	mEvents;
+
+	const EventDef*	mRadioEvents;
 
 };	// AppModeBase
 

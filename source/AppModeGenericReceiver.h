@@ -8,38 +8,35 @@
 #ifndef APP_MODE_GENERIC_RECEIVER_H
 #define APP_MODE_GENERIC_RECEIVER_H
 
-#include "ExtKitRadio.h"
+#include "ExtKitRemoteState.h"
 
+#include "AppKitRemoteState.h"
 #include "AppModeBase.h"
 
 /// App Mode for Generic Receiver
 class AppModeGenericReceiver : public AppModeBase
 {
 public:
-	/// Inherited.
+	/// Inherited
 	static /* Component */ bool isConfigured();
 
-	/// Constructor.
+	/// Constructor
 	AppModeGenericReceiver();
 
-	/// Inherited.
-	/* Component */ void start();
-
-	/// Inherited.
-	/* Component */ void stop();
-
 protected:
-	/// Inherited.
+	/// Inherited
 	/* AppModeBase */ void doHandleEvent(const MicroBitEvent& event);
 
-	/// Inherited.
+	/// Inherited
 	/* AppModeBase */ void doHandleRadioDatagramReceived(const ManagedString& received);
 
-	/// Inherited.
+	/// Inherited
 	/* AppModeBase */ void doHandlePeriodic100ms(uint32_t count);
 
 private:
-	microbit_dal_ext_kit::Radio		mRadio;
+	microbit_dal_ext_kit::RemoteState::Receiver	mReceiver;
+
+	RemoteStateReceiverForButtons	mReceiverForButtons;
 
 };	// AppModeGenericReceiver
 

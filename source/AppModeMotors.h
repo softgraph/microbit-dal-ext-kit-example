@@ -10,46 +10,50 @@
 
 #include "ExtKitDirection.h"
 #include "ExtKitMotoBit.h"
-#include "ExtKitRadio.h"
+#include "ExtKitRemoteState.h"
 #include "ExtKitSonar.h"
 
+#include "AppKitRemoteState.h"
+#include "AppKitState.h"
 #include "AppModeBase.h"
 
 /// App Mode for Motors
 class AppModeMotors : public AppModeBase, protected microbit_dal_ext_kit::Sonar::HandlerProtocol
 {
 public:
-	/// Inherited.
+	/// Inherited
 	static /* Component */ bool isConfigured();
 
-	/// Constructor.
+	/// Constructor
 	AppModeMotors();
 
-	/// Inherited.
-	/* Component */ void start();
-
-	/// Inherited.
-	/* Component */ void stop();
-
 protected:
-	/// Inherited.
+	/// Inherited
 	/* AppModeBase */ void doHandleEvent(const MicroBitEvent& event);
 
-	/// Inherited.
+	/// Inherited
 	/* AppModeBase */ void doHandleRadioDatagramReceived(const ManagedString& received);
 
-	/// Inherited.
+	/// Inherited
 	/* AppModeBase */ void doHandlePeriodic100ms(uint32_t count);
 
-	/// Inherited.
+	/// Inherited
 	/* Sonar::HandlerProtocol */ void handleSonarEcho(uint64_t durationInMs);
 
 private:
 	bool controlMotoBitUsingDirection(microbit_dal_ext_kit::Direction direction);
 
 	microbit_dal_ext_kit::MotoBit	mMotoBit;
-	microbit_dal_ext_kit::Radio		mRadio;
-	microbit_dal_ext_kit::Sonar		mSonar;
+
+	microbit_dal_ext_kit::Sonar	mSonar;
+
+	microbit_dal_ext_kit::RemoteState::Receiver	mReceiver;
+
+	RemoteStateReceiverForButtons	mReceiverForButtons;
+
+	StateForButtons	mButtons;
+
+	StateChangeForSonarDuration	mSonarDuration;
 
 };	// AppModeMotors
 

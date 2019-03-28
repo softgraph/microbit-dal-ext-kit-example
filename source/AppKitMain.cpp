@@ -1,4 +1,4 @@
-/// App Main
+/// AppKit Main
 /**	@file
 	@author	Copyright (c) 2019 Tomoyuki Nakashima.<br>
 			This code is licensed under MIT license. See `LICENSE` in the project root for more information.
@@ -9,7 +9,7 @@
 
 using namespace microbit_dal_ext_kit;
 
-#define	ENABLE_ALL_MICROBIT_FEATURES	1
+#define	ENABLE_ALL_MICROBIT_FEATURES	0
 
 #if ENABLE_ALL_MICROBIT_FEATURES
 
@@ -47,9 +47,9 @@ static AppExtKit	uBit;
 
 static AppSerialDebugger	sDebugger;
 static AppModeDescriber		sDescriber;
-static PeriodicListener		sPeriodicListener;
+static PeriodicObserver		sPeriodicObserver;
 
-static Features checkAvaiableFeatures();
+static Features checkAvaiableHardware();
 static /* new */ AppModeBase* instantiateAppMode();
 
 int main()
@@ -57,44 +57,45 @@ int main()
 	// Initialize the device.
 	uBit.init();
 
-	// Start the Serial Debugger service first. The debugger is not enabled at this point.
+	// Start the Serial Debugger service first. The debugger is ready, but not yet activated at this point. To acivate it, you need to press any key on the terminal conected to the seria port.
 	sDebugger.start();
 
 	// Show the bootup string and give a chance to enable the debugger via the serial port.
 	display::scrollString(APP_STRING_BOOTUP);
 
-	// Check connected hardware and get Avaiable Features.
-	Features condition = checkAvaiableFeatures();
+	// Check Avaiable Hardware.
+	Features condition = checkAvaiableHardware();
 	EXT_KIT_ASSERT(condition != 0);
 
-	// Register App Mode Describer required for selecting App Mode.
-	registerAppModeDescriber(&sDescriber);
-
-	// Select App Mode. The character for the selected App Mode will be shown on the display.
-	selectAppModeFor(condition);
+	// Select an App Mode automatically or manually. After ths call, the character for the selected App Mode will be shown on the display.
+	selectAppModeFor(condition, sDescriber);
 	EXT_KIT_ASSERT(feature::configured() != 0);
 
-	// Prepare other core modules if required
-	prepareCoreRadio();
+	// Check whether the device is inverted or not.
 	bool inverted = feature::isConfigured(feature::kInverted);
 	if(inverted) {
 		display::setUpsideDown();
 	}
 
-	// Start one of App Modes.
+#if 0	//	@todo
+	// Prepare other core modules if required
+	prepareCoreRadio();
+#endif
+
+	// Start a corresponding App Mode Component.
 	AppModeBase* appMode = instantiateAppMode();
 	EXT_KIT_ASSERT_OR_PANIC(appMode, kPanicOutOfMemory);
 	appMode->start();
 
-	// Clear the display.
+	// Clear the App Mode character on the display.
 	time::sleep(500 /* milliseconds */);
 	display::clear();
 
 	// Fire an App Stared event.
 	MicroBitEvent(messageBusID::kLocalEvent, messageBusEvent::kLocalAppStarted);	// CREATE_AND_FIRE
 
-	// Start the Periodic Listener.
-	sPeriodicListener.start();
+	// Start the Periodic Observer.
+	sPeriodicObserver.start();
 
 	// Sleep forever.
 	time::sleep();
@@ -104,7 +105,7 @@ int main()
 	return 0;
 }
 
-Features checkAvaiableFeatures()
+Features checkAvaiableHardware()
 {
 	Features result;
 	result = JoystickBit::avaiableFeatures();
