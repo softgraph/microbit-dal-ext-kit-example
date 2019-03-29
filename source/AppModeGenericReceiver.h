@@ -28,14 +28,13 @@ protected:
 	/* AppModeBase */ void doHandleEvent(const MicroBitEvent& event);
 
 	/// Inherited
-	/* AppModeBase */ void doHandleRadioDatagramReceived(const ManagedString& received);
-
-	/// Inherited
 	/* AppModeBase */ void doHandlePeriodic100ms(uint32_t count);
 
 private:
-	microbit_dal_ext_kit::RemoteState::Receiver	mReceiver;
+	/// Remote State Receiver
+	microbit_dal_ext_kit::remoteState::Receiver	mReceiver;
 
+	/// Remote State Receiver For Buttons
 	RemoteStateReceiverForButtons	mReceiverForButtons;
 
 };	// AppModeGenericReceiver

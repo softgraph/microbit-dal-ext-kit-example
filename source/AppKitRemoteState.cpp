@@ -28,7 +28,7 @@ static const char kMarkerOctave		= '-';
 */
 
 RemoteStateTransmitter::RemoteStateTransmitter(char category)
-	: mTransmitter(RemoteState::Transmitter::global())
+	: mTransmitter(remoteState::Transmitter::global())
 	, mCategory(category)
 {
 	mTransmitter.listen(mCategory, *this);
@@ -42,7 +42,7 @@ RemoteStateTransmitterForButtons::RemoteStateTransmitterForButtons()
 {
 }
 
-/* RemoteState::Transmitter::Protocol */ ManagedString RemoteStateTransmitterForButtons::remoteState()
+/* remoteState::Transmitter::Protocol */ ManagedString RemoteStateTransmitterForButtons::remoteState()
 {
 	ManagedString s =
 		string::hex(buttons.value(), kMarkerButtons) +
@@ -67,7 +67,7 @@ RemoteStateTransmitterForPianoKeys::RemoteStateTransmitterForPianoKeys()
 {
 }
 
-/* RemoteState::Transmitter::Protocol */ ManagedString RemoteStateTransmitterForPianoKeys::remoteState()
+/* remoteState::Transmitter::Protocol */ ManagedString RemoteStateTransmitterForPianoKeys::remoteState()
 {
 	ManagedString s =
 		string::hex(pianoKeys.value(), kMarkerPianoKeys) +
@@ -88,7 +88,7 @@ void RemoteStateTransmitterForPianoKeys::updateRemoteState()
 */
 
 RemoteStateReceiver::RemoteStateReceiver(char category)
-	: mReceiver(RemoteState::Receiver::global())
+	: mReceiver(remoteState::Receiver::global())
 	, mCategory(category)
 {
 	mReceiver.listen(mCategory, *this);
@@ -102,7 +102,7 @@ RemoteStateReceiverForButtons::RemoteStateReceiverForButtons()
 {
 }
 
-/* RemoteState::Receiver::Protocol */ void RemoteStateReceiverForButtons::handleRemoteState(ManagedString& received)
+/* remoteState::Receiver::Protocol */ void RemoteStateReceiverForButtons::handleRemoteState(ManagedString& received)
 {
 	int16_t pos;
 	pos = string::seek(received, 0, kMarkerButtons);
@@ -124,7 +124,7 @@ RemoteStateReceiverForPianoKeys::RemoteStateReceiverForPianoKeys()
 {
 }
 
-/* RemoteState::Receiver::Protocol */ void RemoteStateReceiverForPianoKeys::handleRemoteState(ManagedString& received)
+/* remoteState::Receiver::Protocol */ void RemoteStateReceiverForPianoKeys::handleRemoteState(ManagedString& received)
 {
 	int16_t pos;
 	pos = string::seek(received, 0, kMarkerPianoKeys);

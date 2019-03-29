@@ -32,10 +32,13 @@ protected:
 	/* AppModeBase */ void doHandlePeriodic100ms(uint32_t count);
 
 private:
+	/// Joystick:bit board
 	microbit_dal_ext_kit::JoystickBit	mJoystickBit;
 
-	microbit_dal_ext_kit::RemoteState::Transmitter	mTransmitter;
+	/// Remote State Transmitter
+	microbit_dal_ext_kit::remoteState::Transmitter	mTransmitter;
 
+	/// Remote State Transmitter For Buttons
 	RemoteStateTransmitterForButtons	mTransmitterForButtons;
 
 };	// AppModeJoystickController

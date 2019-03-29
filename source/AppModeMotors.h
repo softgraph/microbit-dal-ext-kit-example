@@ -14,7 +14,6 @@
 #include "ExtKitSonar.h"
 
 #include "AppKitRemoteState.h"
-#include "AppKitState.h"
 #include "AppModeBase.h"
 
 /// App Mode for Motors
@@ -32,28 +31,32 @@ protected:
 	/* AppModeBase */ void doHandleEvent(const MicroBitEvent& event);
 
 	/// Inherited
-	/* AppModeBase */ void doHandleRadioDatagramReceived(const ManagedString& received);
-
-	/// Inherited
 	/* AppModeBase */ void doHandlePeriodic100ms(uint32_t count);
 
 	/// Inherited
-	/* Sonar::HandlerProtocol */ void handleSonarEcho(uint64_t durationInMs);
+	/* Sonar::HandlerProtocol */ void handleSonarEcho(microbit_dal_ext_kit::SonarDuration duration);
 
 private:
+	/// Control Moto:bit Using Direction
 	bool controlMotoBitUsingDirection(microbit_dal_ext_kit::Direction direction);
 
+	/// Moto:bit board
 	microbit_dal_ext_kit::MotoBit	mMotoBit;
 
+	/// Generic Sonar
 	microbit_dal_ext_kit::Sonar	mSonar;
 
-	microbit_dal_ext_kit::RemoteState::Receiver	mReceiver;
+	/// Remote State Receiver
+	microbit_dal_ext_kit::remoteState::Receiver	mReceiver;
 
+	/// Remote State Receiver For Buttons
 	RemoteStateReceiverForButtons	mReceiverForButtons;
 
-	StateForButtons	mButtons;
+	/// State For Buttons
+	microbit_dal_ext_kit::StateForButtons	mButtons;
 
-	StateChangeForSonarDuration	mSonarDuration;
+	/// State Change For Sonar Duration
+	microbit_dal_ext_kit::StateChangeForSonarDuration	mSonarDuration;
 
 };	// AppModeMotors
 

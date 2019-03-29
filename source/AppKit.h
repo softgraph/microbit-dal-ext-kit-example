@@ -33,7 +33,6 @@
 		- AppKitEvent.h
 		- AppKitRemoteState.h
 		- AppKitSerialDebugger.h
-		- AppKitState.h
 		.
 	# Others
 		- AppKit_Common.h
@@ -58,7 +57,6 @@
 #include "AppKitEvent.h"
 #include "AppKitRemoteState.h"
 #include "AppKitSerialDebugger.h"
-#include "AppKitState.h"
 #include "AppMode.h"
 #include "AppModeBase.h"
 #include "AppModeGenericReceiver.h"

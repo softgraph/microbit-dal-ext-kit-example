@@ -8,20 +8,23 @@
 #ifndef APP_KIT_REMOTE_STATE_H
 #define APP_KIT_REMOTE_STATE_H
 
-#include "AppKitState.h"
 #include "ExtKitRemoteState.h"
+#include "ExtKitButton.h"
+#include "ExtKitDirection.h"
+#include "ExtKitOctave.h"
+#include "ExtKitPianoKey.h"
 
 class ManagedString;
 
 /// Remote State Transmitter
-/* abstract */ class RemoteStateTransmitter : public microbit_dal_ext_kit::RemoteState::Transmitter::Protocol
+/* abstract */ class RemoteStateTransmitter : public microbit_dal_ext_kit::remoteState::Transmitter::Protocol
 {
 protected:
 	/// Constructor
 	RemoteStateTransmitter(char category);
 
 	/// Transmitter
-	microbit_dal_ext_kit::RemoteState::Transmitter&	mTransmitter;
+	microbit_dal_ext_kit::remoteState::Transmitter&	mTransmitter;
 
 	/// Category
 	char	mCategory;
@@ -36,16 +39,16 @@ public:
 	RemoteStateTransmitterForButtons();
 
 	/// Inherited
-	/* RemoteState::Transmitter::Protocol */ ManagedString remoteState();
+	/* remoteState::Transmitter::Protocol */ ManagedString remoteState();
 
 	/// Update Remote State
 	void updateRemoteState();
 
 	/// State Change For Buttons
-	StateChangeForButtons	buttons;
+	microbit_dal_ext_kit::StateChangeForButtons	buttons;
 
 	/// State Change For Direction
-	StateChangeForDirection	direction;
+	microbit_dal_ext_kit::StateChangeForDirection	direction;
 
 };	// RemoteStateTransmitterForButtons
 
@@ -57,28 +60,28 @@ public:
 	RemoteStateTransmitterForPianoKeys();
 
 	/// Inherited
-	/* RemoteState::Transmitter::Protocol */ ManagedString remoteState();
+	/* remoteState::Transmitter::Protocol */ ManagedString remoteState();
 
 	/// Update Remote State
 	void updateRemoteState();
 
 	/// State Change For PianoKeys
-	StateChangeForPianoKeys	pianoKeys;
+	microbit_dal_ext_kit::StateChangeForPianoKeys	pianoKeys;
 
 	/// State Change For Octave
-	StateChangeForOctave	octave;
+	microbit_dal_ext_kit::StateChangeForOctave	octave;
 
 };	// RemoteStateTransmitterForPianoKeys
 
 /// Remote State Receiver
-/* abstract */ class RemoteStateReceiver : public microbit_dal_ext_kit::RemoteState::Receiver::Protocol
+/* abstract */ class RemoteStateReceiver : public microbit_dal_ext_kit::remoteState::Receiver::Protocol
 {
 protected:
 	/// Constructor
 	RemoteStateReceiver(char category);
 
 	/// Receiver
-	microbit_dal_ext_kit::RemoteState::Receiver&	mReceiver;
+	microbit_dal_ext_kit::remoteState::Receiver&	mReceiver;
 
 	/// Category
 	char	mCategory;
@@ -93,13 +96,13 @@ public:
 	RemoteStateReceiverForButtons();
 
 	/// Inherited
-	/* RemoteState::Receiver::Protocol */ void handleRemoteState(ManagedString& received);
+	/* remoteState::Receiver::Protocol */ void handleRemoteState(ManagedString& received);
 
 	/// State Change For Buttons
-	StateChangeForButtons	buttons;
+	microbit_dal_ext_kit::StateChangeForButtons	buttons;
 
 	/// State Change For Direction
-	StateChangeForDirection	direction;
+	microbit_dal_ext_kit::StateChangeForDirection	direction;
 
 };	// RemoteStateReceiverForButtons
 
@@ -111,13 +114,13 @@ public:
 	RemoteStateReceiverForPianoKeys();
 
 	/// Inherited
-	/* RemoteState::Receiver::Protocol */ void handleRemoteState(ManagedString& received);
+	/* remoteState::Receiver::Protocol */ void handleRemoteState(ManagedString& received);
 
 	/// State Change For PianoKeys
-	StateChangeForPianoKeys	pianoKeys;
+	microbit_dal_ext_kit::StateChangeForPianoKeys	pianoKeys;
 
 	/// State Change For Octave
-	StateChangeForOctave	octave;
+	microbit_dal_ext_kit::StateChangeForOctave	octave;
 
 };	// RemoteStateReceiverForPianoKeys
 

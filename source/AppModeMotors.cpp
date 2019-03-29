@@ -56,9 +56,9 @@ AppModeMotors::AppModeMotors()
 	}
 }
 
-/* Sonar::HandlerProtocol */ void AppModeMotors::handleSonarEcho(uint64_t durationInMs)
+/* Sonar::HandlerProtocol */ void AppModeMotors::handleSonarEcho(SonarDuration duration)
 {
-	uint32_t value = durationInMs >> 8;
+	uint32_t value = duration >> 8;
 	mSonarDuration.set(value);
 	//	debug_sendLine(EXT_KIT_DEBUG_EVENT "Sonar Echo");
 }

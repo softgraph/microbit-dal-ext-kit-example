@@ -9,7 +9,10 @@
 #define APP_MODE_PIANO_PLAYER_H
 
 #include "ExtKitTouchPiano.h"
-#include "AppKitState.h"
+#include "ExtKitButton.h"
+#include "ExtKitOctave.h"
+#include "ExtKitPianoKey.h"
+
 #include "AppModeBase.h"
 
 /// App Mode for Piano Player
@@ -30,17 +33,23 @@ protected:
 	/* AppModeBase */ void doHandlePeriodic100ms(uint32_t count);
 
 private:
+	/// Touch Piano board
 	microbit_dal_ext_kit::TouchPiano	mTouchPiano;
 
+	/// NeoPixel For Touch Piano board
 	microbit_dal_ext_kit::NeoPixelForTouchPiano	mNeoPixel;
 
+	/// Buzzer For Touch Piano board
 	microbit_dal_ext_kit::BuzzerForTouchPiano	mBuzzer;
 
-	StateForButtons	mButtons;
+	/// State For Buttons
+	microbit_dal_ext_kit::StateForButtons	mButtons;
 
-	StateForPianoKeys	mPianoKeys;
+	/// State For Piano Keys
+	microbit_dal_ext_kit::StateForPianoKeys	mPianoKeys;
 
-	StateForOctave	mOctave;
+	/// State For Octave
+	microbit_dal_ext_kit::StateForOctave	mOctave;
 
 };	// AppModePianoPlayer
 

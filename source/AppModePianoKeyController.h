@@ -12,7 +12,6 @@
 #include "ExtKitTouchPiano.h"
 
 #include "AppKitRemoteState.h"
-#include "AppKitState.h"
 #include "AppModeBase.h"
 
 /// App Mode for Piano Key Controller
@@ -33,17 +32,23 @@ protected:
 	/* AppModeBase */ void doHandlePeriodic100ms(uint32_t count);
 
 private:
+	/// Touch Piano board
 	microbit_dal_ext_kit::TouchPiano	mTouchPiano;
 
+	/// NeoPixel For Touch Piano board
 	microbit_dal_ext_kit::NeoPixelForTouchPiano	mNeoPixel;
 
+	/// Buzzer For Touch Piano board
 	microbit_dal_ext_kit::BuzzerForTouchPiano	mBuzzer;
 
-	microbit_dal_ext_kit::RemoteState::Transmitter	mTransmitter;
+	/// Remote State Transmitter
+	microbit_dal_ext_kit::remoteState::Transmitter	mTransmitter;
 
+	/// Remote State Transmitter For Piano Keys
 	RemoteStateTransmitterForPianoKeys	mTransmitterForPianoKeys;
 
-	StateForButtons	mButtons;
+	/// State For Buttons
+	microbit_dal_ext_kit::StateForButtons	mButtons;
 
 };	// AppModePianoKeyController
 
