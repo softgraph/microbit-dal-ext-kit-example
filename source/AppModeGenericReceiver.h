@@ -34,8 +34,8 @@ private:
 	/// Remote State Receiver
 	microbit_dal_ext_kit::remoteState::Receiver	mReceiver;
 
-	/// Remote State Receiver For Buttons
-	RemoteStateReceiverForButtons	mReceiverForButtons;
+	/// Remote State Receiver Category For Buttons
+	RemoteStateReceiverCategoryForButtons	mReceiverCategoryForButtons;
 
 };	// AppModeGenericReceiver
 

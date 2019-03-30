@@ -58,7 +58,7 @@ AppModeGenericReceiver::AppModeGenericReceiver()
 	// Check Remote Buttons
 	{
 		Buttons b;
-		if(mReceiverForButtons.buttons.read(b)) {
+		if(mReceiverCategoryForButtons.buttons.read(b)) {
 			display::showButton(b);
 			debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Buttons: 0x", string::hex(b).toCharArray());
 		}

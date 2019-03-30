@@ -44,8 +44,8 @@ private:
 	/// Remote State Transmitter
 	microbit_dal_ext_kit::remoteState::Transmitter	mTransmitter;
 
-	/// Remote State Transmitter For Piano Keys
-	RemoteStateTransmitterForPianoKeys	mTransmitterForPianoKeys;
+	/// Remote State Transmitter Category For Piano Keys
+	RemoteStateTransmitterCategoryForPianoKeys	mTransmitterCategoryForPianoKeys;
 
 	/// State For Buttons
 	microbit_dal_ext_kit::StateForButtons	mButtons;

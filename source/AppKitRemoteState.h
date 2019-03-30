@@ -16,30 +16,15 @@
 
 class ManagedString;
 
-/// Remote State Transmitter
-/* abstract */ class RemoteStateTransmitter : public microbit_dal_ext_kit::remoteState::Transmitter::Protocol
-{
-protected:
-	/// Constructor
-	RemoteStateTransmitter(char category);
-
-	/// Transmitter
-	microbit_dal_ext_kit::remoteState::Transmitter&	mTransmitter;
-
-	/// Category
-	char	mCategory;
-
-};	// RemoteStateTransmitter
-
-/// Remote State Transmitter For Buttons
-class RemoteStateTransmitterForButtons : public RemoteStateTransmitter
+/// Remote State Transmitter Category For Buttons
+class RemoteStateTransmitterCategoryForButtons : public microbit_dal_ext_kit::remoteState::Transmitter::CategoryBase
 {
 public:
 	/// Constructor
-	RemoteStateTransmitterForButtons();
+	RemoteStateTransmitterCategoryForButtons();
 
 	/// Inherited
-	/* remoteState::Transmitter::Protocol */ ManagedString remoteState();
+	/* remoteState::Transmitter::CategoryProtocol */ ManagedString remoteState();
 
 	/// Update Remote State
 	void updateRemoteState();
@@ -50,17 +35,17 @@ public:
 	/// State Change For Direction
 	microbit_dal_ext_kit::StateChangeForDirection	direction;
 
-};	// RemoteStateTransmitterForButtons
+};	// RemoteStateTransmitterCategoryForButtons
 
-/// Remote State Transmitter For Piano Keys
-class RemoteStateTransmitterForPianoKeys : public RemoteStateTransmitter
+/// Remote State Transmitter Category For Piano Keys
+class RemoteStateTransmitterCategoryForPianoKeys : public microbit_dal_ext_kit::remoteState::Transmitter::CategoryBase
 {
 public:
 	/// Constructor
-	RemoteStateTransmitterForPianoKeys();
+	RemoteStateTransmitterCategoryForPianoKeys();
 
 	/// Inherited
-	/* remoteState::Transmitter::Protocol */ ManagedString remoteState();
+	/* remoteState::Transmitter::CategoryProtocol */ ManagedString remoteState();
 
 	/// Update Remote State
 	void updateRemoteState();
@@ -71,32 +56,17 @@ public:
 	/// State Change For Octave
 	microbit_dal_ext_kit::StateChangeForOctave	octave;
 
-};	// RemoteStateTransmitterForPianoKeys
+};	// RemoteStateTransmitterCategoryForPianoKeys
 
-/// Remote State Receiver
-/* abstract */ class RemoteStateReceiver : public microbit_dal_ext_kit::remoteState::Receiver::Protocol
-{
-protected:
-	/// Constructor
-	RemoteStateReceiver(char category);
-
-	/// Receiver
-	microbit_dal_ext_kit::remoteState::Receiver&	mReceiver;
-
-	/// Category
-	char	mCategory;
-
-};	// RemoteStateReceiver
-
-/// Remote State Receiver For Buttons
-class RemoteStateReceiverForButtons : public RemoteStateReceiver
+/// Remote State Receiver Category For Buttons
+class RemoteStateReceiverCategoryForButtons : public microbit_dal_ext_kit::remoteState::Receiver::CategoryBase
 {
 public:
 	/// Constructor
-	RemoteStateReceiverForButtons();
+	RemoteStateReceiverCategoryForButtons();
 
 	/// Inherited
-	/* remoteState::Receiver::Protocol */ void handleRemoteState(ManagedString& received);
+	/* remoteState::Receiver::CategoryProtocol */ void handleRemoteState(ManagedString& received);
 
 	/// State Change For Buttons
 	microbit_dal_ext_kit::StateChangeForButtons	buttons;
@@ -104,17 +74,17 @@ public:
 	/// State Change For Direction
 	microbit_dal_ext_kit::StateChangeForDirection	direction;
 
-};	// RemoteStateReceiverForButtons
+};	// RemoteStateReceiverCategoryForButtons
 
-/// Remote State Receiver For PianoKeys
-class RemoteStateReceiverForPianoKeys : public RemoteStateReceiver
+/// Remote State Receiver Category For PianoKeys
+class RemoteStateReceiverCategoryForPianoKeys : public microbit_dal_ext_kit::remoteState::Receiver::CategoryBase
 {
 public:
 	/// Constructor
-	RemoteStateReceiverForPianoKeys();
+	RemoteStateReceiverCategoryForPianoKeys();
 
 	/// Inherited
-	/* remoteState::Receiver::Protocol */ void handleRemoteState(ManagedString& received);
+	/* remoteState::Receiver::CategoryProtocol */ void handleRemoteState(ManagedString& received);
 
 	/// State Change For PianoKeys
 	microbit_dal_ext_kit::StateChangeForPianoKeys	pianoKeys;
@@ -122,6 +92,6 @@ public:
 	/// State Change For Octave
 	microbit_dal_ext_kit::StateChangeForOctave	octave;
 
-};	// RemoteStateReceiverForPianoKeys
+};	// RemoteStateReceiverCategoryForPianoKeys
 
 #endif	// APP_KIT_REMOTE_STATE_H

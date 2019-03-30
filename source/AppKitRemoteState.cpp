@@ -11,38 +11,28 @@
 using namespace microbit_dal_ext_kit;
 
 /*
-	for both `RemoteStateTransmitterForButtons` and `RemoteStateReceiverForButtons`
+	for both `RemoteStateTransmitterCategoryForButtons` and `RemoteStateReceiverCategoryForButtons`
 */
 
 static const char kMarkerButtons	= '+';
 static const char kMarkerDirection	= '-';
 
 /*
-	for both `RemoteStateTransmitterForPianoKeys` and `RemoteStateReceiverForPianoKeys`
+	for both `RemoteStateTransmitterCategoryForPianoKeys` and `RemoteStateReceiverCategoryForPianoKeys`
 */
 
 static const char kMarkerPianoKeys	= '+';
 static const char kMarkerOctave		= '-';
 
-/**	@class	RemoteStateTransmitter
+/**	@class	RemoteStateTransmitterCategoryForButtons
 */
 
-RemoteStateTransmitter::RemoteStateTransmitter(char category)
-	: mTransmitter(remoteState::Transmitter::global())
-	, mCategory(category)
-{
-	mTransmitter.listen(mCategory, *this);
-}
-
-/**	@class	RemoteStateTransmitterForButtons
-*/
-
-RemoteStateTransmitterForButtons::RemoteStateTransmitterForButtons()
-	: RemoteStateTransmitter('b')
+RemoteStateTransmitterCategoryForButtons::RemoteStateTransmitterCategoryForButtons()
+	: remoteState::Transmitter::CategoryBase('b')
 {
 }
 
-/* remoteState::Transmitter::Protocol */ ManagedString RemoteStateTransmitterForButtons::remoteState()
+/* remoteState::Transmitter::CategoryProtocol */ ManagedString RemoteStateTransmitterCategoryForButtons::remoteState()
 {
 	ManagedString s =
 		string::hex(buttons.value(), kMarkerButtons) +
@@ -50,7 +40,7 @@ RemoteStateTransmitterForButtons::RemoteStateTransmitterForButtons()
 	return s;
 }
 
-void RemoteStateTransmitterForButtons::updateRemoteState()
+void RemoteStateTransmitterCategoryForButtons::updateRemoteState()
 {
 	Buttons b;
 	Direction d;
@@ -59,15 +49,15 @@ void RemoteStateTransmitterForButtons::updateRemoteState()
 	}
 }
 
-/**	@class	RemoteStateTransmitterForPianoKeys
+/**	@class	RemoteStateTransmitterCategoryForPianoKeys
 */
 
-RemoteStateTransmitterForPianoKeys::RemoteStateTransmitterForPianoKeys()
-	: RemoteStateTransmitter('p')
+RemoteStateTransmitterCategoryForPianoKeys::RemoteStateTransmitterCategoryForPianoKeys()
+	: remoteState::Transmitter::CategoryBase('p')
 {
 }
 
-/* remoteState::Transmitter::Protocol */ ManagedString RemoteStateTransmitterForPianoKeys::remoteState()
+/* remoteState::Transmitter::CategoryProtocol */ ManagedString RemoteStateTransmitterCategoryForPianoKeys::remoteState()
 {
 	ManagedString s =
 		string::hex(pianoKeys.value(), kMarkerPianoKeys) +
@@ -75,7 +65,7 @@ RemoteStateTransmitterForPianoKeys::RemoteStateTransmitterForPianoKeys()
 	return s;
 }
 
-void RemoteStateTransmitterForPianoKeys::updateRemoteState()
+void RemoteStateTransmitterCategoryForPianoKeys::updateRemoteState()
 {
 	PianoKeys p;
 	Octave o;
@@ -84,25 +74,15 @@ void RemoteStateTransmitterForPianoKeys::updateRemoteState()
 	}
 }
 
-/**	@class	RemoteStateReceiver
+/**	@class	RemoteStateReceiverCategoryForButtons
 */
 
-RemoteStateReceiver::RemoteStateReceiver(char category)
-	: mReceiver(remoteState::Receiver::global())
-	, mCategory(category)
-{
-	mReceiver.listen(mCategory, *this);
-}
-
-/**	@class	RemoteStateReceiverForButtons
-*/
-
-RemoteStateReceiverForButtons::RemoteStateReceiverForButtons()
-	: RemoteStateReceiver('b')
+RemoteStateReceiverCategoryForButtons::RemoteStateReceiverCategoryForButtons()
+	: remoteState::Receiver::CategoryBase('b')
 {
 }
 
-/* remoteState::Receiver::Protocol */ void RemoteStateReceiverForButtons::handleRemoteState(ManagedString& received)
+/* remoteState::Receiver::CategoryProtocol */ void RemoteStateReceiverCategoryForButtons::handleRemoteState(ManagedString& received)
 {
 	int16_t pos;
 	pos = string::seek(received, 0, kMarkerButtons);
@@ -116,15 +96,15 @@ RemoteStateReceiverForButtons::RemoteStateReceiverForButtons()
 	}
 }
 
-/**	@class	RemoteStateReceiverForPianoKeys
+/**	@class	RemoteStateReceiverCategoryForPianoKeys
 */
 
-RemoteStateReceiverForPianoKeys::RemoteStateReceiverForPianoKeys()
-	: RemoteStateReceiver('p')
+RemoteStateReceiverCategoryForPianoKeys::RemoteStateReceiverCategoryForPianoKeys()
+	: remoteState::Receiver::CategoryBase('p')
 {
 }
 
-/* remoteState::Receiver::Protocol */ void RemoteStateReceiverForPianoKeys::handleRemoteState(ManagedString& received)
+/* remoteState::Receiver::CategoryProtocol */ void RemoteStateReceiverCategoryForPianoKeys::handleRemoteState(ManagedString& received)
 {
 	int16_t pos;
 	pos = string::seek(received, 0, kMarkerPianoKeys);

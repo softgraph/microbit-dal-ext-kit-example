@@ -98,7 +98,7 @@ AppModeNeoPixelRing::~AppModeNeoPixelRing()
 	// Check Remote Buttons
 	{
 		Buttons b;
-		if(mReceiverForButtons.buttons.read(/* OUT */ b)) {
+		if(mReceiverCategoryForButtons.buttons.read(/* OUT */ b)) {
 			if((b & button::kLR) == button::kLR) {
 				mNeoPixel.resetMaxBrightness();
 				mNeoPixel.show();
@@ -137,7 +137,7 @@ AppModeNeoPixelRing::~AppModeNeoPixelRing()
 	// Check Remote Direction
 	{
 		Direction d;
-		if(mReceiverForButtons.direction.read(/* OUT */ d)) {
+		if(mReceiverCategoryForButtons.direction.read(/* OUT */ d)) {
 			mNeoPixel.fillColorWithFocusDirection(d);
 			mNeoPixel.show();
 			display::showDirection(d);
@@ -149,8 +149,8 @@ AppModeNeoPixelRing::~AppModeNeoPixelRing()
 	{
 		PianoKeys p;
 		Octave o;
-		bool pChanged = mReceiverForPianoKeys.pianoKeys.read(/* OUT */ p);
-		bool oChanged = mReceiverForPianoKeys.octave.read(/* OUT */ o);
+		bool pChanged = mReceiverCategoryForPianoKeys.pianoKeys.read(/* OUT */ p);
+		bool oChanged = mReceiverCategoryForPianoKeys.octave.read(/* OUT */ o);
 		if(pChanged || oChanged) {
 			if(mBuzzer) {
 				mBuzzer->playTone(/* INOUT */ p, o);

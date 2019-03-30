@@ -38,8 +38,8 @@ private:
 	/// Remote State Transmitter
 	microbit_dal_ext_kit::remoteState::Transmitter	mTransmitter;
 
-	/// Remote State Transmitter For Buttons
-	RemoteStateTransmitterForButtons	mTransmitterForButtons;
+	/// Remote State Transmitter Category For Buttons
+	RemoteStateTransmitterCategoryForButtons	mTransmitterCategoryForButtons;
 
 };	// AppModeJoystickController
 

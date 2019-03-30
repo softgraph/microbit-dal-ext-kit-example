@@ -66,10 +66,10 @@ AppModeGenericTransmitter::AppModeGenericTransmitter()
 	// Update Remote Buttons
 	{
 		Buttons b = button::readMicroBitButtons();
-		if(mTransmitterForButtons.buttons.set(b)) {
+		if(mTransmitterCategoryForButtons.buttons.set(b)) {
 			display::showButton(b);
 		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Buttons: 0x", string::hex(b).toCharArray());
 		}
-		mTransmitterForButtons.updateRemoteState();
+		mTransmitterCategoryForButtons.updateRemoteState();
 	}
 }

@@ -83,7 +83,7 @@ AppModeMotors::AppModeMotors()
 	// Check Remote Buttons
 	{
 		Buttons b;
-		if(mReceiverForButtons.buttons.read(/* OUT */ b)) {
+		if(mReceiverCategoryForButtons.buttons.read(/* OUT */ b)) {
 			display::showButton(b);
 		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Buttons: 0x", string::hex(b).toCharArray());
 		}
@@ -92,7 +92,7 @@ AppModeMotors::AppModeMotors()
 	// Check Remote Direction
 	{
 		Direction d;
-		if(mReceiverForButtons.direction.read(/* OUT */ d)) {
+		if(mReceiverCategoryForButtons.direction.read(/* OUT */ d)) {
 			controlMotoBitUsingDirection(d);
 			display::showDirection(d);
 		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Direction: 0x", string::hex(d).toCharArray());

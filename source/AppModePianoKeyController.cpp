@@ -68,7 +68,7 @@ AppModePianoKeyController::AppModePianoKeyController()
 /* AppModeBase */ void AppModePianoKeyController::doHandlePeriodic100ms(uint32_t /* count */)
 {
 	// The current Octave
-	Octave o = mTransmitterForPianoKeys.octave.value();
+	Octave o = mTransmitterCategoryForPianoKeys.octave.value();
 
 	// Check Local Buttons and update the latest Octave
 	{
@@ -94,14 +94,14 @@ AppModePianoKeyController::AppModePianoKeyController()
 	{
 		PianoKeys p;
 		mTouchPiano.read(/* OUT */ &p);
-		if(mTransmitterForPianoKeys.pianoKeys.set(p)) {
+		if(mTransmitterCategoryForPianoKeys.pianoKeys.set(p)) {
 			display::showBits(p);
 		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote PianoKeys: 0x", string::hex(p).toCharArray());
 		}
-		if(mTransmitterForPianoKeys.octave.set(o)) {
+		if(mTransmitterCategoryForPianoKeys.octave.set(o)) {
 			mNeoPixel.fillColorWithIndicatorRange(o);
 		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Octave: 0x", string::hex(o).toCharArray());
 		}
-		mTransmitterForPianoKeys.updateRemoteState();
+		mTransmitterCategoryForPianoKeys.updateRemoteState();
 	}
 }

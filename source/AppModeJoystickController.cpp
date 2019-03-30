@@ -67,15 +67,15 @@ AppModeJoystickController::AppModeJoystickController()
 	// Update Remote Buttons and Direction
 	{
 		Buttons b = mJoystickBit.readJoystickButtons();
-		if(mTransmitterForButtons.buttons.set(b)) {
+		if(mTransmitterCategoryForButtons.buttons.set(b)) {
 			display::showButton(b);
 		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Buttons: 0x", string::hex(b).toCharArray());
 		}
 		Direction d = mJoystickBit.readJoystickDirection();
-		if(mTransmitterForButtons.direction.set(d)) {
+		if(mTransmitterCategoryForButtons.direction.set(d)) {
 			display::showDirection(d);
 		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Direction: 0x", string::hex(d).toCharArray());
 		}
-		mTransmitterForButtons.updateRemoteState();
+		mTransmitterCategoryForButtons.updateRemoteState();
 	}
 }

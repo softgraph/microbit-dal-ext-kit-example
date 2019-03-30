@@ -53,11 +53,11 @@ private:
 	/// Remote State Receiver
 	microbit_dal_ext_kit::remoteState::Receiver	mReceiver;
 
-	/// Remote State Receiver For Buttons
-	RemoteStateReceiverForButtons	mReceiverForButtons;
+	/// Remote State Receiver Category For Buttons
+	RemoteStateReceiverCategoryForButtons	mReceiverCategoryForButtons;
 
-	/// Remote State Receiver For Piano Keys
-	RemoteStateReceiverForPianoKeys	mReceiverForPianoKeys;
+	/// Remote State Receiver Category For Piano Keys
+	RemoteStateReceiverCategoryForPianoKeys	mReceiverCategoryForPianoKeys;
 
 	/// State For Buttons
 	microbit_dal_ext_kit::StateForButtons	mButtons;
