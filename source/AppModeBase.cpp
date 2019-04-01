@@ -10,7 +10,7 @@
 
 using namespace microbit_dal_ext_kit;
 
-/*	@class	AppModeBase
+/**	@class	AppModeBase
 */
 
 AppModeBase::AppModeBase(const char* name)

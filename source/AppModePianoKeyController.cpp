@@ -10,7 +10,7 @@
 
 using namespace microbit_dal_ext_kit;
 
-/*	@class	AppModePianoKeyController
+/**	@class	AppModePianoKeyController
 */
 
 static const Features kAppMode = appMode::kPianoKeyController;

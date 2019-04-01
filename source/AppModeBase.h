@@ -21,6 +21,7 @@ protected:
 	/// Constructor
 	AppModeBase(const char* name);
 
+	/// Event Definition
 	struct EventDef {
 	public:
 		uint16_t	id;

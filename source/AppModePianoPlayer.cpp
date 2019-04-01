@@ -10,7 +10,7 @@
 
 using namespace microbit_dal_ext_kit;
 
-/*	@class	AppModePianoPlayer
+/**	@class	AppModePianoPlayer
 */
 
 static const Features kAppMode = appMode::kPianoPlayer;

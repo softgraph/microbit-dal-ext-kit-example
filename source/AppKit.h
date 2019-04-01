@@ -9,36 +9,30 @@
 	The interfaces of `microbit-dal-ext-kit-example` are provided by the following header files.
 
 	# App Modes
-		- AppMode.h <br>
-			App Mode values
-		- AppModeBase.h <br>
-			the base class
-		- AppModeGenericReceiver.h <br>
-			a generic receiver using micro:bit only
-		- AppModeGenericTransmitter.h <br>
-			a generic transmitter using micro:bit only
-		- AppModeJoystickController.h <br>
-			a transmitter using ElecFreaks' Joystick:bit
-		- AppModeMotors.h <br>
-			a receiver using SparkFun's moto:bit
-		- AppModeNeoPixelRing.h <br>
-			a receiver using Kitronik's Zip Halo with or without a Buzzer
-		- AppModePianoKeyController.h <br>
-			a transmitter using Waveshare's Mini Piano Module
-		- AppModePianoPlayer.h <br>
-			a player using Waveshare's Mini Piano Module
+		@ref	AppKit_AppModes
+		- AppMode.h
+		- AppModeGenericReceiver.h
+		- AppModeGenericTransmitter.h
+		- AppModeJoystickController.h
+		- AppModeMotors.h
+		- AppModeNeoPixelRing.h
+		- AppModePianoKeyController.h
+		- AppModePianoPlayer.h
 		.
+
 	# Utilities
 		- AppKitError.h
 		- AppKitEvent.h
 		- AppKitRemoteState.h
 		- AppKitSerialDebugger.h
 		.
+
 	# Others
 		- AppKit_Common.h
 		- AppKit_Config.h
 		- AppKit_Doxygen.h
 		- AppKit.h
+		- AppModeBase.h
 		.
 */
 

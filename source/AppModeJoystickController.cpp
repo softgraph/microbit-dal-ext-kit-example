@@ -10,7 +10,7 @@
 
 using namespace microbit_dal_ext_kit;
 
-/*	@class	AppModeJoystickController
+/**	@class	AppModeJoystickController
 */
 
 static const Features kAppMode = appMode::kJoystickController;

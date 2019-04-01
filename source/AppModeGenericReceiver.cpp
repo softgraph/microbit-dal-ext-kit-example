@@ -10,7 +10,7 @@
 
 using namespace microbit_dal_ext_kit;
 
-/*	@class	AppModeGenericReceiver
+/**	@class	AppModeGenericReceiver
 */
 
 static const Features kAppMode = appMode::kGenericReceiver;
