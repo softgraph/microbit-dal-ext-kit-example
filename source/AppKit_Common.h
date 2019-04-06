@@ -1,4 +1,8 @@
-/// AppKit Common - The first include file for all microbit-dal-ext-kit-example interfaces
+/// An example for using microbit-dal-ext-kit
+/**	@package	microbit_dal_app_kit
+*/
+
+/// AppKit Common - the first include file for all microbit-dal-ext-kit-example interfaces
 /**	@file
 	@author	Copyright (c) 2019 Tomoyuki Nakashima.<br>
 			This code is licensed under MIT license. See `LICENSE` in the project root for more information.

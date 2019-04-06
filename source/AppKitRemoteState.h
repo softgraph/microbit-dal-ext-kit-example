@@ -1,3 +1,7 @@
+/// An example for using microbit-dal-ext-kit
+/**	@package	microbit_dal_app_kit
+*/
+
 /// AppKit Remote State
 /**	@file
 	@author	Copyright (c) 2019 Tomoyuki Nakashima.<br>
@@ -15,6 +19,8 @@
 #include "ExtKitPianoKey.h"
 
 class ManagedString;
+
+namespace microbit_dal_app_kit {
 
 /// Remote State Transmitter Category For Buttons
 class RemoteStateTransmitterCategoryForButtons : public microbit_dal_ext_kit::remoteState::Transmitter::CategoryBase
@@ -93,5 +99,7 @@ public:
 	microbit_dal_ext_kit::StateChangeForOctave	octave;
 
 };	// RemoteStateReceiverCategoryForPianoKeys
+
+}	// microbit_dal_app_kit
 
 #endif	// APP_KIT_REMOTE_STATE_H

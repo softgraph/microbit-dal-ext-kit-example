@@ -1,3 +1,7 @@
+/// An example for using microbit-dal-ext-kit
+/**	@package	microbit_dal_app_kit
+*/
+
 /// AppKit Remote State
 /**	@file
 	@author	Copyright (c) 2019 Tomoyuki Nakashima.<br>
@@ -9,6 +13,8 @@
 #include "AppKit.h"
 
 using namespace microbit_dal_ext_kit;
+
+namespace microbit_dal_app_kit {
 
 /*
 	for both `RemoteStateTransmitterCategoryForButtons` and `RemoteStateReceiverCategoryForButtons`
@@ -117,3 +123,5 @@ RemoteStateReceiverCategoryForPianoKeys::RemoteStateReceiverCategoryForPianoKeys
 		octave.set(string::numberForHexString(received, pos));
 	}
 }
+
+}	// microbit_dal_app_kit
