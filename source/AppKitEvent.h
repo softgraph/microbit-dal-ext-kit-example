@@ -1,3 +1,7 @@
+/// An example for using microbit-dal-ext-kit
+/**	@package	microbit_dal_app_kit
+*/
+
 /// AppKit Event
 /**	@file
 	@author	Copyright (c) 2019 Tomoyuki Nakashima.<br>
@@ -8,13 +12,15 @@
 #ifndef APP_KIT_EVENT_H
 #define APP_KIT_EVENT_H
 
+namespace microbit_dal_app_kit {
+
 /// Message Bus ID for App Event
 namespace messageBusID {
 
-/// Local Event
+/// Message Bus ID: Local Event
 const int kLocalEvent	= 2900;
 
-/// Remote Event
+/// Message Bus ID: Remote Event
 const int kRemoteEvent	= 2901;
 
 }	// messageBusID
@@ -22,15 +28,22 @@ const int kRemoteEvent	= 2901;
 /// Message Bus Event for App Event
 namespace messageBusEvent {
 
-/// App Started - Local Event (messageBusID::kLocalEvent)
-const int kLocalAppStarted	= 1;
+/// Local Event: App Started
+const int kLocalAppStarted		= 1;
 
-/// Tilted Left - Remote Event (messageBusID::kRemoteEvent)
-const int kRemoteTiltedLeft	= 1;
+/// Remote Event: Tilt Left
+const int kRemoteTiltLeft		= 1;
 
-/// Tilted Right - Remote Event (messageBusID::kRemoteEvent)
-const int kRemoteTiltedRight	= 2;
+/// Remote Event: Tilt Down (= Tilt Top)
+const int kRemoteTiltTop		= 2;
 
-}	// messageBusID
+/// Remote Event: Tilt Right
+const int kRemoteTiltRight		= 3;
+
+/// Remote Event: Tilt Up (= Tilt Botttom)
+const int kRemoteTiltBottom		= 4;
+
+}	// messageBusEvent
+}	// microbit_dal_app_kit
 
 #endif	// APP_KIT_EVENT_H

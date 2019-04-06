@@ -1,3 +1,7 @@
+/// An example for using microbit-dal-ext-kit
+/**	@package	microbit_dal_app_kit
+*/
+
 /// App Mode Base Component
 /**	@file
 	@author	Copyright (c) 2019 Tomoyuki Nakashima.<br>
@@ -9,6 +13,8 @@
 #include "AppKit.h"
 
 using namespace microbit_dal_ext_kit;
+
+namespace microbit_dal_app_kit {
 
 /**	@class	AppModeBase
 */
@@ -145,28 +151,34 @@ void AppModeBase::handleEvent(MicroBitEvent event)
 		}
 	}
 	else if(source == messageBusID::kRemoteEvent) {
-		if(value == messageBusEvent::kRemoteTiltedLeft) {
-			debug_sendLine(EXT_KIT_DEBUG_EVENT "Remote Event: Tilted Left");
+		if(value == messageBusEvent::kRemoteTiltLeft) {
+			debug_sendLine(EXT_KIT_DEBUG_EVENT "Remote Event: Tilt Left");
 		}
-		else if(value == messageBusEvent::kRemoteTiltedRight) {
-			debug_sendLine(EXT_KIT_DEBUG_EVENT "Remote Event: Tilted Right");
+		else if(value == messageBusEvent::kRemoteTiltTop) {
+			debug_sendLine(EXT_KIT_DEBUG_EVENT "Remote Event: Tilt Down (= Tilt Top)");
+		}
+		else if(value == messageBusEvent::kRemoteTiltRight) {
+			debug_sendLine(EXT_KIT_DEBUG_EVENT "Remote Event: Tilt Right");
+		}
+		else if(value == messageBusEvent::kRemoteTiltBottom) {
+			debug_sendLine(EXT_KIT_DEBUG_EVENT "Remote Event: Tilt Up (= Tilt Bottom)");
 		}
 		else {
 			debug_sendLine(EXT_KIT_DEBUG_EVENT "Remote Event: Unknown");
 		}
 	}
 	else if(source == MICROBIT_ID_GESTURE) {
-		if(value == MICROBIT_ACCELEROMETER_EVT_TILT_UP) {
-			debug_sendLine(EXT_KIT_DEBUG_EVENT "Gesture: Tilted Up");
+		if(value == gesture::microBitGestureEventTiltLeft()) {
+			debug_sendLine(EXT_KIT_DEBUG_EVENT "Gesture: Tilt Left");
 		}
-		else if(value == MICROBIT_ACCELEROMETER_EVT_TILT_DOWN) {
-			debug_sendLine(EXT_KIT_DEBUG_EVENT "Gesture: Tilted Down");
-		}
-		else if(value == gesture::microBitGestureEventTiltLeft()) {
-			debug_sendLine(EXT_KIT_DEBUG_EVENT "Gesture: Tilted Left");
+		else if(value == gesture::microBitGestureEventTiltTop()) {
+			debug_sendLine(EXT_KIT_DEBUG_EVENT "Gesture: Tilt Down (= Tilt Top)");
 		}
 		else if(value == gesture::microBitGestureEventTiltRight()) {
-			debug_sendLine(EXT_KIT_DEBUG_EVENT "Gesture: Tilted Right");
+			debug_sendLine(EXT_KIT_DEBUG_EVENT "Gesture: Tilt Right");
+		}
+		else if(value == gesture::microBitGestureEventTiltBottom()) {
+			debug_sendLine(EXT_KIT_DEBUG_EVENT "Gesture: Tilt Up (= Tilt Bottom)");
 		}
 		else if(value == MICROBIT_ACCELEROMETER_EVT_FACE_UP) {
 			debug_sendLine(EXT_KIT_DEBUG_EVENT "Gesture: Faced Up");
@@ -209,3 +221,5 @@ void AppModeBase::handleEvent(MicroBitEvent event)
 		Statistics::debug_sendItems();
 	}
 }
+
+}	// microbit_dal_app_kit

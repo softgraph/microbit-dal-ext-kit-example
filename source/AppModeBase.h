@@ -1,3 +1,7 @@
+/// An example for using microbit-dal-ext-kit
+/**	@package	microbit_dal_app_kit
+*/
+
 /// App Mode Base component
 /**	@file
 	@author	Copyright (c) 2019 Tomoyuki Nakashima.<br>
@@ -13,6 +17,8 @@
 
 class ManagedString;
 class MicroBitEvent;
+
+namespace microbit_dal_app_kit {
 
 /// App Mode Base Composite Component
 /* abstract */ class AppModeBase : public microbit_dal_ext_kit::CompositeComponent, microbit_dal_ext_kit::PeriodicObserver::Handler::Protocol
@@ -60,5 +66,7 @@ private:
 	const EventDef*	mRadioEvents;
 
 };	// AppModeBase
+
+}	// microbit_dal_app_kit
 
 #endif	// APP_MODE_BASE_H

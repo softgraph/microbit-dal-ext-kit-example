@@ -1,3 +1,7 @@
+/// An example for using microbit-dal-ext-kit
+/**	@package	microbit_dal_app_kit
+*/
+
 /// App Mode for Generic Transmitter
 /**	@file
 	@author	Copyright (c) 2019 Tomoyuki Nakashima.<br>
@@ -9,6 +13,8 @@
 #include "AppKit.h"
 
 using namespace microbit_dal_ext_kit;
+
+namespace microbit_dal_app_kit {
 
 /**	@class	AppModeGenericTransmitter
 */
@@ -25,13 +31,17 @@ AppModeGenericTransmitter::AppModeGenericTransmitter()
 {
 	static const EventDef events[] = {
 		{ messageBusID::kLocalEvent, messageBusEvent::kLocalAppStarted },
+		{ MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_TILT_UP },
+		{ MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_TILT_DOWN },
 		{ MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_TILT_LEFT },
 		{ MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_TILT_RIGHT },
 		{ MICROBIT_ID_ANY, MICROBIT_EVT_ANY }	// END OF TABLE
 	};
 	static const EventDef radioEvents[] = {
-		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltedLeft },
-		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltedRight },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltLeft },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltTop },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltRight },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltBottom },
 		{ MICROBIT_ID_ANY, MICROBIT_EVT_ANY }	// END OF TABLE
 	};
 	selectEvents(events);
@@ -51,12 +61,20 @@ AppModeGenericTransmitter::AppModeGenericTransmitter()
 	}
 	else if(source == MICROBIT_ID_GESTURE) {
 		if(value == gesture::microBitGestureEventTiltLeft()) {
-			MicroBitEvent(messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltedLeft);	// CREATE_AND_FIRE
+			MicroBitEvent(messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltLeft);	// CREATE_AND_FIRE
 			display::flashChar('<');
 		}
+		else if(value == gesture::microBitGestureEventTiltTop()) {
+			MicroBitEvent(messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltTop);	// CREATE_AND_FIRE
+			display::flashChar('^');
+		}
 		else if(value == gesture::microBitGestureEventTiltRight()) {
-			MicroBitEvent(messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltedRight);	// CREATE_AND_FIRE
+			MicroBitEvent(messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltRight);	// CREATE_AND_FIRE
 			display::flashChar('>');
+		}
+		else if(value == gesture::microBitGestureEventTiltBottom()) {
+			MicroBitEvent(messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltBottom);	// CREATE_AND_FIRE
+			display::flashChar('v');
 		}
 	}
 }
@@ -73,3 +91,5 @@ AppModeGenericTransmitter::AppModeGenericTransmitter()
 		mTransmitterCategoryForButtons.updateRemoteState();
 	}
 }
+
+}	// microbit_dal_app_kit

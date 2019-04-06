@@ -1,3 +1,7 @@
+/// An example for using microbit-dal-ext-kit
+/**	@package	microbit_dal_app_kit
+*/
+
 /// App Mode for Motors
 /**	@file
 	@author	Copyright (c) 2019 Tomoyuki Nakashima.<br>
@@ -9,6 +13,8 @@
 #include "AppKit.h"
 
 using namespace microbit_dal_ext_kit;
+
+namespace microbit_dal_app_kit {
 
 /**	@class	AppModeMotors
 */
@@ -26,8 +32,10 @@ AppModeMotors::AppModeMotors()
 {
 	static const EventDef events[] = {
 		{ messageBusID::kLocalEvent,  messageBusEvent::kLocalAppStarted },
-		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltedLeft },
-		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltedRight },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltLeft },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltTop },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltRight },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltBottom },
 		{ MICROBIT_ID_ANY, MICROBIT_EVT_ANY }	// END OF TABLE
 	};
 	selectEvents(events);
@@ -47,11 +55,17 @@ AppModeMotors::AppModeMotors()
 		}
 	}
 	else if(source == messageBusID::kRemoteEvent) {
-		if(value == messageBusEvent::kRemoteTiltedLeft) {
+		if(value == messageBusEvent::kRemoteTiltLeft) {
 			display::flashChar('<');
 		}
-		else if(value == messageBusEvent::kRemoteTiltedRight) {
+		else if(value == messageBusEvent::kRemoteTiltTop) {
+			display::flashChar('^');
+		}
+		else if(value == messageBusEvent::kRemoteTiltRight) {
 			display::flashChar('>');
+		}
+		else if(value == messageBusEvent::kRemoteTiltBottom) {
+			display::flashChar('v');
 		}
 	}
 }
@@ -147,3 +161,5 @@ bool AppModeMotors::controlMotoBitUsingDirection(Direction direction)
 	}
 	return true;
 }
+
+}	// microbit_dal_app_kit

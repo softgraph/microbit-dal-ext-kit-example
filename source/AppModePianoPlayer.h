@@ -1,3 +1,7 @@
+/// An example for using microbit-dal-ext-kit
+/**	@package	microbit_dal_app_kit
+*/
+
 /// App Mode for Piano Player
 /**	@file
 	@author	Copyright (c) 2019 Tomoyuki Nakashima.<br>
@@ -14,6 +18,8 @@
 #include "ExtKitPianoKey.h"
 
 #include "AppModeBase.h"
+
+namespace microbit_dal_app_kit {
 
 /// App Mode for Piano Player
 class AppModePianoPlayer : public AppModeBase
@@ -52,5 +58,7 @@ private:
 	microbit_dal_ext_kit::StateForOctave	mOctave;
 
 };	// AppModePianoPlayer
+
+}	// microbit_dal_app_kit
 
 #endif	// APP_MODE_PIANO_PLAYER_H

@@ -1,3 +1,7 @@
+/// An example for using microbit-dal-ext-kit
+/**	@package	microbit_dal_app_kit
+*/
+
 /// App Mode for NeoPixel Ring
 /**	@file
 	@author	Copyright (c) 2019 Tomoyuki Nakashima.<br>
@@ -9,6 +13,8 @@
 #include "AppKit.h"
 
 using namespace microbit_dal_ext_kit;
+
+namespace microbit_dal_app_kit {
 
 /**	@class	AppModeNeoPixelRing
 */
@@ -28,8 +34,10 @@ AppModeNeoPixelRing::AppModeNeoPixelRing()
 {
 	static const EventDef events[] = {
 		{ messageBusID::kLocalEvent, messageBusEvent::kLocalAppStarted },
-		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltedLeft },
-		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltedRight },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltLeft },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltTop },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltRight },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltBottom },
 		{ MICROBIT_ID_ANY, MICROBIT_EVT_ANY }	// END OF TABLE
 	};
 	selectEvents(events);
@@ -64,15 +72,25 @@ AppModeNeoPixelRing::~AppModeNeoPixelRing()
 		}
 	}
 	else if(source == messageBusID::kRemoteEvent) {
-		if(value == messageBusEvent::kRemoteTiltedLeft) {
+		if(value == messageBusEvent::kRemoteTiltLeft) {
 			mNeoPixel.rotateLeft();
 			mNeoPixel.show();
 			display::flashChar('<');
 		}
-		else if(value == messageBusEvent::kRemoteTiltedRight) {
+		else if(value == messageBusEvent::kRemoteTiltTop) {
+			mNeoPixel.rotateLeft();
+			mNeoPixel.show();
+			display::flashChar('^');
+		}
+		else if(value == messageBusEvent::kRemoteTiltRight) {
 			mNeoPixel.rotateRight();
 			mNeoPixel.show();
 			display::flashChar('>');
+		}
+		else if(value == messageBusEvent::kRemoteTiltBottom) {
+			mNeoPixel.rotateRight();
+			mNeoPixel.show();
+			display::flashChar('v');
 		}
 	}
 }
@@ -199,3 +217,5 @@ void AppModeNeoPixelRing::setNeoPixelMode(char mode)
 	}
 	mNeoPixel.show();
 }
+
+}	// microbit_dal_app_kit
