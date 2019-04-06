@@ -1,3 +1,7 @@
+/// An example for using microbit-dal-ext-kit
+/**	@package	microbit_dal_app_kit
+*/
+
 /// AppKit Main
 /**	@file
 	@author	Copyright (c) 2019 Tomoyuki Nakashima.<br>
@@ -7,12 +11,14 @@
 
 #include "AppKit.h"
 
+using namespace microbit_dal_app_kit;
 using namespace microbit_dal_ext_kit;
 
 #define	ENABLE_ALL_MICROBIT_FEATURES	0
 
 #if ENABLE_ALL_MICROBIT_FEATURES
 
+/// Device class
 static MicroBitExtKit	uBit;
 
 #else	// ENABLE_ALL_MICROBIT_FEATURES
@@ -21,8 +27,8 @@ class AppExtKit : public PrimitiveExtKit
 {
 public:
 	AppExtKit();
-
 	void init();
+
 private:
 	MicroBitAccelerometer&	accelerometer;
 	MicroBitRadio	radio;
@@ -41,64 +47,72 @@ void AppExtKit::init()
 	mExtKit.registerRadio(radio);
 }
 
+/// Device class
 static AppExtKit	uBit;
 
 #endif	// ENABLE_ALL_MICROBIT_FEATURES
 
+/// Serial Debugger
 static AppSerialDebugger	sDebugger;
+
+/// App Mode Describer
 static AppModeDescriber		sDescriber;
+
+/// Periodic Observer
 static PeriodicObserver		sPeriodicObserver;
 
 static Features checkAvaiableHardware();
 static /* new */ AppModeBase* instantiateAppMode();
 
+// main function
 int main()
 {
 	// Initialize the device.
 	uBit.init();
 
-	// Start the Serial Debugger service first. The debugger is ready, but not yet activated at this point. To acivate it, you need to press any key on the terminal conected to the seria port.
+	// Start the Serial Debugger service first. After this call, the debugger is enabled but not yet activated.
+	// To acivate it, you need to press any key on the terminal conected to the USB seria port.
 	sDebugger.start();
 
-	// Show the bootup string and give a chance to enable the debugger via the serial port.
+	// Show the bootup string and give a chance to acivate the debugger via the USB serial port.
 	display::scrollString(APP_STRING_BOOTUP);
 
 	// Check Avaiable Hardware.
 	Features condition = checkAvaiableHardware();
-	EXT_KIT_ASSERT(condition != 0);
+	EXT_KIT_ASSERT(condition);
 
-	// Select an App Mode automatically or manually. After ths call, the character for the selected App Mode will be shown on the display.
-	selectAppModeFor(condition, sDescriber);
-	EXT_KIT_ASSERT(feature::configured() != 0);
+	// Repeat indefinitely
+	while (true) {
 
-	// Check whether the device is inverted or not.
-	bool inverted = feature::isConfigured(feature::kInverted);
-	if(inverted) {
-		display::setUpsideDown();
+		// Select an App Mode automatically or manually. After ths call, the character for the selected App Mode is shown on the display.
+		selectAppModeFor(condition, sDescriber);
+		EXT_KIT_ASSERT(feature::configured());
+
+		// Set display rotation.
+		bool inverted = feature::isConfigured(feature::kInverted);
+		display::setDisplayRotation(inverted ? MICROBIT_DISPLAY_ROTATION_180 : MICROBIT_DISPLAY_ROTATION_0);
+
+		// Start the corresponding App Mode Component.
+		AppModeBase* appMode = instantiateAppMode();
+		EXT_KIT_ASSERT_OR_PANIC(appMode, kPanicOutOfMemory);
+		appMode->start();
+
+		// Clear the App Mode character on the display.
+		time::sleep(500 /* milliseconds */);
+		display::clear();
+
+		// Fire the App Stared event.
+		MicroBitEvent(messageBusID::kLocalEvent, messageBusEvent::kLocalAppStarted);	// CREATE_AND_FIRE
+
+		// Start the Periodic Observer and wait for the completion.
+		sPeriodicObserver.start();
+		sPeriodicObserver.waitForCompletion();
+
+		/// Stop services.
+		sPeriodicObserver.stop();
+		appMode->stop();
+		delete appMode;
 	}
-
-#if 0	//	@todo
-	// Prepare other core modules if required
-	prepareCoreRadio();
-#endif
-
-	// Start a corresponding App Mode Component.
-	AppModeBase* appMode = instantiateAppMode();
-	EXT_KIT_ASSERT_OR_PANIC(appMode, kPanicOutOfMemory);
-	appMode->start();
-
-	// Clear the App Mode character on the display.
-	time::sleep(500 /* milliseconds */);
-	display::clear();
-
-	// Fire an App Stared event.
-	MicroBitEvent(messageBusID::kLocalEvent, messageBusEvent::kLocalAppStarted);	// CREATE_AND_FIRE
-
-	// Start the Periodic Observer.
-	sPeriodicObserver.start();
-
-	// Sleep forever.
-	time::sleep();
 
 // exit:
 	EXT_KIT_ASSERT_OR_PANIC(!"App Main is Aborted", kAppMainAborted);
@@ -123,7 +137,11 @@ Features checkAvaiableHardware()
 	ExtKit& g = ExtKit::global();
 	result = Buzzer::avaiableFeatures(g.p2());
 	if(result) {
-		return result | feature::kZipHalo;	// the device might be a ZipHalo with a buzzer on P2
+		return result | feature::kReservedForApp2;	// Buzzer on port P2
+	}
+	result = Buzzer::avaiableFeatures(g.p1());
+	if(result) {
+		return result | feature::kReservedForApp1;	// Buzzer on port P1
 	}
 	return feature::kNoAutoDetection;
 }
@@ -149,7 +167,7 @@ Features checkAvaiableHardware()
 	else if(AppModeGenericTransmitter::isConfigured()) {	// selected AppMode: 'T'
 		appMode = new AppModeGenericTransmitter();
 	}
-	else if(AppModeGenericReceiver::isConfigured()) {		// selected AppMode: 'R'
+	else if(AppModeGenericReceiver::isConfigured()) {		// selected AppMode: 'B' or 'R'
 		appMode = new AppModeGenericReceiver();
 	}
 	else {
