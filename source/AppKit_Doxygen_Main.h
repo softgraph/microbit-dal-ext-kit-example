@@ -1,3 +1,7 @@
+/// An example for using microbit-dal-ext-kit
+/**	@package	microbit_dal_app_kit
+*/
+
 /// Doxygen Main Page
 /**	@file
 	@author	Copyright (c) 2019 Tomoyuki Nakashima.<br>
@@ -5,12 +9,15 @@
 	@note	Run Doxygen (http://www.doxygen.nl) with `Doxyfile` in the project root to generate the documentation.
 */
 
+using namespace microbit_dal_app_kit;
+using namespace microbit_dal_ext_kit;
+
 /**	@mainpage	Introduction
 
 	@section	main_1	1. Outlines
 
 	@subsection	main_1_1	1.1 microbit-dal-ext-kit-example
-		- microbit-dal-ext-kit-example is an example application for using @ref main_1_2. <br>
+		- microbit-dal-ext-kit-example is an example for using @ref main_1_2. <br>
 			Se also <a href="https://github.com/softgraph/microbit-dal-ext-kit-example"><b>microbit-dal-ext-kit-example</b> on github.com</a>.
 		.
 
@@ -33,7 +40,9 @@
 		- @ref	ExtKit_Device
 		- @ref	ExtKit_Global
 		- @ref	ExtKit_Components
-		- @ref	AppKit_AppModes
+		- @ref	AppKit_Main
+		- @ref	AppKit_AppMode
+		- @ref	AppKit_RemoteStateCategory
 
 	@section	main_3	3. Header File Structure
 		- @ref	ExtKit_Headers
