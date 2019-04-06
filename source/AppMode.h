@@ -1,3 +1,7 @@
+/// An example for using microbit-dal-ext-kit
+/**	@package	microbit_dal_app_kit
+*/
+
 /// App Mode
 /**	@file
 	@author	Copyright (c) 2019 Tomoyuki Nakashima.<br>
@@ -9,6 +13,8 @@
 #define APP_MODE_H
 
 #include "ExtKitAppMode.h"
+
+namespace microbit_dal_app_kit {
 
 /// App Mode
 namespace appMode {
@@ -42,12 +48,20 @@ const microbit_dal_ext_kit::AppMode kPianoKeyController =
 	| microbit_dal_ext_kit::feature::kBuzzer
 	);
 
-///	App Mode 'O' for a receiver using Kitronik's Zip Halo with a Buzzer.
+///	App Mode 'O' for a receiver using Kitronik's Zip Halo with a Buzzer on port P2.
 const microbit_dal_ext_kit::AppMode kNeoPixelRing =
 	( microbit_dal_ext_kit::feature::kRemoteRX
 	| microbit_dal_ext_kit::feature::kZipHalo
 	| microbit_dal_ext_kit::feature::kNeoPixel
 	| microbit_dal_ext_kit::feature::kBuzzer
+	| microbit_dal_ext_kit::feature::kReservedForApp2	// Buzzer on port P2
+	);
+
+///	App Mode 'B' for a receiver with a Buzzer on port P1.
+const microbit_dal_ext_kit::AppMode kBuzzer =
+	( microbit_dal_ext_kit::feature::kRemoteRX
+	| microbit_dal_ext_kit::feature::kBuzzer
+	| microbit_dal_ext_kit::feature::kReservedForApp1	// Buzzer on port P1
 	);
 
 ///	App Mode 'Z' for a receiver using Kitronik's Zip Halo.
@@ -83,5 +97,7 @@ public:
 	/* AppModeDescriberProtocol */ int /* count */ appModesFor(microbit_dal_ext_kit::Features condition, microbit_dal_ext_kit::AppMode** /* OUT new */ appModes) const;
 
 };	// AppModeDescriber
+
+}	// microbit_dal_app_kit
 
 #endif	// APP_MODE_H

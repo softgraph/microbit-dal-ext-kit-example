@@ -1,3 +1,7 @@
+/// An example for using microbit-dal-ext-kit
+/**	@package	microbit_dal_app_kit
+*/
+
 /// App Mode
 /**	@file
 	@author	Copyright (c) 2019 Tomoyuki Nakashima.<br>
@@ -9,6 +13,8 @@
 #include "AppKit.h"
 
 using namespace microbit_dal_ext_kit;
+
+namespace microbit_dal_app_kit {
 
 /**	@class AppModeDescriber
 */
@@ -39,10 +45,15 @@ static const AppModeDef sAppModeTable[] = {
 	//	App Mode 'K' for a transmitter using Waveshare's Mini Piano Module.
 	{ appMode::kPianoKeyController,		'K', "Piano Key Controller" },
 
-	//	[App Modes for kZipHalo + kBuzzer]
+	//	[App Modes for kBuzzer + kReservedForApp2]
 
-	//	App Mode 'O' for a receiver using Kitronik's Zip Halo with a Buzzer.
+	//	App Mode 'O' for a receiver using Kitronik's Zip Halo with a Buzzer on port P2.
 	{ appMode::kNeoPixelRing,			'O', "NeoPixel Ring" },
+
+	//	[App Modes for kBuzzer + kReservedForApp1]
+
+	//	App Mode 'B' for a receiver with a Buzzer on port P1.
+	{ appMode::kBuzzer,					'B', "Buzzer" },
 
 	//	[App Modes for kNoAutoDetection]
 
@@ -104,3 +115,5 @@ static const AppModeDef sAppModeTable[] = {
 	}
 	return count;
 }
+
+}	// microbit_dal_app_kit
