@@ -1,3 +1,7 @@
+/// An example for using microbit-dal-ext-kit
+/**	@package	microbit_dal_app_kit
+*/
+
 /// AppKit Config
 /**	@file
 	@author	Copyright (c) 2019 Tomoyuki Nakashima.<br>
