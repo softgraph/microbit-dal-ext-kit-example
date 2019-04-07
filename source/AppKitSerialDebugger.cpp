@@ -29,19 +29,23 @@ AppSerialDebugger::AppSerialDebugger()
 /* to be overridden */ bool /* consumed */ AppSerialDebugger::doHandleLineCommand(ManagedString command)
 {
 	if((command.length() > 0) && (command.charAt(0) == ':')) {
-		if((command.length() == 4) &&
-		   ((command.charAt(1) == 'r') || (command.charAt(1) == 'R')) &&
-		   ((command.charAt(2) == 'a') || (command.charAt(2) == 'A')) &&
-		   ((command.charAt(3) == 'm') || (command.charAt(3) == 'M')))
-		{	// Restart App Mode
-			static RequestToken request;
-			PeriodicObserver& po = PeriodicObserver::global();
-			request.value = po.kRequestToCancel;
-			po.issueRequest(request);
-			return true;	// consumed
+		if(command.length() == 4) {
+			const char c1 = command.charAt(1);
+			const char c2 = command.charAt(2);
+			const char c3 = command.charAt(3);
+			if(((c1 == 'r') || (c1 == 'R')) &&
+			   ((c2 == 'a') || (c2 == 'A')) &&
+			   ((c3 == 'm') || (c3 == 'M')))
+			{	// Restart App Mode
+				/// @todo	to be reviewed
+				static RequestToken request;
+				PeriodicObserver& po = PeriodicObserver::global();
+				request.value = po.kRequestToCancel;
+				po.issueRequest(request);
+				return true;	// consumed
+			}
 		}
 	}
-
 	return SerialDebugger::doHandleLineCommand(command);
 }
 
@@ -49,13 +53,13 @@ AppSerialDebugger::AppSerialDebugger()
 {
 	SerialDebugger::debug_sendCmdHelp();
 
-	static const char* cmdHelp[] = {
+	static const char* const cmdHelp[] = {
 		"--- Additional Line Command (Enter key is required) ---",
 		":ram    Restart App Mode",
-		0
+		0	// END OF TABLE
 	};
 
-	const char** p = cmdHelp;
+	const char* const * p = cmdHelp;
 	while (*p) {
 		debug_sendLine(*p++, false);
 	}
