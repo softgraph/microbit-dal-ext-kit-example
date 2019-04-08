@@ -95,7 +95,7 @@ static const AppModeDef sAppModeTable[] = {
 	return p->modeName;
 }
 
-/* AppModeDescriberProtocol */ int /* count */ AppModeDescriber::appModesFor(Features condition, AppMode** /* OUT new */ appModes) const
+/* AppModeDescriberProtocol */ int /* count */ AppModeDescriber::appModesFor(Features condition, AppMode** /* OUT new[] */ appModes) const
 {
 	#define COUNT_OF(x)		sizeof(x)/sizeof(x[0])
 
@@ -110,9 +110,9 @@ static const AppModeDef sAppModeTable[] = {
 		}
 		p++;
 	}
-	if(0 < count) {
-		*appModes = selection;
-	}
+	selection[count] = 0;
+
+	*appModes = selection;
 	return count;
 }
 

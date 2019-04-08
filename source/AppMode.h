@@ -94,7 +94,7 @@ class AppModeDescriber : public microbit_dal_ext_kit::AppModeDescriberProtocol
 public:
 	/* AppModeDescriberProtocol */ char charFor(microbit_dal_ext_kit::AppMode appMode) const;
 	/* AppModeDescriberProtocol */ const char* nameFor(microbit_dal_ext_kit::AppMode appMode) const;
-	/* AppModeDescriberProtocol */ int /* count */ appModesFor(microbit_dal_ext_kit::Features condition, microbit_dal_ext_kit::AppMode** /* OUT new */ appModes) const;
+	/* AppModeDescriberProtocol */ int /* count */ appModesFor(microbit_dal_ext_kit::Features condition, microbit_dal_ext_kit::AppMode** /* OUT new[] */ appModes) const;
 
 };	// AppModeDescriber
 
