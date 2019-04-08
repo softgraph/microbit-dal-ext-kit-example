@@ -37,7 +37,6 @@ AppSerialDebugger::AppSerialDebugger()
 			   ((c2 == 'a') || (c2 == 'A')) &&
 			   ((c3 == 'm') || (c3 == 'M')))
 			{	// Restart App Mode
-				/// @todo	to be reviewed
 				static RequestToken request;
 				PeriodicObserver& po = PeriodicObserver::global();
 				request.value = po.kRequestToCancel;
@@ -49,27 +48,26 @@ AppSerialDebugger::AppSerialDebugger()
 	return SerialDebugger::doHandleLineCommand(command);
 }
 
-/* SerialDebugger */ void AppSerialDebugger::debug_sendCmdHelp()
+/* SerialDebugger */ void AppSerialDebugger::debug_sendHelpForDirectCommands()
 {
-	SerialDebugger::debug_sendCmdHelp();
+	SerialDebugger::debug_sendHelpForDirectCommands();
+}
 
-	static const char* const cmdHelp[] = {
-		"--- Additional Line Command (Enter key is required) ---",
+/* SerialDebugger */ void AppSerialDebugger::debug_sendHelpForLineCommands()
+{
+	SerialDebugger::debug_sendHelpForLineCommands();
+
+	static const char* const lineArray[] = {
 		":ram    Restart App Mode",
 		0	// END OF TABLE
 	};
 
-	const char* const * p = cmdHelp;
-	while (*p) {
-		debug_sendLine(*p++, false);
-	}
+	debug_sendLines(lineArray);
 }
 
 /* SerialDebugger */ void AppSerialDebugger::debug_sendConfig()
 {
 	SerialDebugger::debug_sendConfig();
-
-//	debug_sendLine("--- Yotta Config (microbit_dal_ext_kit-example) ---", false);
 }
 
 /* SerialDebugger */ void AppSerialDebugger::debug_sendDeviceInfo()

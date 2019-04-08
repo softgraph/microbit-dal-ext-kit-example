@@ -31,7 +31,10 @@ protected:
 	/* SerialDebugger */ bool /* consumed */ doHandleLineCommand(ManagedString command);
 
 	/// Inherited
-	/* SerialDebugger */ void debug_sendCmdHelp();
+	/* SerialDebugger */ void debug_sendHelpForDirectCommands();
+
+	/// Inherited
+	/* SerialDebugger */ void debug_sendHelpForLineCommands();
 
 	/// Inherited
 	/* SerialDebugger */ void debug_sendConfig();
