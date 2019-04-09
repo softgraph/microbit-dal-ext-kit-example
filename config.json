@@ -1,7 +1,5 @@
 {
-	"_see_also": "http://docs.yottabuild.org/reference/config.html",
 	"microbit-dal": {
-		"_see_also": "https://lancaster-university.github.io/microbit-docs/advanced/",
 		"bluetooth": {
 			"enabled": 0,
 			"pairing_mode": 0
@@ -10,7 +8,6 @@
 		"heap_debug": 0
 	},
 	"microbit-dal--ext-kit": {
-		"_see_also": "microbit-dal-ext-kit/config.example.json",
 		"radio": {
 			"group": 9
 		}

@@ -18,6 +18,7 @@ namespace microbit_dal_app_kit {
 		- @subpage	AppKit_AppMode
 		- @subpage	AppKit_RemoteStateCategory
 		- @subpage	AppKit_Headers
+		- @subpage	AppKit_Build
 */
 
 /**	@page	AppKit_Main	The Main Flow
@@ -158,6 +159,30 @@ namespace microbit_dal_app_kit {
 			- App Mode 'O' (`appMode::kNeoPixelRing`)
 			- App Mode 'B' (`appMode::kBuzzer`)
 			.
+*/
+
+/**	@page	AppKit_Build	Build Environment for microbit-dal-ext-kit-example
+
+	@section	AppKit_Build_1	1. Installation
+		Follow the instructions on the site below.
+		@reference	Yotta - micro:bit runtime
+			- https://lancaster-university.github.io/microbit-docs/offline-toolchains
+
+	@section	AppKit_Build_2	2. Set Build Target
+		Set your yotta target before building.
+		@code
+			$ yt target bbc-microbit-classic-gcc
+		@endcode
+
+	@section	AppKit_Build_3	3. Build
+		Build your project.
+		@code
+			$ yt build
+		@endcode
+		The following file can be copied to your micro:bit device.
+		@code
+			build/bbc-microbit-classic-gcc/source/microbit-dal-ext-kit-example-combined.hex
+		@endcode
 */
 
 }	// microbit_dal_app_kit
