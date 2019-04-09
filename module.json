@@ -2,10 +2,10 @@
 	"_see_also": "http://docs.yottabuild.org/reference/module.html",
 	"name": "microbit-dal-ext-kit-example",
 	"description": "An example for using microbit-dal-ext-kit",
-	"version": "0.8.2",
+	"version": "0.8.4",
 	"license": "MIT",
 	"dependencies": {
-		"microbit-dal-ext-kit": "softgraph/microbit-dal-ext-kit#v0.8.2"
+		"microbit-dal-ext-kit": "softgraph/microbit-dal-ext-kit#v0.8.4"
 	},
 	"private": true,
 	"bin": "./source"
