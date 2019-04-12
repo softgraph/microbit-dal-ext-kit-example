@@ -1,4 +1,4 @@
-/// An example for using microbit-dal-ext-kit
+/// An example for using `microbit-dal-ext-kit`
 /**	@package	microbit_dal_app_kit
 */
 
@@ -14,11 +14,11 @@
 
 namespace microbit_dal_app_kit {
 
-/**	@page	AppKit_Headers	Header files of microbit-dal-ext-kit-example
+/**	@page	AppKit_Headers	Header File Structure of microbit-dal-ext-kit-example
 	The interfaces of `microbit-dal-ext-kit-example` are provided by the following header files.
 
 	# App Modes
-		@ref	AppKit_AppModes
+		See also @ref	AppKit_AppMode.
 		- AppMode.h
 		- AppModeGenericReceiver.h
 		- AppModeGenericTransmitter.h
@@ -27,14 +27,12 @@ namespace microbit_dal_app_kit {
 		- AppModeNeoPixelRing.h
 		- AppModePianoKeyController.h
 		- AppModePianoPlayer.h
-		.
 
 	# Utilities
 		- AppKitError.h
 		- AppKitEvent.h
 		- AppKitRemoteState.h
 		- AppKitSerialDebugger.h
-		.
 
 	# Others
 		- AppKit_Common.h
@@ -42,7 +40,6 @@ namespace microbit_dal_app_kit {
 		- AppKit_Doxygen.h
 		- AppKit.h
 		- AppModeBase.h
-		.
 */
 
 }	// microbit_dal_app_kit

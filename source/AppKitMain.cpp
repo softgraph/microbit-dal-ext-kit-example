@@ -1,4 +1,4 @@
-/// An example for using microbit-dal-ext-kit
+/// An example for using `microbit-dal-ext-kit`
 /**	@package	microbit_dal_app_kit
 */
 
@@ -70,7 +70,7 @@ int main()
 	// Initialize the device.
 	uBit.init();
 
-	// Start the Serial Debugger service first. After this call, the debugger is enabled but not yet activated.
+	// Start the Serial Debugger service first. After this call, the debugger is prepared but not yet activated.
 	// To acivate it, you need to press any key on the terminal conected to the USB seria port.
 	sDebugger.start();
 
@@ -81,7 +81,7 @@ int main()
 	Features condition = checkAvaiableHardware();
 	EXT_KIT_ASSERT(condition);
 
-	// Repeat indefinitely
+	// Repeat indefinitely.
 	while (true) {
 
 		// Select an App Mode automatically or manually. After ths call, the character for the selected App Mode is shown on the display.

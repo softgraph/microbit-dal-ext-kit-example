@@ -1,4 +1,4 @@
-/// An example for using microbit-dal-ext-kit
+/// An example for using `microbit-dal-ext-kit`
 /**	@package	microbit_dal_app_kit
 */
 
