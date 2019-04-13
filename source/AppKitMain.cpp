@@ -14,7 +14,7 @@
 using namespace microbit_dal_app_kit;
 using namespace microbit_dal_ext_kit;
 
-#define	ENABLE_ALL_MICROBIT_FEATURES	0
+#define	ENABLE_ALL_MICROBIT_FEATURES	0	// Enable all `MicroBit` features if true
 
 #if ENABLE_ALL_MICROBIT_FEATURES
 

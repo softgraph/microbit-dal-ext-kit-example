@@ -7,3 +7,4 @@
 /yotta_targets/
 .DS_Store
 .yotta.json
+.brackets.json

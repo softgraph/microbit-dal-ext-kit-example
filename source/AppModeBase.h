@@ -46,10 +46,6 @@ protected:
 	/// Inherited
 	/* CompositeComponent */ void doStop();
 
-	void listen(int id, int value);
-
-	void ignore(int id, int value);
-
 	/// Do Handle Event
 	virtual /* to be overridden */ void doHandleEvent(const MicroBitEvent& /* event */)	{ /* nothing to do */ }
 
@@ -57,6 +53,10 @@ protected:
 	virtual /* to be overridden */ void doHandlePeriodic100ms(uint32_t /* count */)	{ /* nothing to do */ }
 
 private:
+	void listen(int id, int value);
+
+	void ignore(int id, int value);
+
 	void handleEvent(MicroBitEvent event);
 
 	/* PeriodicObserver::Handler::Protocol */ void handlePeriodicEvent(uint32_t count, microbit_dal_ext_kit::PeriodicObserver::PeriodUnit unit);

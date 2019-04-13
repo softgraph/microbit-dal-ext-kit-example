@@ -17,8 +17,7 @@ namespace microbit_dal_app_kit {
 		- @subpage	AppKit_Main
 		- @subpage	AppKit_AppMode
 		- @subpage	AppKit_RemoteStateCategory
-		- @subpage	AppKit_Build
-		- @subpage	AppKit_Run
+		- @subpage	AppKit_BuildConfig
 		- @subpage	AppKit_Headers
 */
 

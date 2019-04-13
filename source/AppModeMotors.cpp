@@ -140,16 +140,16 @@ bool AppModeMotors::controlMotoBitUsingDirection(Direction direction)
 		return false;
 	}
 
-	#define F MotoBit::kForward
-	#define B MotoBit::kBackward
-	const int H = 50;	// 50; // speedInPercent - high
-	const int L = 25;	// 25; // speedInPercent - low
+	const MotoBit::MotorDirection	F = MotoBit::kForward;
+	const MotoBit::MotorDirection	B = MotoBit::kBackward;
+	const int	H = 50;	// 50; // speedInPercent - high
+	const int	L = 25;	// 25; // speedInPercent - low
 	switch(direction) {
-		case direction::kCenter:	mMotoBit.setMotorSpeed(F, F, 0, 0);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: -");	break;
-		case direction::kN:			mMotoBit.setMotorSpeed(F, F, H, H);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: N");	break;
-		case direction::kE:			mMotoBit.setMotorSpeed(F, B, H, H);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: E");	break;
-		case direction::kW:			mMotoBit.setMotorSpeed(B, F, H, H);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: W");	break;
-		case direction::kS:			mMotoBit.setMotorSpeed(B, B, H, H);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: S");	break;
+		case direction::kCenter:	mMotoBit.setMotorSpeed(F, F, 0, 0);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: -");		break;
+		case direction::kN:			mMotoBit.setMotorSpeed(F, F, H, H);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: N");		break;
+		case direction::kE:			mMotoBit.setMotorSpeed(F, B, H, H);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: E");		break;
+		case direction::kW:			mMotoBit.setMotorSpeed(B, F, H, H);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: W");		break;
+		case direction::kS:			mMotoBit.setMotorSpeed(B, B, H, H);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: S");		break;
 		case direction::kNE:		mMotoBit.setMotorSpeed(F, F, H, L);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: NE");	break;
 		case direction::kNW:		mMotoBit.setMotorSpeed(F, F, L, H);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: NW");	break;
 		case direction::kSE:		mMotoBit.setMotorSpeed(B, B, H, L);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: SE");	break;

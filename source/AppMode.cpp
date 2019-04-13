@@ -97,9 +97,9 @@ static const AppModeDef sAppModeTable[] = {
 
 /* AppModeDescriberProtocol */ int /* count */ AppModeDescriber::appModesFor(Features condition, AppMode** /* OUT new[] */ appModes) const
 {
-	#define COUNT_OF(x)		sizeof(x)/sizeof(x[0])
-
 	EXT_KIT_ASSERT(appModes);
+
+	#define COUNT_OF(x)		sizeof(x)/sizeof(x[0])	// Count of table elements
 
 	AppMode* selection = new AppMode[COUNT_OF(sAppModeTable)];
 	const AppModeDef* p = sAppModeTable;
