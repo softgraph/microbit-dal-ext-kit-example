@@ -91,45 +91,6 @@ namespace microbit_dal_app_kit {
 			-	@skipline	}
 */
 
-/**	@page	AppKit_AppMode	App Mode - the set of components specific to a micro:bit setup and usage
-
-	# App Mode for ElecFreaks' Joystick:bit
-		The following App Mode is selected automatically if Joystick:bit board is connected to the micro:bit.
-		- App Mode J (`appMode::kJoystickController`) <br>
-			`AppModeJoystickController` provides a transmitter using ElecFreaks' Joystick:bit.
-
-	# App Mode for SparkFun's moto:bit
-		The following App Mode is selected automatically if moto:bit board is connected to the micro:bit.
-		- App Mode M (`appMode::kMotors`) <br>
-			`AppModeMotors` provides a receiver using SparkFun's moto:bit.
-
-	# App Modes for Waveshare's Mini Piano Module
-		The following App Modes are available if Mini Piano Module is connected to the micro:bit.
-		- App Mode P (`appMode::kPianoPlayer`) <br>
-			`AppModePianoPlayer` provides a stand-alone piano player using Waveshare's Mini Piano Module
-		- App Mode K (`appMode::kPianoKeyController`) <br>
-			`AppModePianoKeyController` provides a transmitter using Waveshare's Mini Piano Module.
-
-	# App Modes for Kitronik's Zip Halo with a buzzer connected to port P2
-		The following App Mode is selected automatically if a buzzer is connected to port P2 on the micro:bit.
-		- App Mode O (`appMode::kNeoPixelRing`) <br>
-			`AppModeNeoPixelRing` provides a receiver using Kitronik's Zip Halo with a Buzzer.
-
-	# App Modes for a receiver with a buzzer connected to port P1
-		The following App Mode is selected automatically if a buzzer is connected to port P1 on the micro:bit.
-		- App Mode B (`appMode::kBuzzer`) <br>
-			`AppModeGenericReceiver` provides a receiver with a Buzzer.
-
-	# App Modes for no auto-detection
-		The following App Modes are available if all of detections above are failed.
-		- App Mode R (`appMode::kGenericReceiver`) <br>
-			`AppModeGenericReceiver` provides a generic receiver using micro:bit only.
-		- App Mode T (`appMode::kGenericTransmitter`) <br>
-			`AppModeGenericTransmitter` provides a generic transmitter using micro:bit only.
-		- App Mode Z (`appMode::kZipHalo`) <br>
-			`AppModeNeoPixelRing` provides a receiver using Kitronik's Zip Halo.
-*/
-
 /**	@page	AppKit_RemoteStateCategory	Remote State Category - the set of remote states sent from the transmiiter to the reciver over radio
 
 	# Remote State Category For Buttons

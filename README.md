@@ -35,30 +35,24 @@ An example for using `microbit-dal-ext-kit`
 
 + To install offline development tools, follow the instructions at [Yotta</b> (lancaster-university.github.io)](https://lancaster-university.github.io/microbit-docs/offline-toolchains).
 
-### Build Target
+### Install Required Targets and Modules
 
-+ Before building, you need to set the build target to the micro:bit platform. Run the following yotta command (`yotta` or `yt`) at the project root of `microbit-dal-ext-kit-example`.
-
-		$ yt target bbc-microbit-classic-gcc
-		...
-		$ ls yotta_targets
-		bbc-microbit-classic-gcc	mbed-gcc
-
-	The files required for the target are automatically downloaded to `yotta_targets` directory. Also, the target name is recorded in `.yotta.json` file in the project root.
-
-### Install Required Modules
-
-+ To install the required modules, run the following yotta command at the project root of `microbit-dal-ext-kit-example`.
++ Before starting the build, run the following yotta command (`yotta` or `yt`) at the project root of `microbit-dal-ext-kit-example`.
 
 		$ yt install
 		...
+
++ The target files required for the module are automatically downloaded to `yotta_targets` directory.
+
+		$ ls yotta_targets
+		bbc-microbit-classic-gcc  mbed-gcc
+
++ The other module files required for the module are automatically downloaded to `yotta_modules` directory.
+
 		$ ls yotta_modules
 		ble  ble-nrf51822  mbed-classic  microbit  microbit-dal  microbit-dal-ext-kit  nrf51-sdk
 
-	The files required for the modules are automatically downloaded to `yotta_modules` directory.
-
-
-+ After installing `microbit-dal-ext-kit`, run Doxygen again to generate the documentation including both `microbit-dal-ext-kit-example` and `microbit-dal-ext-kit`.
++ After required modules are installed, you can run Doxygen to generate `microbit-dal-ext-kit-example` documentation integrated with `microbit-dal-ext-kit`. For the details, see Documentation section below.
 
 ### Build Modules
 
@@ -79,7 +73,7 @@ An example for using `microbit-dal-ext-kit`
 
 Run [Doxygen (doxygen.nl)](http://www.doxygen.nl) with `Doxyfile` in the project root to generate the documentation.
 
-The documentation for both `microbit-dal-ext-kit-example` and `microbit-dal-ext-kit` are generated if you run Doxygen after installing the required modules described above.
+The generated document contains both `microbit-dal-ext-kit-example` and `microbit-dal-ext-kit`, if `microbit-dal-ext-kit` has been installed to `yotta_modules` directory.
 
 ## License
 
