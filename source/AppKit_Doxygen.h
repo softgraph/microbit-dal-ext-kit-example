@@ -91,58 +91,6 @@ namespace microbit_dal_app_kit {
 			-	@skipline	}
 */
 
-/**	@page	AppKit_RemoteStateCategory	Remote State Category - the set of remote states sent from the transmiiter to the reciver over radio
-
-	# Remote State Category For Buttons
-		The category sends and receives states of `Buttons` and `Direction`. <br>
-		The following App Modes support the category using `RemoteStateTransmitterCategoryForButtons` and `RemoteStateReceiverCategoryForButtons`.
-		<table>
-		<tr>
-			<td>
-				Transmitter
-			</td>
-			<td>
-				Receiver
-			</td>
-		</tr>
-		<tr>
-			<td>
-				App Mode J (`appMode::kJoystickController`) <br>
-				App Mode T (`appMode::kGenericTransmitter`)
-			</td>
-			<td>
-				App Mode M (`appMode::kMotors`) <br>
-				App Mode O (`appMode::kNeoPixelRing`) <br>
-				App Mode Z (`appMode::kZipHalo`) <br>
-				App Mode R (`appMode::kGenericReceiver`)
-			</td>
-		</tr>
-		</table>
-
-	# Remote State Category For PianoKeys
-		The category The category sends and receives states of `PianoKeys` and `Octave`. <br>
-		The following App Modes support the category using `RemoteStateTransmitterCategoryForPianoKeys` and `RemoteStateReceiverCategoryForPianoKeys`.
-		<table>
-		<tr>
-			<td>
-				Transmitter
-			</td>
-			<td>
-				Receiver
-			</td>
-		</tr>
-		<tr>
-			<td>
-				App Mode K (`appMode::kPianoKeyController`)
-			</td>
-			<td>
-				App Mode O (`appMode::kNeoPixelRing`) <br>
-				App Mode B (`appMode::kBuzzer`)
-			</td>
-		</tr>
-		</table>
-*/
-
 /**	@page	AppKit_BuildConfig	Build Configuration
 
 	# Build Configuration

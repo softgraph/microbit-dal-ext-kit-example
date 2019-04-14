@@ -57,6 +57,9 @@ static const AppModeDef sAppModeTable[] = {
 
 	//	[App Modes for kNoAutoDetection]
 
+	//	App Mode 'G' for a gravity sensor using micro:bit only.
+	{ appMode::kGravitySensor,			'G', "Gravity Sensor" },
+
 	//	App Mode 'T' for a generic transmitter using micro:bit only.
 	{ appMode::kGenericTransmitter,		'T', "Generic Transmitter" },
 
@@ -114,6 +117,66 @@ static const AppModeDef sAppModeTable[] = {
 
 	*appModes = selection;
 	return count;
+}
+
+Features checkAvaiableHardware()
+{
+	Features result;
+	result = JoystickBit::avaiableFeatures();
+	if(result) {
+		return result;
+	}
+	result = MotoBit::avaiableFeatures();
+	if(result) {
+		return result;
+	}
+	result = TouchPiano::avaiableFeatures();
+	if(result) {
+		return result;
+	}
+	ExtKit& g = ExtKit::global();
+	result = Buzzer::avaiableFeatures(g.p2());
+	if(result) {
+		return result | feature::kReservedForApp2;	// Buzzer on port P2
+	}
+	result = Buzzer::avaiableFeatures(g.p1());
+	if(result) {
+		return result | feature::kReservedForApp1;	// Buzzer on port P1
+	}
+	return feature::kNoAutoDetection;
+}
+
+/* new */ AppModeBase* instantiateAppMode()
+{
+	AppModeBase* appMode = 0;
+	if(AppModeMotors::isConfigured()) {						// selected AppMode: 'M'
+		appMode = new AppModeMotors();
+	}
+	else if(AppModeJoystickController::isConfigured()) {	// selected AppMode: 'J'
+		appMode = new AppModeJoystickController();
+	}
+	else if(AppModePianoPlayer::isConfigured()) {			// selected AppMode: 'P'
+		appMode = new AppModePianoPlayer();
+	}
+	else if(AppModePianoKeyController::isConfigured()) {	// selected AppMode: 'K'
+		appMode = new AppModePianoKeyController();
+	}
+	else if(AppModeNeoPixelRing::isConfigured()) {			// selected AppMode: 'O' or 'Z'
+		appMode = new AppModeNeoPixelRing();
+	}
+	else if(AppModeGravitySensor::isConfigured()) {			// selected AppMode: 'G'
+		appMode = new AppModeGravitySensor();
+	}
+	else if(AppModeGenericTransmitter::isConfigured()) {	// selected AppMode: 'T'
+		appMode = new AppModeGenericTransmitter();
+	}
+	else if(AppModeGenericReceiver::isConfigured()) {		// selected AppMode: 'B' or 'R'
+		appMode = new AppModeGenericReceiver();
+	}
+	else {
+		EXT_KIT_ASSERT(!"Invalid App Mode");
+	}
+	return appMode;
 }
 
 }	// microbit_dal_app_kit
