@@ -22,6 +22,7 @@ namespace microbit_dal_app_kit {
 		- AppMode.h
 		- AppModeGenericReceiver.h
 		- AppModeGenericTransmitter.h
+		- AppModeGravitySensor.h
 		- AppModeJoystickController.h
 		- AppModeMotors.h
 		- AppModeNeoPixelRing.h
@@ -60,6 +61,7 @@ namespace microbit_dal_app_kit {
 #include "AppModeBase.h"
 #include "AppModeGenericReceiver.h"
 #include "AppModeGenericTransmitter.h"
+#include "AppModeGravitySensor.h"
 #include "AppModeJoystickController.h"
 #include "AppModeMotors.h"
 #include "AppModeNeoPixelRing.h"
