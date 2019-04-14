@@ -52,8 +52,6 @@ An example for using `microbit-dal-ext-kit`
 		$ ls yotta_modules
 		ble  ble-nrf51822  mbed-classic  microbit  microbit-dal  microbit-dal-ext-kit  nrf51-sdk
 
-+ After required modules are installed, you can run Doxygen to generate `microbit-dal-ext-kit-example` documentation integrated with `microbit-dal-ext-kit`. For the details, see Documentation section below.
-
 ### Build Modules
 
 + To build all modules and the executable, run the following yotta command at the project root of `microbit-dal-ext-kit-example`.
