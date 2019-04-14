@@ -58,10 +58,11 @@ An example for using `microbit-dal-ext-kit`
 
 		$ yt build
 		...
+
++ The files are built in `build/bbc-microbit-classic-gcc` directory.
+
 		$ ls build/bbc-microbit-classic-gcc/source/microbit-dal-ext-kit-example-combined.hex
 		build/bbc-microbit-classic-gcc/source/microbit-dal-ext-kit-example-combined.hex
-
-	The files are built in `build/bbc-microbit-classic-gcc` directory.
 
 + To flash the executable file to your micro:bit device, just copy the `combined.hex` file to the device. Here is an example for Terminal on Mac OS.
 
