@@ -31,7 +31,7 @@ An example for using `microbit-dal-ext-kit`
 	
 ## Install, Build and Run
 
-### Development Tools
+### Install Development Tools
 
 + To install offline development tools, follow the instructions at [Yotta</b> (lancaster-university.github.io)](https://lancaster-university.github.io/microbit-docs/offline-toolchains).
 
@@ -42,31 +42,40 @@ An example for using `microbit-dal-ext-kit`
 		$ yt install
 		...
 
-+ The target files required for the module are automatically downloaded to `yotta_targets` directory.
++ The target files required for the module are automatically downloaded to `yotta_targets` directory as below.
 
 		$ ls yotta_targets
 		bbc-microbit-classic-gcc  mbed-gcc
 
-+ The other module files required for the module are automatically downloaded to `yotta_modules` directory.
++ The other module files required for the module are automatically downloaded to `yotta_modules` directory as below.
 
 		$ ls yotta_modules
 		ble  ble-nrf51822  mbed-classic  microbit  microbit-dal  microbit-dal-ext-kit  nrf51-sdk
 
-### Build Modules
+### Build Executable
 
-+ To build all modules and the executable, run the following yotta command at the project root of `microbit-dal-ext-kit-example`.
++ To build all required modules and the executable, run the following yotta command at the project root of `microbit-dal-ext-kit-example`.
 
 		$ yt build
 		...
 
-+ The files are built in `build/bbc-microbit-classic-gcc` directory.
++ The files are built in `build/bbc-microbit-classic-gcc` directory as below.
 
 		$ ls build/bbc-microbit-classic-gcc/source/microbit-dal-ext-kit-example-combined.hex
 		build/bbc-microbit-classic-gcc/source/microbit-dal-ext-kit-example-combined.hex
 
-+ To flash the executable file to your micro:bit device, just copy the `combined.hex` file to the device. Here is an example for Terminal on Mac OS.
+### Run Executable
+
++ To flash the executable file to your micro:bit device, just copy the `combined.hex` file to the device mounted as a usb storage. Here is an example for Terminal on Mac OS.
 
 		$ cp build/bbc-microbit-classic-gcc/source/microbit-dal-ext-kit-example-combined.hex /Volumes/MICROBIT
+
++ The executable starts automatically after it has been copied into the device.
++ The scrolling '`--`' characters are shown on the device's 5 x 5 LEDs display. Then, '`T`' is shown as a candidate for the App Mode.
++ By default, the following candidates are available for the App Mode. Press A button to switch among these modes and press B button to select the mode.
+	+ App Mode '`T`' (Generic Transmitter mode using micro:bit only)
+	+ App Mode '`R`' (Generic Receiver mode using micro:bit only)
+	+ App Mode '`Z`' (Zip Halo mode using micro:bit and Kitronik's Zip Halo board)
 
 ## Documentation
 
