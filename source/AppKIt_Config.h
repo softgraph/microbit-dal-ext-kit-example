@@ -13,6 +13,6 @@
 #define APP_KIT__CONFIG_H
 
 ///	Bootup String.
-#define APP_STRING_BOOTUP	"-"
+#define APP_STRING_BOOTUP	"--"
 
 #endif	// APP_KIT__CONFIG_H
