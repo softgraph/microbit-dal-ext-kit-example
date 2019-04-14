@@ -4,7 +4,7 @@
 	"version": "0.8.6",
 	"license": "MIT",
 	"dependencies": {
-		"microbit-dal-ext-kit": "softgraph/microbit-dal-ext-kit#v0.8.5"
+		"microbit-dal-ext-kit": "softgraph/microbit-dal-ext-kit#v0.8.6"
 	},
 	"private": true,
 	"bin": "./source"
