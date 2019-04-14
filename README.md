@@ -8,7 +8,7 @@ An example for using `microbit-dal-ext-kit`
 <table>
 <tr><td align="center"><code>microbit-dal-ext-kit-example</code></td></tr>
 <tr><td align="center"><code>microbit-dal-ext-kit</code></td></tr>
-<tr><td align="center"><code>microbit</code> and <code>microbit-dal</code> <br> (micro:bit runtime)</td></tr>
+<tr><td align="center"><code>microbit</code> and <code>microbit-dal</code> <br> (also known as micro:bit runtime)</td></tr>
 <tr><td align="center">Arm Mbed OS</td></tr>
 <tr><td align="center">BBC micro:bit device</td></tr>
 <tr><td align="center">Extension board and/or Hardware module (optional)</td></tr>
@@ -71,8 +71,9 @@ An example for using `microbit-dal-ext-kit`
 		$ cp build/bbc-microbit-classic-gcc/source/microbit-dal-ext-kit-example-combined.hex /Volumes/MICROBIT
 
 + The executable starts automatically after it has been copied into the device.
-+ The scrolling '`--`' characters are shown on the device's 5 x 5 LEDs display. Then, '`T`' is shown as a candidate for the App Mode.
-+ By default, the following candidates are available for the App Mode. Press A button to switch among these modes and press B button to select the mode.
++ The scrolling '`--`' characters are shown on the device's 5 x 5 LEDs display. Then, '`G`' is shown as a candidate for the App Mode.
++ For a standalone micro:bit device, the following candidates are available for the App Mode. Press A button to switch among these modes and press B button to select the mode.
+	+ App Mode '`G`' (Gravity Sensor using micro:bit only)
 	+ App Mode '`T`' (Generic Transmitter mode using micro:bit only)
 	+ App Mode '`R`' (Generic Receiver mode using micro:bit only)
 	+ App Mode '`Z`' (Zip Halo mode using micro:bit and Kitronik's Zip Halo board)
