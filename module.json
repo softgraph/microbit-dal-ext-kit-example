@@ -1,7 +1,7 @@
 {
 	"name": "microbit-dal-ext-kit-example",
 	"description": "An example for using microbit-dal-ext-kit",
-	"version": "0.8.5",
+	"version": "0.8.6",
 	"license": "MIT",
 	"dependencies": {
 		"microbit-dal-ext-kit": "softgraph/microbit-dal-ext-kit#v0.8.5"
