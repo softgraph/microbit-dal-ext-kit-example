@@ -29,21 +29,23 @@ An example for using `microbit-dal-ext-kit`
 + `microbit` <br>
 	A collection of the commonly used components of the micro:bit runtime with a standard configuration, to provide an easy to use interface for programming the micro:bit in C/C++.
 
-## Wiki
+## License
 
-See also [the wiki page for microbit-dal-ext-kit and microbit-dal-ext-kit-example](https://github.com/softgraph/microbit-dal-ext-kit-example/wiki).
+MIT
 
-## Documentation
+## Resources
+
+### Wiki
+
+See also [the wiki page for microbit-dal-ext-kit and example](https://github.com/softgraph/microbit-dal-ext-kit-example/wiki).
+
+### Documentation
 
 Run [Doxygen (doxygen.nl)](http://www.doxygen.nl) with `Doxyfile` in the project root to generate the documentation.
 
 The generated document contains both `microbit-dal-ext-kit-example` and `microbit-dal-ext-kit`, if `microbit-dal-ext-kit` has been installed to `yotta_modules` directory.
 
-## License
-
-MIT
-
-## Required Modules
+### Required Modules
 
 Module                 | URL
 ---------------------- | ---
