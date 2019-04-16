@@ -37,7 +37,7 @@ MIT
 
 ### Wiki
 
-See also [the wiki page for microbit-dal-ext-kit and example](https://github.com/softgraph/microbit-dal-ext-kit-example/wiki).
+See also [the wiki page for `microbit-dal-ext-kit` and `example`](https://github.com/softgraph/microbit-dal-ext-kit-example/wiki).
 
 ### Documentation
 
