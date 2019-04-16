@@ -24,101 +24,46 @@ namespace microbit_dal_app_kit {
 
 	## App Mode for ElecFreaks' Joystick:bit
 		The following App Mode is selected automatically if Joystick:bit board is connected to the micro:bit.
-			<table><tr><td>
-				App Mode
-			</td><td>
-				Description
-			</td></tr><tr><td>
-				App Mode J (`appMode::kJoystickController`)
-			</td><td>
+			- App Mode J (`appMode::kJoystickController`) <br>
 				`AppModeJoystickController` provides a transmitter using ElecFreaks' Joystick:bit.
-			</td></tr></table>
 
 	## App Mode for SparkFun's moto:bit
 		The following App Mode is selected automatically if moto:bit board is connected to the micro:bit.
-			<table><tr><td>
-				App Mode
-			</td><td>
-				Description
-			</td></tr><tr><td>
-				App Mode M (`appMode::kMotors`)
-			</td><td>
+			- App Mode M (`appMode::kMotors`) <br>
 				`AppModeMotors` provides a receiver using SparkFun's moto:bit.
-			</td></tr></table>
 
 	## App Modes for Waveshare's Mini Piano Module
 		The following App Modes are selectable if Mini Piano Module is connected to the micro:bit.
-			<table><tr><td>
-				App Mode
-			</td><td>
-				Description
-			</td></tr><tr><td>
-				App Mode P (`appMode::kPianoPlayer`)
-			</td><td>
+			- App Mode P (`appMode::kPianoPlayer`) <br>
 				`AppModePianoPlayer` provides a stand-alone piano player using Waveshare's Mini Piano Module.
-			</td></tr><tr><td>
-				App Mode K (`appMode::kPianoKeyController`)
-			</td><td>
+			- App Mode K (`appMode::kPianoKeyController`) <br>
 				`AppModePianoKeyController` provides a transmitter using Waveshare's Mini Piano Module.
-			</td></tr></table>
 
 	## App Modes for Kitronik's Zip Halo with a buzzer connected to port P2
 		The following App Mode is selected automatically if a buzzer is connected to port P2 on the micro:bit.
-			<table><tr><td>
-				App Mode
-			</td><td>
-				Description
-			</td></tr><tr><td>
-				App Mode O (`appMode::kNeoPixelRing`)
-			</td><td>
+			- App Mode O (`appMode::kNeoPixelRing`) <br>
 				`AppModeNeoPixelRing` provides a receiver using Kitronik's Zip Halo with a buzzer.
-			</td></tr></table>
 
 	## App Modes for a receiver with a buzzer connected to port P1
 		The following App Mode is selected automatically if a buzzer is connected to port P1 on the micro:bit.
-			<table><tr><td>
-				App Mode
-			</td><td>
-				Description
-			</td></tr><tr><td>
-				App Mode B (`appMode::kBuzzer`)
-			</td><td>
+			- App Mode B (`appMode::kBuzzer`) <br>
 				`AppModeGenericReceiver` provides a receiver with a buzzer.
-			</td></tr></table>
 
 	# App Modes without auto-detection
 
 	## App Modes for Kitronik's Zip Halo
 		The following App Modes is selectable if any auto-detection listed here is not available.
-			<table><tr><td>
-				App Mode
-			</td><td>
-				Description
-			</td></tr><tr><td>
-				App Mode Z (`appMode::kZipHalo`)
-			</td><td>
+			- App Mode Z (`appMode::kZipHalo`) <br>
 				`AppModeNeoPixelRing` provides a receiver using Kitronik's Zip Halo.
-			</td></tr></table>
 
 	## App Modes for micro:bit only
 		The following App Modes are selectable if any auto-detection listed here is not available.
-			<table><tr><td>
-				App Mode
-			</td><td>
-				Description
-			</td></tr><tr><td>
-				App Mode G (`appMode::kGravitySensor`)
-			</td><td>
+			- App Mode G (`appMode::kGravitySensor`) <br>
 				`AppModeGravitySensor` provides a gravity sensor using micro:bit only.
-			</td></tr><tr><td>
-				App Mode R (`appMode::kGenericReceiver`)
-			</td><td>
+			- App Mode R (`appMode::kGenericReceiver`) <br>
 				`AppModeGenericReceiver` provides a generic receiver using micro:bit only.
-			</td></tr><tr><td>
-				App Mode T (`appMode::kGenericTransmitter`)
-			</td><td>
+			- App Mode T (`appMode::kGenericTransmitter`) <br>
 				`AppModeGenericTransmitter` provides a generic transmitter using micro:bit only.
-			</td></tr></table>
 */
 
 /**	@page	AppKit_RemoteStateCategory	Remote State Category - the set of remote states sent from the transmiiter to the reciver over radio
