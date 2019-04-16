@@ -1,4 +1,3 @@
-
 # microbit-dal-ext-kit-example
 
 An example for using `microbit-dal-ext-kit`

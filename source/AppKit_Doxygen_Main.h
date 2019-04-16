@@ -15,7 +15,11 @@ using namespace microbit_dal_ext_kit;
 /**	@mainpage	Introduction
 
 	# Overview
-		- See <a href="https://github.com/softgraph/microbit-dal-ext-kit">`microbit-dal-ext-kit` (github.com/softgraph)</a> and <a href="https://github.com/softgraph/microbit-dal-ext-kit-example">`microbit-dal-ext-kit-example` (github.com/softgraph)</a>.
+		See the following pages.
+		- <a href="https://github.com/softgraph/microbit-dal-ext-kit-example/wiki">Wiki (github.com/softgraph)</a> for `microbit-dal-ext-kit` and `example`.
+		- <a href="https://github.com/softgraph/microbit-dal-ext-kit-example/wiki/Home-(ja)">日本語 Wiki (github.com/softgraph)</a> for `microbit-dal-ext-kit` and `example`.
+		- <a href="https://github.com/softgraph/microbit-dal-ext-kit-example">The repository (github.com/softgraph)</a> for `microbit-dal-ext-kit-example`.
+		- <a href="https://github.com/softgraph/microbit-dal-ext-kit">The repository (github.com/softgraph)</a> for `microbit-dal-ext-kit`.
 
 	# Key Concepts
 		- @ref	ExtKit_Device
