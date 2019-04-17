@@ -36,13 +36,13 @@ MIT
 
 ### Wiki
 
-See also [the wiki page for `microbit-dal-ext-kit` and `example`](https://github.com/softgraph/microbit-dal-ext-kit-example/wiki).
+See also [Miscellaneous notes for microbit-dal-ext-kit and example](https://github.com/softgraph/microbit-dal-ext-kit-example/wiki).
 
 ### Documentation
 
 Run [Doxygen (doxygen.nl)](http://www.doxygen.nl) with `Doxyfile` in the project root to generate the documentation.
 
-The generated document contains both `microbit-dal-ext-kit-example` and `microbit-dal-ext-kit` if `microbit-dal-ext-kit` has been installed.
+The generated document contains both `microbit-dal-ext-kit-example` and `microbit-dal-ext-kit` if `microbit-dal-ext-kit` has been installed to `yotta_modules`.
 
 ### Required Modules
 

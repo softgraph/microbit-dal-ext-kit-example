@@ -16,10 +16,10 @@ using namespace microbit_dal_ext_kit;
 
 	# Overview
 		See the following pages.
-		- <a href="https://github.com/softgraph/microbit-dal-ext-kit-example/wiki">Wiki (github.com/softgraph)</a> for `microbit-dal-ext-kit` and `example`.
-		- <a href="https://github.com/softgraph/microbit-dal-ext-kit-example/wiki/Home-(ja)">日本語 Wiki (github.com/softgraph)</a> for `microbit-dal-ext-kit` and `example`.
-		- <a href="https://github.com/softgraph/microbit-dal-ext-kit-example">The repository (github.com/softgraph)</a> for `microbit-dal-ext-kit-example`.
-		- <a href="https://github.com/softgraph/microbit-dal-ext-kit">The repository (github.com/softgraph)</a> for `microbit-dal-ext-kit`.
+		- <a href="https://github.com/softgraph/microbit-dal-ext-kit-example/wiki"><b>Miscellaneous notes for microbit-dal-ext-kit and example</b> (github.com/softgraph)</a>
+		- <a href="https://github.com/softgraph/microbit-dal-ext-kit-example/wiki/Home-(ja)"><b>microbit-dal-ext-kit と example のための各種ノート</b> (github.com/softgraph)</a>
+		- <a href="https://github.com/softgraph/microbit-dal-ext-kit-example"><b>The repository</b> (github.com/softgraph)</a> for `microbit-dal-ext-kit-example`
+		- <a href="https://github.com/softgraph/microbit-dal-ext-kit"><b>The repository</b> (github.com/softgraph)</a> for `microbit-dal-ext-kit`
 
 	# Key Concepts
 		- @ref	ExtKit_Device
