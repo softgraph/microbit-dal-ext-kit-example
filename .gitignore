@@ -2,7 +2,11 @@
 
 /build/
 /doxygen/
+/microbit/
+/microbit-dal/
 /microbit-dal-ext-kit/
+/microbit-dal-ext-kit.wiki/
+/microbit-dal-ext-kit-example.wiki/
 /yotta_modules/
 /yotta_targets/
 .DS_Store
