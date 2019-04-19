@@ -21,7 +21,7 @@ class MicroBitEvent;
 namespace microbit_dal_app_kit {
 
 /// App Mode Base Composite Component
-/* abstract */ class AppModeBase : public microbit_dal_ext_kit::CompositeComponent, microbit_dal_ext_kit::PeriodicObserver::Handler::Protocol
+/* abstract */ class AppModeBase : public microbit_dal_ext_kit::CompositeComponent, microbit_dal_ext_kit::PeriodicObserver::HandlerProtocol
 {
 protected:
 	/// Constructor
@@ -30,7 +30,10 @@ protected:
 	/// Event Definition
 	struct EventDef {
 	public:
+		/// Event ID
 		uint16_t	id;
+
+		/// Event Value
 		uint16_t	value;
 	};
 
@@ -59,7 +62,7 @@ private:
 
 	void handleEvent(MicroBitEvent event);
 
-	/* PeriodicObserver::Handler::Protocol */ void handlePeriodicEvent(uint32_t count, microbit_dal_ext_kit::PeriodicObserver::PeriodUnit unit);
+	/* PeriodicObserver::HandlerProtocol */ void handlePeriodicEvent(uint32_t count, microbit_dal_ext_kit::PeriodicObserver::PeriodUnit unit);
 
 	const EventDef*	mEvents;
 

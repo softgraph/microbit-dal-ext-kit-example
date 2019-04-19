@@ -66,13 +66,13 @@ void AppModeBase::selectRadioEvents(const EventDef* def)
 	}
 
 	// Listen Periodic Observer
-	PeriodicObserver::Handler::listen(PeriodicObserver::kUnit100ms, *this);
+	PeriodicObserver::listen(PeriodicObserver::kUnit100ms, *this);
 }
 
 /* CompositeComponent */ void AppModeBase::doStop()
 {
 	// Ignore Periodic Observer
-	PeriodicObserver::Handler::ignore(PeriodicObserver::kUnit100ms, *this);
+	PeriodicObserver::ignore(PeriodicObserver::kUnit100ms, *this);
 
 	// Ignore Radio Events
 	if(mRadioEvents) {
