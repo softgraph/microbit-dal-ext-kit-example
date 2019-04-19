@@ -105,6 +105,7 @@ namespace microbit_dal_app_kit {
 				- The module depends on the following module.
 					- https://github.com/softgraph/microbit-dal-ext-kit
 			- @until	"private"
+				- The module is not intended to publish to the the public yotta registry <https://yottabuild.org>.
 			- @until	"bin"
 				- The module is an executable.
 			- @skipline	}
