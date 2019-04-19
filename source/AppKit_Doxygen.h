@@ -13,7 +13,7 @@ using namespace microbit_dal_ext_kit;
 
 namespace microbit_dal_app_kit {
 
-/**	@page	microbit-dal-ext-kit-example	Topics - microbit-dal-ext-kit-example
+/**	@page	Topics_microbit-dal-ext-kit-example	Topics - microbit-dal-ext-kit-example
 		- @subpage	AppKit_Main
 		- @subpage	AppKit_AppMode
 		- @subpage	AppKit_RemoteStateCategory

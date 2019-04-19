@@ -40,7 +40,7 @@ See also [Miscellaneous notes for microbit-dal-ext-kit and example](https://gith
 
 ### Documentation
 
-Run [Doxygen (doxygen.nl)](http://www.doxygen.nl) with `Doxyfile` in the project root to generate the documentation.
+Run [Doxygen (doxygen.nl)](http://www.doxygen.nl/download.html#latestsrc) with `Doxyfile` in the project root to generate the documentation. Doxygen version 1.8.0 or higher is required.
 
 The generated document contains both `microbit-dal-ext-kit-example` and `microbit-dal-ext-kit` if `microbit-dal-ext-kit` has been installed to `yotta_modules`.
 
