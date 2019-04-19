@@ -16,16 +16,16 @@ An example for using `microbit-dal-ext-kit`
 
 ### Module Outlines
 
-+ `microbit-dal-ext-kit-example` <br>
++ [`microbit-dal-ext-kit-example` (github.com/softgraph)](https://github.com/softgraph/microbit-dal-ext-kit-example) <br>
 	An example for using `microbit-dal-ext-kit`
 
-+ `microbit-dal-ext-kit` <br>
++ [`microbit-dal-ext-kit` (github.com/softgraph)](https://github.com/softgraph/microbit-dal-ext-kit) <br>
 	The set of components and utilities for C++ applications using `microbit-dal` (also known as micro:bit runtime) with or without `microbit`
 
-+ `microbit-dal` <br>
++ [`microbit-dal` (github.com/lancaster-university)](https://github.com/lancaster-university/microbit-dal) <br>
 	The core set of drivers, mechanisms and types that make up the micro:bit runtime.
 
-+ `microbit` <br>
++ [`microbit` (github.com/lancaster-university)](https://github.com/lancaster-university/microbit) <br>
 	A collection of the commonly used components of the micro:bit runtime with a standard configuration, to provide an easy to use interface for programming the micro:bit in C/C++.
 
 ## License

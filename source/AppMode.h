@@ -184,8 +184,13 @@ const microbit_dal_ext_kit::AppMode kGenericReceiver =
 class AppModeDescriber : public microbit_dal_ext_kit::AppModeDescriberProtocol
 {
 public:
+	/// Inherited
 	/* AppModeDescriberProtocol */ char charFor(microbit_dal_ext_kit::AppMode appMode) const;
+
+	/// Inherited
 	/* AppModeDescriberProtocol */ const char* nameFor(microbit_dal_ext_kit::AppMode appMode) const;
+
+	/// Inherited
 	/* AppModeDescriberProtocol */ int /* count */ appModesFor(microbit_dal_ext_kit::Features condition, microbit_dal_ext_kit::AppMode** /* OUT new[] */ appModes) const;
 
 };	// AppModeDescriber
