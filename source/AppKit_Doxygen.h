@@ -94,7 +94,7 @@ namespace microbit_dal_app_kit {
 /**	@page	AppKit_BuildConfig	Build Configuration
 
 	# Build Configuration
-		- The `module.json` file in the module root is used to describe the module or executable, especially the module name and dependencies to other modules.
+		- The `module.json` file in the project root is used to describe the module or executable, especially the module name and dependencies to other modules.
 		- Here is an example of `module.json` for `microbit-dal-ext-kit-example` executable.
 			@dontinclude	./module.json
 			- @skipline	{
