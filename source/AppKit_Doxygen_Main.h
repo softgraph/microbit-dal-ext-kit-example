@@ -23,7 +23,7 @@ using namespace microbit_dal_ext_kit;
 			- <a href="https://github.com/softgraph/microbit-dal-ext-kit-example"><b>microbit-dal-ext-kit-example</b> (github.com/softgraph)</a>
 		- Wiki
 			- <a href="https://github.com/softgraph/microbit-dal-ext-kit-example/wiki"><b>Miscellaneous notes for microbit-dal-ext-kit and example</b> (github.com/softgraph)</a>
-		- Wiki (日本語版)
+		- Wiki (Japanese Edition)
 			- <a href="https://github.com/softgraph/microbit-dal-ext-kit-example/wiki/Home-(ja)"><b>microbit-dal-ext-kit と example のための各種ノート</b> (github.com/softgraph)</a>
 
 	# Key Concepts
