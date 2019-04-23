@@ -80,7 +80,12 @@ AppModeMotors::AppModeMotors()
 
 /* Sonar::HandlerProtocol */ void AppModeMotors::handleSonarEcho(uint32_t duration /* in microseconds*/)
 {
-	SonarDistance value /* in centimeters */ = duration * 17 / 1000;
+	const uint32_t kSoundSpeed = 343;			// 343 m/s
+	const uint32_t kMaxDuration = 36 * 1000;	// 36 ms
+	if(duration > kMaxDuration) {
+		duration = kMaxDuration;
+	}
+	SonarDistance value /* in centimeters */ = (duration * kSoundSpeed) / 2 / 10000;
 	mSonarDistance.set(value);
 }
 
