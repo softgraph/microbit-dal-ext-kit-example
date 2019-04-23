@@ -22,6 +22,18 @@
 
 namespace microbit_dal_app_kit {
 
+///	%Sonar Distance in centimeters
+typedef uint16_t	SonarDistance;
+
+/// `StateChange` specialization for `#SonarDistance`
+class StateChangeForSonarDistance : public microbit_dal_ext_kit::StateChange<SonarDistance>
+{
+public:
+	/// Constructor
+	StateChangeForSonarDistance();
+
+};	// StateChangeForSonarDistance
+
 /// App Mode for Motors
 class AppModeMotors : public AppModeBase, protected microbit_dal_ext_kit::Sonar::HandlerProtocol
 {
@@ -40,7 +52,7 @@ protected:
 	/* AppModeBase */ void doHandlePeriodic100ms(uint32_t count);
 
 	/// Inherited
-	/* Sonar::HandlerProtocol */ void handleSonarEcho(microbit_dal_ext_kit::SonarDuration duration);
+	/* Sonar::HandlerProtocol */ void handleSonarEcho(uint32_t duration /* in microseconds*/);
 
 private:
 	/// Control Moto:bit Using Direction
@@ -58,11 +70,11 @@ private:
 	/// Remote State Receiver Category For Buttons
 	RemoteStateReceiverCategoryForButtons	mReceiverCategoryForButtons;
 
-	/// State For Buttons
+	/// State For Local Buttons
 	microbit_dal_ext_kit::StateForButtons	mButtons;
 
-	/// State Change For Sonar Duration
-	microbit_dal_ext_kit::StateChangeForSonarDuration	mSonarDuration;
+	/// State Change For Sonar Distance
+	StateChangeForSonarDistance	mSonarDistance;
 
 };	// AppModeMotors
 

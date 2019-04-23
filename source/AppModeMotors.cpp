@@ -16,6 +16,14 @@ using namespace microbit_dal_ext_kit;
 
 namespace microbit_dal_app_kit {
 
+/**	@class	StateChangeForSonarDistance
+*/
+
+StateChangeForSonarDistance::StateChangeForSonarDistance()
+	: StateChange<SonarDistance>(0)
+{
+}
+
 /**	@class	AppModeMotors
 */
 
@@ -70,26 +78,28 @@ AppModeMotors::AppModeMotors()
 	}
 }
 
-/* Sonar::HandlerProtocol */ void AppModeMotors::handleSonarEcho(SonarDuration duration)
+/* Sonar::HandlerProtocol */ void AppModeMotors::handleSonarEcho(uint32_t duration /* in microseconds*/)
 {
-	uint32_t value = duration >> 8;
-	mSonarDuration.set(value);
-	//	debug_sendLine(EXT_KIT_DEBUG_EVENT "Sonar Echo");
+	SonarDistance value /* in centimeters */ = duration * 17 / 1000;
+	mSonarDistance.set(value);
 }
 
 /* AppModeBase */ void AppModeMotors::doHandlePeriodic100ms(uint32_t /* count */)
 {
 	// Check Sonar Echo
 	if(Sonar::isConfigured()) {
-		uint32_t value;
-		if(mSonarDuration.read(/* OUT */ value)) {
-#if 0		/// @todo	to be implemented
-			if(value < 10) {
-				...
+		SonarDistance lastValue = mSonarDistance.lastValue();
+		SonarDistance value;
+		if(mSonarDistance.read(/* OUT */ value)) {
+			if((value < 10) && (value < lastValue)) {
+				const Direction d = direction::kStop;
+				controlMotoBitUsingDirection(d);
+				display::showDirection(d);
 			}
-#endif
-			display::showNumber(value);
-		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Sonar Duration: ", ManagedString((int) value).toCharArray());
+			else {
+				display::showNumber(value);
+			}
+		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Sonar Distance in centimeters: ", ManagedString((int) value).toCharArray());
 		}
 		mSonar.trigger();
 	}
@@ -158,6 +168,7 @@ bool AppModeMotors::controlMotoBitUsingDirection(Direction direction)
 		case direction::kLB:		mMotoBit.setMotorSpeed(B, B, H, 0);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: LB");	break;
 		case direction::kRF:		mMotoBit.setMotorSpeed(F, F, 0, H);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: RF");	break;
 		case direction::kRB:		mMotoBit.setMotorSpeed(B, B, 0, H);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: RB");	break;
+		case direction::kStop:		mMotoBit.setMotorSpeed(F, F, 0, 0);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: Stop");	break;
 	}
 	return true;
 }
