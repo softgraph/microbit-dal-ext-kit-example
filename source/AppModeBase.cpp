@@ -36,70 +36,60 @@ void AppModeBase::selectRadioEvents(const EventDef* def)
 	mRadioEvents = def;
 }
 
-/* CompositeComponent */ void AppModeBase::doStart()
+/* CompositeComponent */ void AppModeBase::doHandleComponentAction(Action action)
 {
-	// Start Base classes
-	CompositeComponent::doStart();
-
-	// Start Children
-	startChildren();
-
-	// Listen to Selected Events
-	if(mEvents) {
-		const EventDef* p = mEvents;
-		while((p->id) || (p->value)) {
-			listen(p->id, p->value);
-			p++;
-		}
-	}
-
-	// Listen to Selected Radio Events to be forwarded to the receiver
-	if(mRadioEvents) {
-		MicroBitRadio* r = ExtKit::global().radio();
-		if(r) {
-			const EventDef* p = mRadioEvents;
+	if(action == kStart) {
+		// Listen to Selected Events
+		if(mEvents) {
+			const EventDef* p = mEvents;
 			while((p->id) || (p->value)) {
-				r->event.listen(p->id, p->value);
+				listen(p->id, p->value);
+				p++;
+			}
+		}
+
+		// Listen to Selected Radio Events to be forwarded to the receiver
+		if(mRadioEvents) {
+			MicroBitRadio* r = ExtKit::global().radio();
+			if(r) {
+				const EventDef* p = mRadioEvents;
+				while((p->id) || (p->value)) {
+					r->event.listen(p->id, p->value);
+					p++;
+				}
+			}
+		}
+
+		// Listen Periodic Observer
+		PeriodicObserver::listen(PeriodicObserver::kUnit100ms, *this);
+	}
+	else if(action == kStop) {
+		// Ignore Periodic Observer
+		PeriodicObserver::ignore(PeriodicObserver::kUnit100ms, *this);
+
+		// Ignore Radio Events
+		if(mRadioEvents) {
+			MicroBitRadio* r = ExtKit::global().radio();
+			if(r) {
+				const EventDef* p = mRadioEvents;
+				while((p->id) || (p->value)) {
+					r->event.ignore(p->id, p->value);
+					p++;
+				}
+			}
+		}
+
+		// Ignore Events
+		if(mEvents) {
+			const EventDef* p = mEvents;
+			while((p->id) || (p->value)) {
+				ignore(p->id, p->value);
 				p++;
 			}
 		}
 	}
 
-	// Listen Periodic Observer
-	PeriodicObserver::listen(PeriodicObserver::kUnit100ms, *this);
-}
-
-/* CompositeComponent */ void AppModeBase::doStop()
-{
-	// Ignore Periodic Observer
-	PeriodicObserver::ignore(PeriodicObserver::kUnit100ms, *this);
-
-	// Ignore Radio Events
-	if(mRadioEvents) {
-		MicroBitRadio* r = ExtKit::global().radio();
-		if(r) {
-			const EventDef* p = mRadioEvents;
-			while((p->id) || (p->value)) {
-				r->event.ignore(p->id, p->value);
-				p++;
-			}
-		}
-	}
-
-	// Ignore Events
-	if(mEvents) {
-		const EventDef* p = mEvents;
-		while((p->id) || (p->value)) {
-			ignore(p->id, p->value);
-			p++;
-		}
-	}
-
-	// Stop Children
-	stopChildren();
-
-	// Stop Base classes
-	CompositeComponent::doStop();
+	CompositeComponent::doHandleComponentAction(action);
 }
 
 void AppModeBase::listen(int id, int value)

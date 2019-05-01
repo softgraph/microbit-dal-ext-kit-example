@@ -44,10 +44,7 @@ protected:
 	void selectRadioEvents(const EventDef* def);
 
 	/// Inherited
-	/* CompositeComponent */ void doStart();
-
-	/// Inherited
-	/* CompositeComponent */ void doStop();
+	/* CompositeComponent */ void doHandleComponentAction(Action action);
 
 	/// Do Handle Event
 	virtual /* to be overridden */ void doHandleEvent(const MicroBitEvent& /* event */)	{ /* nothing to do */ }
