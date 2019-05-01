@@ -76,6 +76,9 @@ private:
 	/// State Change For Sonar Distance
 	StateChangeForSonarDistance	mSonarDistance;
 
+	/// RawSonar Duration
+	uint32_t mRawSonarDuration[4];
+
 };	// AppModeMotors
 
 }	// microbit_dal_app_kit

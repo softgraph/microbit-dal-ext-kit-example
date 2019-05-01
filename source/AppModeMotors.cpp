@@ -38,6 +38,11 @@ AppModeMotors::AppModeMotors()
 	: AppModeBase("AppModeMotors")
 	, mSonar(ExtKit::global().p1(), ExtKit::global().p0(), MICROBIT_ID_IO_P0, *this)
 {
+	mRawSonarDuration[0] = 0;
+	mRawSonarDuration[1] = 0;
+	mRawSonarDuration[2] = 0;
+	mRawSonarDuration[3] = 0;
+
 	static const EventDef events[] = {
 		{ messageBusID::kLocalEvent,  messageBusEvent::kLocalAppStarted },
 		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltLeft },
@@ -80,11 +85,20 @@ AppModeMotors::AppModeMotors()
 
 /* Sonar::HandlerProtocol */ void AppModeMotors::handleSonarEcho(uint32_t duration /* in microseconds*/)
 {
-	const uint32_t kSoundSpeed = 343;			// 343 m/s
+	// Apply the upper limit.
 	const uint32_t kMaxDuration = 36 * 1000;	// 36 ms
 	if(duration > kMaxDuration) {
 		duration = kMaxDuration;
 	}
+
+	mRawSonarDuration[3] = mRawSonarDuration[2];
+	mRawSonarDuration[2] = mRawSonarDuration[1];
+	mRawSonarDuration[1] = mRawSonarDuration[0];
+	mRawSonarDuration[0] = duration;
+
+	duration = (mRawSonarDuration[0] + mRawSonarDuration[1]) / 2;	// the average of the latest two samples
+
+	const uint32_t kSoundSpeed = 343;			// 343 m/s
 	SonarDistance value /* in centimeters */ = (duration * kSoundSpeed) / 2 / 10000;
 	mSonarDistance.set(value);
 }
@@ -104,7 +118,8 @@ AppModeMotors::AppModeMotors()
 			else {
 				display::showNumber(value);
 			}
-		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Sonar Distance in centimeters: ", ManagedString((int) value).toCharArray());
+		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Sonar Duration in microseconds: ", ManagedString((int) mRawSonarDuration[0]).toCharArray());
+			debug_sendLine(EXT_KIT_DEBUG_ACTION "Sonar Distance in centimeters: ", ManagedString((int) value).toCharArray());
 		}
 		mSonar.trigger();
 	}
