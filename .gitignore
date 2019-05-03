@@ -1,15 +1,12 @@
 # https://git-scm.com/docs/gitignore
 
+.brackets.json
+.DS_Store
+/.vscode/ipch/
 /build/
 /doxygen/
-/microbit/
-/microbit-dal/
 /microbit-dal-ext-kit/
-/microbit-dal-ext-kit.wiki/
 /microbit-dal-ext-kit-example.wiki/
-/nrf51-sdk/
+/microbit-dal-ext-kit.wiki/
 /yotta_modules/
 /yotta_targets/
-/.vscode/ipch/
-.DS_Store
-.brackets.json

@@ -1,11 +1,11 @@
 {
-	"name": "microbit-dal-ext-kit-example",
-	"description": "An example for using microbit-dal-ext-kit",
-	"version": "0.11.0",
-	"license": "MIT",
-	"dependencies": {
-		"microbit-dal-ext-kit": "softgraph/microbit-dal-ext-kit#v0.11.0"
-	},
-	"private": true,
-	"bin": "./source"
+  "name": "microbit-dal-ext-kit-example",
+  "description": "An example for using microbit-dal-ext-kit",
+  "version": "0.11.0",
+  "license": "MIT",
+  "dependencies": {
+    "microbit-dal-ext-kit": "softgraph/microbit-dal-ext-kit#v0.11.0"
+  },
+  "private": true,
+  "bin": "./source"
 }

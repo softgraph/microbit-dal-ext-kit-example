@@ -48,7 +48,7 @@
                 "filterStderr": true,                                           // <Required> Use stderr to look for serverStarted message.
                 "filterStdout": false
 
-                // Here is an example of initial gdb/mi commands generated on macOS using this `launch.json`.
+                // Here is an example of initial gdb/mi commands generated on macOS using this configuration.
                 //  -gdb-set target-async on
                 //  -target-select remote localhost:3333
                 //  -thread-info 1
@@ -65,7 +65,7 @@
                 //  -stack-list-frames 0 1000
                 //  -exec-continue
  
-                // See also https://github.com/softgraph/microbit-dal-ext-kit-example/wiki/Debugging-with-gdb-and-pyOCD
+                // See also https://github.com/softgraph/microbit-dal-ext-kit-example/wiki/Debugging-with-gdb-and-pyOCD-(using-VS-Code-debugger-UI)
             }
         }
     ]

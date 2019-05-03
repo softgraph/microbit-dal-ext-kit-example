@@ -1,15 +1,15 @@
 {
-	"microbit-dal": {
-		"bluetooth": {
-			"enabled": 0,
-			"pairing_mode": 0
-		},
-		"debug": 0,
-		"heap_debug": 0
-	},
-	"microbit-dal--ext-kit": {
-		"radio": {
-			"group": 9
-		}
-	}
+  "microbit-dal": {
+    "bluetooth": {
+        "enabled": 0,
+        "pairing_mode": 0
+    },
+    "debug": 0,
+    "heap_debug": 0
+  },
+  "microbit-dal--ext-kit": {
+    "radio": {
+      "group": 9
+    }
+  }
 }
