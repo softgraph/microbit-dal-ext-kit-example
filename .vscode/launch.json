@@ -65,7 +65,7 @@
                 //  -stack-list-frames 0 1000
                 //  -exec-continue
  
-                // See also https://github.com/softgraph/microbit-dal-ext-kit-example/wiki/Debugging-with-gdb-and-pyOCD-(using-VS-Code-debugger-UI)
+                // See also https://github.com/softgraph/microbit-dal-ext-kit-example/wiki/NOTE-Debug
             }
         }
     ]
