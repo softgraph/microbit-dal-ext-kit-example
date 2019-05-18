@@ -1,8 +1,8 @@
+[ [English](README.md) ]
+
 # microbit-dal-ext-kit-example
 
 `microbit-dal-ext-kit` の利用例
-
-[English](README.md)
 
 ### 構造
 

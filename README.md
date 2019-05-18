@@ -1,8 +1,8 @@
+[ [日本語](README.ja.md) ]
+
 # microbit-dal-ext-kit-example
 
 An example for using `microbit-dal-ext-kit`
-
-[日本語](README.ja.md)
 
 ### Structure
 
