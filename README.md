@@ -2,9 +2,7 @@
 
 An example for using `microbit-dal-ext-kit`
 
-<div style="text-align: right">
-	[日本語](README.ja.md)
-	</div>
+[日本語](README.ja.md)
 
 ### Structure
 
