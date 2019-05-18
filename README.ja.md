@@ -2,6 +2,8 @@
 
 `microbit-dal-ext-kit` の利用例
 
+[English](README.md)
+
 ### 構造
 
 <table><tr><td align="center">

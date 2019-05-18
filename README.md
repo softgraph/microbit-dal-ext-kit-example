@@ -2,6 +2,8 @@
 
 An example for using `microbit-dal-ext-kit`
 
+[日本語](README.ja.md)
+
 ### Structure
 
 <table><tr><td align="center">
