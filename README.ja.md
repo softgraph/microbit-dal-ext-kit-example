@@ -1,4 +1,4 @@
-[ [English](README.md) ]
+[ [English](README.md) ] [ 日本語 ]
 
 # microbit-dal-ext-kit-example
 
