@@ -2,7 +2,9 @@
 
 `microbit-dal-ext-kit` の利用例
 
-[English](README.md)
+<div style="text-align: right">
+	[English](README.md)
+	</div>
 
 ### 構造
 
