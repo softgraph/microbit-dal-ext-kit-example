@@ -106,13 +106,13 @@ namespace appMode {
 
 ///	App Mode 'J' for a transmitter using ElecFreaks' Joystick:bit.
 const microbit_dal_ext_kit::AppMode kJoystickController =
-	( microbit_dal_ext_kit::feature::kRemoteTx
+	( microbit_dal_ext_kit::feature::kRemoteStateTx
 	| microbit_dal_ext_kit::feature::kJoystickBit
 	);
 
 ///	App Mode 'M' for a receiver using SparkFun's moto:bit.
 const microbit_dal_ext_kit::AppMode kMotors =
-	( microbit_dal_ext_kit::feature::kRemoteRX
+	( microbit_dal_ext_kit::feature::kRemoteStateRx
 	| microbit_dal_ext_kit::feature::kMotoBit
 	| microbit_dal_ext_kit::feature::kSonar
 	| microbit_dal_ext_kit::feature::kInverted
@@ -127,7 +127,7 @@ const microbit_dal_ext_kit::AppMode kPianoPlayer =
 
 ///	App Mode 'K' for a transmitter using Waveshare's Mini Piano Module.
 const microbit_dal_ext_kit::AppMode kPianoKeyController =
-	( microbit_dal_ext_kit::feature::kRemoteTx
+	( microbit_dal_ext_kit::feature::kRemoteStateTx
 	| microbit_dal_ext_kit::feature::kTouchPiano
 	| microbit_dal_ext_kit::feature::kNeoPixel
 	| microbit_dal_ext_kit::feature::kBuzzer
@@ -135,7 +135,7 @@ const microbit_dal_ext_kit::AppMode kPianoKeyController =
 
 ///	App Mode 'O' for a receiver using Kitronik's Zip Halo with a Buzzer on port P2.
 const microbit_dal_ext_kit::AppMode kNeoPixelRing =
-	( microbit_dal_ext_kit::feature::kRemoteRX
+	( microbit_dal_ext_kit::feature::kRemoteStateRx
 	| microbit_dal_ext_kit::feature::kZipHalo
 	| microbit_dal_ext_kit::feature::kNeoPixel
 	| microbit_dal_ext_kit::feature::kBuzzer
@@ -144,14 +144,14 @@ const microbit_dal_ext_kit::AppMode kNeoPixelRing =
 
 ///	App Mode 'B' for a receiver with a Buzzer on port P1.
 const microbit_dal_ext_kit::AppMode kBuzzer =
-	( microbit_dal_ext_kit::feature::kRemoteRX
+	( microbit_dal_ext_kit::feature::kRemoteStateRx
 	| microbit_dal_ext_kit::feature::kBuzzer
 	| microbit_dal_ext_kit::feature::kReservedForApp1	// Buzzer on port P1
 	);
 
 ///	App Mode 'Z' for a receiver using Kitronik's Zip Halo.
 const microbit_dal_ext_kit::AppMode kZipHalo =
-	( microbit_dal_ext_kit::feature::kRemoteRX
+	( microbit_dal_ext_kit::feature::kRemoteStateRx
 	| microbit_dal_ext_kit::feature::kZipHalo
 	| microbit_dal_ext_kit::feature::kNeoPixel
 	| microbit_dal_ext_kit::feature::kNoAutoDetection
@@ -166,14 +166,14 @@ const microbit_dal_ext_kit::AppMode kGravitySensor =
 
 ///	App Mode 'T' for a generic transmitter using micro:bit only.
 const microbit_dal_ext_kit::AppMode kGenericTransmitter =
-	( microbit_dal_ext_kit::feature::kRemoteTx
+	( microbit_dal_ext_kit::feature::kRemoteStateTx
 	| microbit_dal_ext_kit::feature::kMicroBitOnly
 	| microbit_dal_ext_kit::feature::kNoAutoDetection
 	);
 
 ///	App Mode 'R' for a generic receiver using micro:bit only.
 const microbit_dal_ext_kit::AppMode kGenericReceiver =
-	( microbit_dal_ext_kit::feature::kRemoteRX
+	( microbit_dal_ext_kit::feature::kRemoteStateRx
 	| microbit_dal_ext_kit::feature::kMicroBitOnly
 	| microbit_dal_ext_kit::feature::kNoAutoDetection
 	);
