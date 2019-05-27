@@ -91,12 +91,12 @@ RemoteStateReceiverCategoryForButtons::RemoteStateReceiverCategoryForButtons()
 /* remoteState::Receiver::CategoryProtocol */ void RemoteStateReceiverCategoryForButtons::handleRemoteState(ManagedString& received)
 {
 	int16_t pos;
-	pos = string::seek(received, 0, kMarkerButtons);
+	pos = string::seekTo(kMarkerButtons, received);
 	if(0 < pos) {
 		buttons.set(string::numberForHexString(received, pos));
 	}
 
-	pos = string::seek(received, 0, kMarkerDirection);
+	pos = string::seekTo(kMarkerDirection, received);
 	if(0 < pos) {
 		direction.set(string::numberForHexString(received, pos));
 	}
@@ -113,12 +113,12 @@ RemoteStateReceiverCategoryForPianoKeys::RemoteStateReceiverCategoryForPianoKeys
 /* remoteState::Receiver::CategoryProtocol */ void RemoteStateReceiverCategoryForPianoKeys::handleRemoteState(ManagedString& received)
 {
 	int16_t pos;
-	pos = string::seek(received, 0, kMarkerPianoKeys);
+	pos = string::seekTo(kMarkerPianoKeys, received);
 	if(0 < pos) {
 		pianoKeys.set(string::numberForHexString(received, pos));
 	}
 
-	pos = string::seek(received, 0, kMarkerOctave);
+	pos = string::seekTo(kMarkerOctave, received);
 	if(0 < pos) {
 		octave.set(string::numberForHexString(received, pos));
 	}
