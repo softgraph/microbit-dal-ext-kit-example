@@ -16,12 +16,12 @@ using namespace microbit_dal_ext_kit;
 
 	# Overview
 		- README
-			- @ref yotta_modules/microbit-dal-ext-kit/README.md
-			- @ref README.md
+			- @ref yotta_modules/microbit-dal-ext-kit/README.md "microbit-dal-ext-kit"
+			- @ref README.md "microbit-dal-ext-kit-example"
 		- Wiki
-			- <a href="https://github.com/softgraph/microbit-dal-ext-kit-example/wiki"><b>Miscellaneous notes for microbit-dal-ext-kit and example</b> (github.com/softgraph)</a>
+			- <a href="https://github.com/softgraph/microbit-dal-ext-kit-example/wiki"><b>Notes for microbit-dal-ext-kit and example</b> (github.com/softgraph)</a>
 		- Wiki (Japanese Edition)
-			- <a href="https://github.com/softgraph/microbit-dal-ext-kit-example/wiki/Home-(ja)"><b>microbit-dal-ext-kit と example のための各種ノート</b> (github.com/softgraph)</a>
+			- <a href="https://github.com/softgraph/microbit-dal-ext-kit-example/wiki/Home-(ja)"><b>microbit-dal-ext-kit と example のためのノート</b> (github.com/softgraph)</a>
 		- Repositories
 			- <a href="https://github.com/softgraph/microbit-dal-ext-kit"><b>microbit-dal-ext-kit</b> (github.com/softgraph)</a>
 			- <a href="https://github.com/softgraph/microbit-dal-ext-kit-example"><b>microbit-dal-ext-kit-example</b> (github.com/softgraph)</a>
