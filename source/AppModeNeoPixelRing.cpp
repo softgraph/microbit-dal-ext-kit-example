@@ -19,15 +19,6 @@ namespace microbit_dal_app_kit {
 /**	@class	AppModeNeoPixelRing
 */
 
-static const Features kAppMode1	= appMode::kNeoPixelRing;
-static const Features kAppMode2	= appMode::kZipHalo;
-
-/* Component */ bool AppModeNeoPixelRing::isConfigured()
-{
-	Features configured = feature::configured();
-	return (configured == kAppMode1) || (configured == kAppMode2);
-}
-
 AppModeNeoPixelRing::AppModeNeoPixelRing()
 	: AppModeBase("AppModeNeoPixelRing")
 	, mBuzzer(0)

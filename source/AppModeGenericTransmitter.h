@@ -23,9 +23,6 @@ namespace microbit_dal_app_kit {
 class AppModeGenericTransmitter : public AppModeBase
 {
 public:
-	/// Inherited
-	static /* Component */ bool isConfigured();
-
 	/// Constructor
 	AppModeGenericTransmitter();
 

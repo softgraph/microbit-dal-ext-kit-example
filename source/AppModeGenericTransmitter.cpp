@@ -19,13 +19,6 @@ namespace microbit_dal_app_kit {
 /**	@class	AppModeGenericTransmitter
 */
 
-static const Features kAppMode = appMode::kGenericTransmitter;
-
-/* Component */ bool AppModeGenericTransmitter::isConfigured()
-{
-	return feature::configured() == kAppMode;
-}
-
 AppModeGenericTransmitter::AppModeGenericTransmitter()
 	: AppModeBase("AppModeGenericTransmitter")
 {

@@ -38,9 +38,6 @@ public:
 class AppModeMotors : public AppModeBase, protected microbit_dal_ext_kit::Sonar::HandlerProtocol
 {
 public:
-	/// Inherited
-	static /* Component */ bool isConfigured();
-
 	/// Constructor
 	AppModeMotors();
 

@@ -27,13 +27,6 @@ StateChangeForSonarDistance::StateChangeForSonarDistance()
 /**	@class	AppModeMotors
 */
 
-static const Features kAppMode = appMode::kMotors;
-
-/* Component */ bool AppModeMotors::isConfigured()
-{
-	return feature::configured() == kAppMode;
-}
-
 AppModeMotors::AppModeMotors()
 	: AppModeBase("AppModeMotors")
 	, mSonar(ExtKit::global().p1(), ExtKit::global().p0(), MICROBIT_ID_IO_P0, *this)
@@ -106,7 +99,7 @@ AppModeMotors::AppModeMotors()
 /* AppModeBase */ void AppModeMotors::doHandlePeriodic100ms(uint32_t /* count */)
 {
 	// Check Sonar Echo
-	if(Sonar::isConfigured()) {
+	{
 		SonarDistance lastValue = mSonarDistance.lastValue();
 		SonarDistance value;
 		if(mSonarDistance.read(/* OUT */ value)) {
@@ -166,10 +159,6 @@ AppModeMotors::AppModeMotors()
 
 bool AppModeMotors::controlMotoBitUsingDirection(Direction direction)
 {
-	if(!MotoBit::isConfigured()) {
-		return false;
-	}
-
 	const MotoBit::MotorDirection	F = MotoBit::kForward;
 	const MotoBit::MotorDirection	B = MotoBit::kBackward;
 	const int	H = 50;	// 50; // speedInPercent - high

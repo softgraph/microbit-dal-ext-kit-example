@@ -19,13 +19,6 @@ namespace microbit_dal_app_kit {
 /**	@class	AppModeJoystickController
 */
 
-static const Features kAppMode = appMode::kJoystickController;
-
-/* Component */ bool AppModeJoystickController::isConfigured()
-{
-	return feature::configured() == kAppMode;
-}
-
 AppModeJoystickController::AppModeJoystickController()
 	: AppModeBase("AppModeJoystickController")
 {

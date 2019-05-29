@@ -2,29 +2,26 @@
 /**	@package	microbit_dal_app_kit
 */
 
-/// App Mode for Gravity Sensor
+/// App Mode for Generic Accelerometer
 /**	@file
 	@author	Copyright (c) 2019 Tomoyuki Nakashima.<br>
 			This code is licensed under MIT license. See `LICENSE` in the project root for more information.
 	@note	Run Doxygen (http://www.doxygen.nl) with `Doxyfile` in the project root to generate the documentation.
 */
 
-#ifndef APP_MODE_GRAVITY_SENSOR_H
-#define APP_MODE_GRAVITY_SENSOR_H
+#ifndef APP_MODE_GENERIC_ACCELEROMETER_H
+#define APP_MODE_GENERIC_ACCELEROMETER_H
 
 #include "AppModeBase.h"
 
 namespace microbit_dal_app_kit {
 
-/// App Mode for Gravity Sensor
-class AppModeGravitySensor : public AppModeBase
+/// App Mode for Generic Accelerometer
+class AppModeGenericAccelerometer : public AppModeBase
 {
 public:
-	/// Inherited
-	static /* Component */ bool isConfigured();
-
 	/// Constructor
-	AppModeGravitySensor();
+	AppModeGenericAccelerometer();
 
 protected:
 	/// Inherited
@@ -37,4 +34,4 @@ protected:
 
 }	// microbit_dal_app_kit
 
-#endif	// APP_MODE_GRAVITY_SENSOR_H
+#endif	// APP_MODE_GENERIC_ACCELEROMETER_H

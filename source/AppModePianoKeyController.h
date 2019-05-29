@@ -24,9 +24,6 @@ namespace microbit_dal_app_kit {
 class AppModePianoKeyController : public AppModeBase
 {
 public:
-	/// Inherited
-	static /* Component */ bool isConfigured();
-
 	/// Constructor
 	AppModePianoKeyController();
 

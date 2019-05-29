@@ -2,33 +2,25 @@
 /**	@package	microbit_dal_app_kit
 */
 
-/// App Mode for Gravity Sensor
+/// App Mode for Generic Accelerometer
 /**	@file
 	@author	Copyright (c) 2019 Tomoyuki Nakashima.<br>
 			This code is licensed under MIT license. See `LICENSE` in the project root for more information.
 	@note	Run Doxygen (http://www.doxygen.nl) with `Doxyfile` in the project root to generate the documentation.
 */
 
-#include "AppModeGravitySensor.h"	// self
+#include "AppModeGenericAccelerometer.h"	// self
 #include "AppKit.h"
 
 using namespace microbit_dal_ext_kit;
 
 namespace microbit_dal_app_kit {
 
-/**	@class	AppModeGravitySensor
+/**	@class	AppModeGenericAccelerometer
 */
 
-static const Features kAppMode	= appMode::kGravitySensor;
-
-/* Component */ bool AppModeGravitySensor::isConfigured()
-{
-	Features configured = feature::configured();
-	return configured == kAppMode;
-}
-
-AppModeGravitySensor::AppModeGravitySensor()
-	: AppModeBase("AppModeGravitySensor")
+AppModeGenericAccelerometer::AppModeGenericAccelerometer()
+	: AppModeBase("AppModeGenericAccelerometer")
 {
 	static const EventDef events[] = {
 		{ messageBusID::kLocalEvent,  messageBusEvent::kLocalAppStarted },
@@ -37,7 +29,7 @@ AppModeGravitySensor::AppModeGravitySensor()
 	selectEvents(events);
 }
 
-/* AppModeBase */ void AppModeGravitySensor::doHandleEvent(const MicroBitEvent& event)
+/* AppModeBase */ void AppModeGenericAccelerometer::doHandleEvent(const MicroBitEvent& event)
 {
 	uint16_t source = event.source;
 	uint16_t value = event.value;
@@ -48,7 +40,7 @@ AppModeGravitySensor::AppModeGravitySensor()
 	}
 }
 
-/* AppModeBase */ void AppModeGravitySensor::doHandlePeriodic100ms(uint32_t /* count */)
+/* AppModeBase */ void AppModeGenericAccelerometer::doHandlePeriodic100ms(uint32_t /* count */)
 {
 	// Check Accelerometer
 	MicroBitAccelerometer* a = ExtKit::global().accelerometer();

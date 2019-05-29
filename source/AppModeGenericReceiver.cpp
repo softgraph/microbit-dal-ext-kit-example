@@ -19,15 +19,6 @@ namespace microbit_dal_app_kit {
 /**	@class	AppModeGenericReceiver
 */
 
-static const Features kAppMode1	= appMode::kBuzzer;
-static const Features kAppMode2	= appMode::kGenericReceiver;
-
-/* Component */ bool AppModeGenericReceiver::isConfigured()
-{
-	Features configured = feature::configured();
-	return (configured == kAppMode1) || (configured == kAppMode2);
-}
-
 AppModeGenericReceiver::AppModeGenericReceiver()
 	: AppModeBase("AppModeGenericReceiver")
 	, mBuzzer(0)

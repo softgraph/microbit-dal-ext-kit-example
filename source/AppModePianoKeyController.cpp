@@ -19,13 +19,6 @@ namespace microbit_dal_app_kit {
 /**	@class	AppModePianoKeyController
 */
 
-static const Features kAppMode = appMode::kPianoKeyController;
-
-/* Component */ bool AppModePianoKeyController::isConfigured()
-{
-	return feature::configured() == kAppMode;
-}
-
 AppModePianoKeyController::AppModePianoKeyController()
 	: AppModeBase("AppModePianoKeyController")
 {
