@@ -72,6 +72,7 @@ int main()
 	sDebugger.start();
 
 	// Show the bootup string and give a chance to acivate the debugger via the USB serial port.
+	display::setScrollSpeed(100);
 	display::scrollString(APP_STRING_BOOTUP);
 
 	// Check Avaiable Hardware.
