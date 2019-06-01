@@ -21,12 +21,12 @@ AppSerialDebugger::AppSerialDebugger()
 {
 }
 
-/* to be overridden */ bool /* consumed */ AppSerialDebugger::doHandleDirectCommand(ManagedString command)
+/* SerialDebugger */ bool /* consumed */ AppSerialDebugger::doHandleDirectCommand(ManagedString command)
 {
-	return SerialDebugger::doHandleDirectCommand(command);
+	return /* super */ SerialDebugger::doHandleDirectCommand(command);
 }
 
-/* to be overridden */ bool /* consumed */ AppSerialDebugger::doHandleLineCommand(ManagedString command)
+/* SerialDebugger */ bool /* consumed */ AppSerialDebugger::doHandleLineCommand(ManagedString command)
 {
 	if((command.length() > 0) && (command.charAt(0) == ':')) {
 		if(command.length() == 4) {
@@ -45,17 +45,17 @@ AppSerialDebugger::AppSerialDebugger()
 			}
 		}
 	}
-	return SerialDebugger::doHandleLineCommand(command);
+	return /* super */ SerialDebugger::doHandleLineCommand(command);
 }
 
 /* SerialDebugger */ void AppSerialDebugger::debug_sendHelpForDirectCommands()
 {
-	SerialDebugger::debug_sendHelpForDirectCommands();
+	/* super */ SerialDebugger::debug_sendHelpForDirectCommands();
 }
 
 /* SerialDebugger */ void AppSerialDebugger::debug_sendHelpForLineCommands()
 {
-	SerialDebugger::debug_sendHelpForLineCommands();
+	/* super */ SerialDebugger::debug_sendHelpForLineCommands();
 
 	static const char* const lineArray[] = {
 		":ram    Restart App Mode",
@@ -67,12 +67,12 @@ AppSerialDebugger::AppSerialDebugger()
 
 /* SerialDebugger */ void AppSerialDebugger::debug_sendConfig()
 {
-	SerialDebugger::debug_sendConfig();
+	/* super */ SerialDebugger::debug_sendConfig();
 }
 
 /* SerialDebugger */ void AppSerialDebugger::debug_sendDeviceInfo()
 {
-	SerialDebugger::debug_sendDeviceInfo();
+	/* super */ SerialDebugger::debug_sendDeviceInfo();
 
 	debug_sendLine("microbit_dal_ext_kit-example version: " YOTTA_MICROBIT_DAL_EXT_KIT_EXAMPLE_VERSION_STRING, false);
 }
