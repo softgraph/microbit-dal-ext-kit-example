@@ -47,10 +47,10 @@ protected:
 	/* CompositeComponent */ void doHandleComponentAction(Action action);
 
 	/// Do Handle Event
-	virtual /* to be overridden */ void doHandleEvent(const MicroBitEvent& /* event */)	{ /* nothing to do */ }
+	virtual /* AppModeBase */ void doHandleEvent(const MicroBitEvent& /* event */)	{ /* nothing to do */ }
 
 	/// Do Handle Periodic 100 ms
-	virtual /* to be overridden */ void doHandlePeriodic100ms(uint32_t /* count */)	{ /* nothing to do */ }
+	virtual /* AppModeBase */ void doHandlePeriodic100ms(uint32_t /* count */)	{ /* nothing to do */ }
 
 private:
 	void listen(int id, int value);
