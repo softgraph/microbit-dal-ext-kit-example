@@ -23,6 +23,12 @@ AppModeGenericReceiver::AppModeGenericReceiver()
 	: AppModeBase("AppModeGenericReceiver")
 	, mBuzzer(0)
 {
+	if(feature::isConfigured(feature::kBuzzer)) {
+		ExtKit& g = ExtKit::global();
+		mBuzzer = new Buzzer("BuzzerForNeoPixelRing", /* analogPort */ g.p1());
+		EXT_KIT_ASSERT_OR_PANIC(mBuzzer, kPanicOutOfMemory);
+	}
+
 	static const EventDef events[] = {
 		{ messageBusID::kLocalEvent,  messageBusEvent::kLocalAppStarted },
 		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltLeft },
@@ -34,11 +40,7 @@ AppModeGenericReceiver::AppModeGenericReceiver()
 	selectEvents(events);
 
 	addChild(mReceiver);
-	if(feature::isConfigured(feature::kBuzzer)) {
-		ExtKit& g = ExtKit::global();
-		mBuzzer = new Buzzer("BuzzerForNeoPixelRing", /* analogPort */ g.p1());
-		EXT_KIT_ASSERT_OR_PANIC(mBuzzer, kPanicOutOfMemory);
-
+	if(mBuzzer) {
 		addChild(*mBuzzer);
 	}
 }
