@@ -19,9 +19,13 @@ namespace microbit_dal_app_kit {
 /**	@class	AppModePianoPlayer
 */
 
+static const NeoPixel::MaxBrightness kMaxBrightnessDefault = 10;	/* percent */
+
 AppModePianoPlayer::AppModePianoPlayer()
 	: AppModeBase("AppModePianoPlayer")
 {
+	mNeoPixel.setMaxBrightness(kMaxBrightnessDefault);
+
 	static const EventDef events[] = {
 		{ messageBusID::kLocalEvent, messageBusEvent::kLocalAppStarted },
 		{ MICROBIT_ID_ANY, MICROBIT_EVT_ANY }	// END OF TABLE

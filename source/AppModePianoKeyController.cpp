@@ -19,9 +19,13 @@ namespace microbit_dal_app_kit {
 /**	@class	AppModePianoKeyController
 */
 
+static const NeoPixel::MaxBrightness kMaxBrightnessDefault = 10;	/* percent */
+
 AppModePianoKeyController::AppModePianoKeyController()
 	: AppModeBase("AppModePianoKeyController")
 {
+	mNeoPixel.setMaxBrightness(kMaxBrightnessDefault);
+
 	static const EventDef events[] = {
 		{ messageBusID::kLocalEvent, messageBusEvent::kLocalAppStarted },
 		{ MICROBIT_ID_GESTURE, MICROBIT_ACCELEROMETER_EVT_TILT_UP },
