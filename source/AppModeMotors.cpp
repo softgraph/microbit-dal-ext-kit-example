@@ -29,12 +29,35 @@ StateChangeForSonarDistance::StateChangeForSonarDistance()
 
 AppModeMotors::AppModeMotors()
 	: AppModeBase("AppModeMotors")
-	, mSonar(ExtKit::global().p1(), ExtKit::global().p0(), MICROBIT_ID_IO_P0, *this)
+	, mMotorsLR(0)
+	, mNeoPixel(0)
+	, mSonar(0)
 {
-	mRawSonarDuration[0] = 0;
-	mRawSonarDuration[1] = 0;
-	mRawSonarDuration[2] = 0;
-	mRawSonarDuration[3] = 0;
+	if(feature::isConfigured(feature::kMotoBit)) {
+		mMotorsLR = new MotoBit();
+		EXT_KIT_ASSERT_OR_PANIC(mMotorsLR, kPanicOutOfMemory);
+	}
+	else if(feature::isConfigured(feature::kServoMotorsLR)) {
+		mMotorsLR = new RingBitCar();
+		EXT_KIT_ASSERT_OR_PANIC(mMotorsLR, kPanicOutOfMemory);
+
+		if(feature::isConfigured(feature::kNeoPixel)) {
+			mNeoPixel = new NeoPixelForRingBitCar(10);
+		}
+#if 0
+		else if(feature::isConfigured(feature::kSonar)) {
+			ExtKit& g = ExtKit::global();
+			mSonar = new Sonar("SonarForRingBitCar",
+							   /* triggerOutput */ g.p1(),
+							   /* echoInput */ g.p0(), MICROBIT_ID_IO_P0, *this,
+							   /* echoInputStabilizer */ 1);
+			EXT_KIT_ASSERT_OR_PANIC(mSonar, kPanicOutOfMemory);
+		}
+#endif
+		else {
+			mNeoPixel = new NeoPixelForRingBitCar(2);
+		}
+	}
 
 	static const EventDef events[] = {
 		{ messageBusID::kLocalEvent,  messageBusEvent::kLocalAppStarted },
@@ -46,8 +69,15 @@ AppModeMotors::AppModeMotors()
 	};
 	selectEvents(events);
 
-	addChild(mMotoBit);
-	addChild(mSonar);
+	if(mMotorsLR) {
+		addChild(*mMotorsLR);
+	}
+	if(mNeoPixel) {
+		addChild(*mNeoPixel);
+	}
+	if(mSonar) {
+		addChild(*mSonar);
+	}
 	addChild(mReceiver);
 }
 
@@ -78,19 +108,6 @@ AppModeMotors::AppModeMotors()
 
 /* Sonar::HandlerProtocol */ void AppModeMotors::handleSonarEcho(uint32_t duration /* in microseconds*/)
 {
-	// Apply the upper limit.
-	const uint32_t kMaxDuration = 36 * 1000;	// 36 ms
-	if(duration > kMaxDuration) {
-		duration = kMaxDuration;
-	}
-
-	mRawSonarDuration[3] = mRawSonarDuration[2];
-	mRawSonarDuration[2] = mRawSonarDuration[1];
-	mRawSonarDuration[1] = mRawSonarDuration[0];
-	mRawSonarDuration[0] = duration;
-
-	duration = (mRawSonarDuration[0] + mRawSonarDuration[1]) / 2;	// the average of the latest two samples
-
 	const uint32_t kSoundSpeed = 343;			// 343 m/s
 	SonarDistance value /* in centimeters */ = (duration * kSoundSpeed) / 2 / 10000;
 	mSonarDistance.set(value);
@@ -99,22 +116,21 @@ AppModeMotors::AppModeMotors()
 /* AppModeBase */ void AppModeMotors::doHandlePeriodic100ms(uint32_t /* count */)
 {
 	// Check Sonar Echo
-	{
+	if(mSonar) {
 		SonarDistance lastValue = mSonarDistance.lastValue();
 		SonarDistance value;
 		if(mSonarDistance.read(/* OUT */ value)) {
 			if((value < 10) && (value < lastValue)) {
 				const Direction d = direction::kStop;
-				controlMotoBitUsingDirection(d);
+				controlMotorsUsingDirection(d);
 				display::showDirection(d);
 			}
 			else {
 				display::showNumber(value);
 			}
-		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Sonar Duration in microseconds: ", ManagedString((int) mRawSonarDuration[0]).toCharArray());
 			debug_sendLine(EXT_KIT_DEBUG_ACTION "Sonar Distance in centimeters: ", ManagedString((int) value).toCharArray());
 		}
-		mSonar.trigger();
+		mSonar->trigger();
 	}
 
 	// Check Remote Buttons
@@ -130,7 +146,7 @@ AppModeMotors::AppModeMotors()
 	{
 		Direction d;
 		if(mReceiverCategoryForButtons.direction.read(/* OUT */ d)) {
-			controlMotoBitUsingDirection(d);
+			controlMotorsUsingDirection(d);
 			display::showDirection(d);
 		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Direction: 0x", string::hex(d).toCharArray());
 		}
@@ -150,36 +166,106 @@ AppModeMotors::AppModeMotors()
 			else if(b & button::kR) {
 				d = direction::kRF;
 			}
-			controlMotoBitUsingDirection(d);
+			controlMotorsUsingDirection(d);
 			display::showDirection(d);
 		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Local Buttons: 0x", string::hex(b).toCharArray());
 		}
 	}
 }
 
-bool AppModeMotors::controlMotoBitUsingDirection(Direction direction)
+bool AppModeMotors::controlMotorsUsingDirection(Direction direction)
 {
-	const MotoBit::MotorDirection	F = MotoBit::kForward;
-	const MotoBit::MotorDirection	B = MotoBit::kBackward;
+	if(!mMotorsLR) {
+		return false;
+	}
+
+	const MotorsLR::MotorDirection	F = MotorsLR::kForward;
+	const MotorsLR::MotorDirection	B = MotorsLR::kBackward;
 	const int	H = 50;	// 50; // speedInPercent - high
 	const int	L = 25;	// 25; // speedInPercent - low
 	switch(direction) {
-		case direction::kCenter:	mMotoBit.setMotorSpeed(F, F, 0, 0);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: -");		break;
-		case direction::kN:			mMotoBit.setMotorSpeed(F, F, H, H);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: N");		break;
-		case direction::kE:			mMotoBit.setMotorSpeed(F, B, H, H);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: E");		break;
-		case direction::kW:			mMotoBit.setMotorSpeed(B, F, H, H);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: W");		break;
-		case direction::kS:			mMotoBit.setMotorSpeed(B, B, H, H);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: S");		break;
-		case direction::kNE:		mMotoBit.setMotorSpeed(F, F, H, L);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: NE");	break;
-		case direction::kNW:		mMotoBit.setMotorSpeed(F, F, L, H);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: NW");	break;
-		case direction::kSE:		mMotoBit.setMotorSpeed(B, B, H, L);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: SE");	break;
-		case direction::kSW:		mMotoBit.setMotorSpeed(B, B, L, H);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: SW");	break;
-		case direction::kLF:		mMotoBit.setMotorSpeed(F, F, H, 0);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: LF");	break;
-		case direction::kLB:		mMotoBit.setMotorSpeed(B, B, H, 0);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: LB");	break;
-		case direction::kRF:		mMotoBit.setMotorSpeed(F, F, 0, H);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: RF");	break;
-		case direction::kRB:		mMotoBit.setMotorSpeed(B, B, 0, H);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: RB");	break;
-		case direction::kStop:		mMotoBit.setMotorSpeed(F, F, 0, 0);		debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: Stop");	break;
+		case direction::kCenter:
+			mMotorsLR->setMotorSpeed(F, F, 0, 0);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: -");
+			break;
+		case direction::kN:
+			mMotorsLR->setMotorSpeed(F, F, H, H);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: N");
+			break;
+		case direction::kE:
+			mMotorsLR->setMotorSpeed(F, B, H, H);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: E");
+			break;
+		case direction::kW:
+			mMotorsLR->setMotorSpeed(B, F, H, H);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: W");
+			break;
+		case direction::kS:
+			mMotorsLR->setMotorSpeed(B, B, H, H);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: S");
+			break;
+		case direction::kNE:
+			mMotorsLR->setMotorSpeed(F, F, H, L);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: NE");
+			break;
+		case direction::kNW:
+			mMotorsLR->setMotorSpeed(F, F, L, H);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: NW");
+			break;
+		case direction::kSE:
+			mMotorsLR->setMotorSpeed(B, B, H, L);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: SE");
+			break;
+		case direction::kSW:
+			mMotorsLR->setMotorSpeed(B, B, L, H);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: SW");
+			break;
+		case direction::kLF:
+			mMotorsLR->setMotorSpeed(F, F, H, 0);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: LF");
+			break;
+		case direction::kLB:
+			mMotorsLR->setMotorSpeed(B, B, H, 0);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: LB");
+			break;
+		case direction::kRF:
+			mMotorsLR->setMotorSpeed(F, F, 0, H);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: RF");
+			break;
+		case direction::kRB:
+			mMotorsLR->setMotorSpeed(B, B, 0, H);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: RB");
+			break;
+		case direction::kStop:
+			mMotorsLR->setMotorSpeed(F, F, 0, 0);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: Stop");
+			break;
 	}
 	return true;
+}
+
+/**	@class	RingBitCar
+	@reference	Tinkertanker pxt-ringbitcar ringbitcar.ts (MIT license)
+		- https://makecode.microbit.org/pkg/tinkertanker/pxt-ringbitcar
+		- https://github.com/Tinkertanker/pxt-ringbitcar
+		- https://github.com/Tinkertanker/pxt-ringbitcar/blob/master/ringbitcar.ts
+*/
+
+RingBitCar::RingBitCar()
+	: MotorsLR("RingBitCar")
+	, mServoL(ExtKit::global().p1())
+	, mServoR(ExtKit::global().p2())
+{
+}
+
+/* MotorsLR */ int RingBitCar::setMotorSpeed(MotorsLR::Motor motor, MotorsLR::MotorDirection direction, int speedInPercent)	// returns MICROBIT_INVALID_PARAMETER, MICROBIT_NOT_SUPPORTED, MICROBIT_I2C_ERROR or MICROBIT_OK
+{
+	// range: 600-1400, 1500, 1600-2400
+	static const int kCenter = 1500;	// microseconds
+	static const int kOffset = 100;		// microseconds
+	static const int kRatio = 8;		// microseconds for 1 percent
+
+	int speed = kOffset + kRatio * speedInPercent;
+	if(motor == kLeft) {
+		return mServoL.setServoPulseUs(kCenter + (direction == kForward) ? speed : - speed);
+	}
+	else {
+		return mServoR.setServoPulseUs(kCenter + (direction == kForward) ? - speed : speed);
+	}
+}
+
+/**	@class	NeoPixelForRingBitCar
+*/
+
+NeoPixelForRingBitCar::NeoPixelForRingBitCar(int ledCount)
+	: NeoPixel("NeoPixelForRingBitCar", /* ledPort */ ExtKit::global().p0(), ledCount)
+{
 }
 
 }	// microbit_dal_app_kit

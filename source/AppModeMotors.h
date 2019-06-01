@@ -13,7 +13,8 @@
 #define APP_MODE_MOTORS_H
 
 #include "ExtKitDirection.h"
-#include "ExtKitMotoBit.h"
+#include "ExtKitMotorsLR.h"
+#include "ExtKitNeoPixel.h"
 #include "ExtKitRemoteState.h"
 #include "ExtKitSonar.h"
 
@@ -52,14 +53,17 @@ protected:
 	/* Sonar::HandlerProtocol */ void handleSonarEcho(uint32_t duration /* in microseconds*/);
 
 private:
-	/// Control Moto:bit Using Direction
-	bool controlMotoBitUsingDirection(microbit_dal_ext_kit::Direction direction);
+	/// Control Motors Using Direction
+	bool controlMotorsUsingDirection(microbit_dal_ext_kit::Direction direction);
 
-	/// Moto:bit board
-	microbit_dal_ext_kit::MotoBit	mMotoBit;
+	/// Motors LR
+	microbit_dal_ext_kit::MotorsLR*	mMotorsLR;
+
+	/// NeoPixel
+	microbit_dal_ext_kit::NeoPixel*	mNeoPixel;
 
 	/// Generic Sonar
-	microbit_dal_ext_kit::Sonar	mSonar;
+	microbit_dal_ext_kit::Sonar*	mSonar;
 
 	/// Remote State Receiver
 	microbit_dal_ext_kit::remoteState::Receiver	mReceiver;
@@ -73,10 +77,41 @@ private:
 	/// State Change For Sonar Distance
 	StateChangeForSonarDistance	mSonarDistance;
 
-	/// RawSonar Duration
-	uint32_t mRawSonarDuration[4];
-
 };	// AppModeMotors
+
+/// An Component which provides the support for ElecFreaks' ring:bit car (v2) board
+/**
+	@reference	ElecFreaks ring:bit car (v2) for micro:bit
+		- https://www.elecfreaks.com/estore/elecfreaks-ring-bit-car-v2-for-micro-bit-without-micro-bit.html
+		- https://www.elecfreaks.com/learn-en/microbitKit/ring_bit_v2/index.html
+*/
+class RingBitCar : public microbit_dal_ext_kit::MotorsLR
+{
+public:
+	/// Constructor
+	RingBitCar();
+
+protected:
+	/// Inherited
+	/* MotorsLR */ int setMotorSpeed(microbit_dal_ext_kit::MotorsLR::Motor motor, microbit_dal_ext_kit::MotorsLR::MotorDirection direction, int speedInPercent);	// returns MICROBIT_INVALID_PARAMETER, MICROBIT_NOT_SUPPORTED, MICROBIT_I2C_ERROR or MICROBIT_OK
+
+private:
+	/// Servo Left
+	MicroBitPin&	mServoL;
+
+	/// Servo Right
+	MicroBitPin&	mServoR;
+
+};	// RingBitCar
+
+/// NeoPixel For RingBit Car
+class NeoPixelForRingBitCar : public microbit_dal_ext_kit::NeoPixel
+{
+public:
+	/// Constructor
+	NeoPixelForRingBitCar(int ledCount);
+
+};	// NeoPixelForRingBitCar
 
 }	// microbit_dal_app_kit
 

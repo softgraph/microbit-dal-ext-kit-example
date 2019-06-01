@@ -23,39 +23,33 @@ namespace appMode {
 
 	## App Mode for ElecFreaks' Joystick:bit
 		The following App Mode is selected automatically if Joystick:bit board is connected to the micro:bit.
-		- App Mode "J"<br>
-			`AppModeJoystickController` provides a transmitter using ElecFreaks' Joystick:bit.
+		- App Mode `J` (a transmitter using ElecFreaks' Joystick:bit) using `AppModeJoystickController`
 
 	## App Mode for SparkFun's moto:bit
 		The following App Mode is selected automatically if moto:bit board is connected to the micro:bit.
-		- App Mode "M"<br>
-			`AppModeMotors` provides a receiver using SparkFun's moto:bit.
+		- App Mode `M` (a receiver using SparkFun's moto:bit) using `AppModeMotors`
 
 	## App Modes for Waveshare's Mini Piano Module
 		The following App Modes are selectable if Mini Piano Module is connected to the micro:bit.
-		- App Mode "P"<br>
-			`AppModePianoPlayer` provides a stand-alone piano player using Waveshare's Mini Piano Module.
-		- App Mode "K<br>
-			`AppModePianoKeyController` provides a transmitter using Waveshare's Mini Piano Module.
+		- App Mode `P` (a stand-alone piano player using Waveshare's Mini Piano Module) using `AppModePianoPlayer`
+		- App Mode `K` (a transmitter using Waveshare's Mini Piano Module) using `AppModePianoKeyController`
 
 	# App Modes without auto-detection
 		The following App Modes are selectable if any auto-detection listed here is not available.
 
-	## App Modes for Kitronik's Zip Halo
-		- App Mode "Zb"<br>
-			`AppModeNeoPixelRing` provides a receiver using Kitronik's Zip Halo with a buzzer.
-		- App Mode "Z-"<br>
-			`AppModeNeoPixelRing` provides a receiver using Kitronik's Zip Halo.
-
 	## App Modes for micro:bit only
-		- App Mode "GA"<br>
-			`AppModeGenericAccelerometer` provides a generic accelerometer using micro:bit only.
-		- App Mode "GT"<br>
-			`AppModeGenericTransmitter` provides a generic transmitter using micro:bit only.
-		- App Mode "GRb"<br>
-			`AppModeGenericReceiver` provides a generic receiver using micro:bit with a buzzer.
-		- App Mode "GR-"<br>
-			`AppModeGenericReceiver` provides a generic receiver using micro:bit only.
+		- App Mode `GA` (a generic accelerometer) using `AppModeGenericAccelerometer`
+		- App Mode `GT` (a generic transmitter) using `AppModeGenericTransmitter`
+		- App Mode `GRb` (a generic receiver with a buzzer) using `AppModeGenericReceiver`
+		- App Mode `GR-` (a generic receiver) using `AppModeGenericReceiver`
+
+	## App Modes for ElecFreaks' ring:bit car (v2)
+		- App Mode `C` (a receiver using ElecFreaks' ring:bit car (v2)) using `AppModeMotors`
+
+	## App Modes for Kitronik's Zip Halo
+		- App Mode `Zb` (a receiver using Kitronik's Zip Halo with a buzzer) using `AppModeNeoPixelRing`
+		- App Mode `Z-` (a receiver using Kitronik's Zip Halo) using `AppModeNeoPixelRing`
+
 */
 
 /**	@page	AppKit_RemoteStateCategory	Remote State Category - the set of remote states sent from the transmiiter to the reciver over radio
@@ -68,14 +62,15 @@ namespace appMode {
 			</td><td>
 				Receiver
 			</td></tr><tr><td>
-				App Mode "J"<br>
-				App Mode "GT"
+				App Mode `J` (a transmitter using ElecFreaks' Joystick:bit)<br>
+				App Mode `GT` (a generic transmitter)
 			</td><td>
-				App Mode "M"<br>
-				App Mode "Zb"<br>
-				App Mode "Z-"<br>
-				App Mode "GRb"<br>
-				App Mode "GR-"
+				App Mode `M` (a receiver using SparkFun's moto:bit)<br>
+				App Mode `C` (a receiver using ElecFreaks' ring:bit car (v2))<br>
+				App Mode `Zb` (a receiver using Kitronik's Zip Halo with a buzzer)<br>
+				App Mode `Z-` (a receiver using Kitronik's Zip Halo)<br>
+				App Mode `GRb` (a generic receiver with a buzzer)<br>
+				App Mode `GR-` (a generic receiver)
 			</td></tr></table>
 
 	# Remote State Category For PianoKeys
@@ -87,10 +82,10 @@ namespace appMode {
 				Receiver
 			</td></tr>
 			<tr><td>
-				App Mode "K"
+				App Mode `K` (a transmitter using Waveshare's Mini Piano Module)
 			</td><td>
-				App Mode "Zb"<br>
-				App Mode "GRb"
+				App Mode `Zb` (a receiver using Kitronik's Zip Halo with a buzzer)<br>
+				App Mode `GRb` (a generic receiver using micro:bit with a buzzer)
 			</td></tr></table>
 */
 
@@ -98,67 +93,64 @@ namespace appMode {
 	App Modes with `feature::kJoystickBit`
 */
 
-///	App Mode "J" for `AppModeJoystickController`
+///	App Mode `J` using `AppModeJoystickController`
 static const AppMode kJoystickController =
-	feature::kRemoteStateTx |
-	feature::kJoystickBit;
+	feature::kJoystickBit |
+	feature::kRemoteStateTx;
 
 /*
 	App Modes with `feature::kMotoBit`
 */
 
-///	App Mode "M" for `AppModeMotors`
-static const AppMode kMotors =
-	feature::kRemoteStateRx |
+///	App Mode `M` using `AppModeMotors`
+static const AppMode kMotoBit =
 	feature::kMotoBit |
-	feature::kSonar |
-	feature::kInverted;
+	feature::kInverted |
+	feature::kRemoteStateRx;
 
 /*
 	App Modes with `feature::kTouchPiano`
 */
 
-///	App Mode "P" for `AppModePianoPlayer`
+///	App Mode `P` using `AppModePianoPlayer`
 static const AppMode kPianoPlayer =
-	feature::kTouchPiano |
-	feature::kNeoPixel |
-	feature::kBuzzer;
+	feature::kTouchPiano;
 
-///	App Mode "K" for `AppModePianoKeyController`
+///	App Mode `K` using `AppModePianoKeyController`
 static const AppMode kPianoKeyController =
-	feature::kRemoteStateTx |
 	feature::kTouchPiano |
-	feature::kNeoPixel |
-	feature::kBuzzer;
+	feature::kRemoteStateTx;
 
 /*
 	App Modes with `feature::kNoAutoDetection`
 */
 
-///	App Mode "GA" for `AppModeGenericAccelerometer`
+///	App Mode `GA` using `AppModeGenericAccelerometer`
 static const AppMode kGenericAccelerometer =
-	feature::kMicroBitOnly |
-	feature::kReservedForApp0 |	// Use Accelerometer
-	feature::kNoAutoDetection;
+	feature::kNoAutoDetection |
+	feature::kReservedForApp0;	// Use Accelerometer
 
-///	App Mode "GT" for `AppModeGenericTransmitter`
+///	App Mode `GT` using `AppModeGenericTransmitter`
 static const AppMode kGenericTransmitter =
-	feature::kRemoteStateTx |
-	feature::kMicroBitOnly |
-	feature::kNoAutoDetection;
+	feature::kNoAutoDetection |
+	feature::kRemoteStateTx;
 
-///	App Mode "GR?" for `AppModeGenericReceiver`
+///	App Mode `GR?` using `AppModeGenericReceiver`
 static const AppMode kGenericReceiver =
-	feature::kRemoteStateRx |
-	feature::kMicroBitOnly |
-	feature::kNoAutoDetection;
+	feature::kNoAutoDetection |
+	feature::kRemoteStateRx;
 
-///	App Mode "Z?" for `AppModeNeoPixelRing`
+/// App Mode `C?` using `AppModeMotors`
+static const AppMode kRingBitCar =
+	feature::kNoAutoDetection |
+	feature::kServoMotorsLR |
+	feature::kRemoteStateRx;
+
+///	App Mode `Z?` using `AppModeNeoPixelRing`
 static const AppMode kZipHalo =
-	feature::kRemoteStateRx |
+	feature::kNoAutoDetection |
 	feature::kZipHalo |
-	feature::kNeoPixel |
-	feature::kNoAutoDetection;
+	feature::kRemoteStateRx;
 
 }	// appMode
 
@@ -178,9 +170,9 @@ static const AppModeDef sAppModeTable[] = {
 		"Joystick Controller"
 	},
 	{
-		appMode::kMotors,
+		appMode::kMotoBit,
 		"M",
-		"Motors"
+		"moto:bit"
 	},
 	{
 		appMode::kPianoPlayer,
@@ -213,6 +205,16 @@ static const AppModeDef sAppModeTable[] = {
 		"Generic Receiver"
 	},
 	{
+		appMode::kRingBitCar | feature::kNeoPixel,
+		"Cl",
+		"ring:bit Car with optional 8 LEDs"
+	},
+	{
+		appMode::kRingBitCar,
+		"C-",
+		"ring:bit Car with no options"
+	},
+	{
 		appMode::kZipHalo | feature::kBuzzer,
 		"Zb",
 		"Zip Halo with a buzzer"
@@ -235,6 +237,7 @@ static const AppModeDef sAppModeTable[] = {
 
 static const char* const sHints[] = {
 	"AAcc",
+	"CCar",
 	"GGen",
 	"JJoy",
 	"KKey",
@@ -244,6 +247,7 @@ static const char* const sHints[] = {
 	"TTx",
 	"ZZip",
 	"bBuz",
+	"lLED",
 	"-Fin",
 	0
 };
@@ -318,35 +322,35 @@ Features checkAvaiableHardware()
 {
 	AppModeBase* appMode = 0;
 	if(feature::isConfigured(appMode::kJoystickController)) {
-		//	App Mode "J" for `AppModeJoystickController`
+		//	App Mode `J` using `AppModeJoystickController`
 		appMode = new AppModeJoystickController();
 	}
-	else if(feature::isConfigured(appMode::kMotors)) {
-		//	App Mode "M" for `AppModeMotors`
+	else if(feature::isConfigured(appMode::kMotoBit)) {
+		//	App Mode `M` using `AppModeMotors`
 		appMode = new AppModeMotors();
 	}
-	else if(feature::isConfigured(appMode::kPianoPlayer)) {
-		//	App Mode "P" for `AppModePianoPlayer`
-		appMode = new AppModePianoPlayer();
-	}
-	else if(feature::isConfigured(appMode::kPianoKeyController)) {
-		//	App Mode "K" for `AppModePianoKeyController`
+	else if(feature::isConfigured(appMode::kPianoKeyController)) {	// Check `K` before `P`
+		//	App Mode `K` using `AppModePianoKeyController`
 		appMode = new AppModePianoKeyController();
 	}
+	else if(feature::isConfigured(appMode::kPianoPlayer)) {
+		//	App Mode `P` using `AppModePianoPlayer`
+		appMode = new AppModePianoPlayer();
+	}
 	else if(feature::isConfigured(appMode::kGenericAccelerometer)) {
-		//	App Mode "GA" for `AppModeGenericAccelerometer`
+		//	App Mode `GA` using `AppModeGenericAccelerometer`
 		appMode = new AppModeGenericAccelerometer();
 	}
 	else if(feature::isConfigured(appMode::kGenericTransmitter)) {
-		//	App Mode "GT" for `AppModeGenericTransmitter`
+		//	App Mode `GT` using `AppModeGenericTransmitter`
 		appMode = new AppModeGenericTransmitter();
 	}
 	else if(feature::isConfigured(appMode::kGenericReceiver)) {
-		//	App Mode "GR?" for `AppModeGenericReceiver`
+		//	App Mode `GR` using `AppModeGenericReceiver`
 		appMode = new AppModeGenericReceiver();
 	}
 	else if(feature::isConfigured(appMode::kZipHalo)) {
-		//	App Mode "Z?" for `AppModeNeoPixelRing`
+		//	App Mode `Z` using `AppModeNeoPixelRing`
 		appMode = new AppModeNeoPixelRing();
 	}
 	else {
