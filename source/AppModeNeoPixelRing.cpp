@@ -19,10 +19,21 @@ namespace microbit_dal_app_kit {
 /**	@class	AppModeNeoPixelRing
 */
 
+static const NeoPixel::MaxBrightness kMaxBrightnessDefault	= 10;	/* percent */
+static const NeoPixel::MaxBrightness kMaxBrightnessStep		= 5;	/* percent */
+
 AppModeNeoPixelRing::AppModeNeoPixelRing()
 	: AppModeBase("AppModeNeoPixelRing")
 	, mBuzzer(0)
 {
+	mNeoPixel.setMaxBrightness(kMaxBrightnessDefault);
+
+	if(feature::isConfigured(feature::kBuzzer)) {
+		ExtKit& g = ExtKit::global();
+		mBuzzer = new Buzzer("BuzzerForNeoPixelRing", /* analogPort */ g.p2());
+		EXT_KIT_ASSERT_OR_PANIC(mBuzzer, kPanicOutOfMemory);
+	}
+
 	static const EventDef events[] = {
 		{ messageBusID::kLocalEvent, messageBusEvent::kLocalAppStarted },
 		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltLeft },
@@ -36,11 +47,7 @@ AppModeNeoPixelRing::AppModeNeoPixelRing()
 	addChild(mZipHalo);
 	addChild(mNeoPixel);
 	addChild(mReceiver);
-	if(feature::isConfigured(feature::kBuzzer)) {
-		ExtKit& g = ExtKit::global();
-		mBuzzer = new Buzzer("BuzzerForNeoPixelRing", /* analogPort */ g.p2());
-		EXT_KIT_ASSERT_OR_PANIC(mBuzzer, kPanicOutOfMemory);
-
+	if(mBuzzer) {
 		addChild(*mBuzzer);
 	}
 }
@@ -109,15 +116,15 @@ AppModeNeoPixelRing::~AppModeNeoPixelRing()
 		Buttons b;
 		if(mReceiverCategoryForButtons.buttons.read(/* OUT */ b)) {
 			if((b & button::kLR) == button::kLR) {
-				mNeoPixel.resetMaxBrightness();
+				mNeoPixel.setMaxBrightness(kMaxBrightnessDefault);
 				mNeoPixel.show();
 			}
 			else if(b & button::kL) {
-				mNeoPixel.changeMaxBrightness(-5);
+				mNeoPixel.changeMaxBrightness(- kMaxBrightnessStep);
 				mNeoPixel.show();
 			}
 			else if(b & button::kR) {
-				mNeoPixel.changeMaxBrightness(5);
+				mNeoPixel.changeMaxBrightness(kMaxBrightnessStep);
 				mNeoPixel.show();
 			}
 			else if(b & button::kA) {
