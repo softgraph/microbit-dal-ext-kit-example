@@ -16,8 +16,8 @@ using namespace microbit_dal_ext_kit;
 
 	# Overview
 		- README
-			- @ref yotta_modules/microbit-dal-ext-kit/README.md "microbit-dal-ext-kit"
-			- @ref README.md "microbit-dal-ext-kit-example"
+			- @ref	yotta_modules/microbit-dal-ext-kit/README.md "microbit-dal-ext-kit"
+			- @ref	README.md "microbit-dal-ext-kit-example"
 		- Wiki
 			- <a href="https://github.com/softgraph/microbit-dal-ext-kit-example/wiki"><b>Notes for microbit-dal-ext-kit and example</b> (github.com/softgraph)</a>
 		- Wiki (Japanese Edition)
