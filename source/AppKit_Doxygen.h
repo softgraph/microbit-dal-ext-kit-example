@@ -77,8 +77,6 @@ namespace microbit_dal_app_kit {
 		-# Start the corresponding App Mode Component.
 			-	@skip		//
 				@until		appMode->start();
-			-	@skip		//
-				@until		display::clear();
 		-# Fire the App Stared event.
 			-	@skip		//
 				@until		MicroBitEvent

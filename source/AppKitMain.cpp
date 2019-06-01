@@ -82,7 +82,7 @@ int main()
 	// Repeat indefinitely.
 	while (true) {
 
-		// Select an App Mode automatically or manually. After ths call, the character for the selected App Mode is shown on the display.
+		// Select an App Mode automatically or manually. The display is cleared after this call.
 		selectAppModeFor(condition, sDescriber);
 		EXT_KIT_ASSERT(feature::configured());
 
@@ -94,10 +94,6 @@ int main()
 		AppModeBase* appMode = instantiateAppMode();
 		EXT_KIT_ASSERT_OR_PANIC(appMode, kPanicOutOfMemory);
 		appMode->start();
-
-		// Clear the App Mode character on the display.
-		time::sleep(500 /* milliseconds */);
-		display::clear();
 
 		// Fire the App Stared event.
 		MicroBitEvent(messageBusID::kLocalEvent, messageBusEvent::kLocalAppStarted);	// CREATE_AND_FIRE
