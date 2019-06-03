@@ -814,8 +814,10 @@ WARN_LOGFILE           =
 # Note: If this tag is empty the current directory is searched.
 
 INPUT                  = README.md \
+                         README.ja.md \
                          source \
                          yotta_modules/microbit-dal-ext-kit/README.md \
+                         yotta_modules/microbit-dal-ext-kit/README.ja.md \
                          yotta_modules/microbit-dal-ext-kit/inc \
                          yotta_modules/microbit-dal-ext-kit/source
 
