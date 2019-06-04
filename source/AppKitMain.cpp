@@ -87,7 +87,7 @@ int main()
 		EXT_KIT_ASSERT(appMode() != kAppModeNone);
 
 		// Set display rotation.
-		bool inverted = feature::isConfigured(feature::kInverted);
+		bool inverted = feature::isConfigured(feature::kUpsideDown);
 		display::setDisplayRotation(inverted ? MICROBIT_DISPLAY_ROTATION_180 : MICROBIT_DISPLAY_ROTATION_0);
 
 		// Start the corresponding App Mode Component.

@@ -20,44 +20,60 @@ namespace microbit_dal_app_kit {
 
 namespace feature {
 
-/// Auto detection for the extension board is not available.
-const microbit_dal_ext_kit::AppMode kNoAutoDetection	= (1 << 0);
+/*
+	Manually configured options.
+*/
 
-/// The device is mounted upside down. micro:bit's button A is on the right.
-const microbit_dal_ext_kit::AppMode kInverted			= (1 << 1);
+/// The device is mounted upside down.
+const microbit_dal_ext_kit::AppMode kUpsideDown		= (1 << 1);
 
-/// Remote State Transmitter is supported.
+/// The device is an accelerometer.
+const microbit_dal_ext_kit::AppMode kAccelerometer	= (1 << 2);
+
+/// The device is a remote state transmitter.
 const microbit_dal_ext_kit::AppMode kRemoteStateTx	= (1 << 3);
 
-/// Remote State Receiver is supported.
+/// The device is a remote state receiver.
 const microbit_dal_ext_kit::AppMode kRemoteStateRx	= (1 << 4);
 
-/// Generic NeoPixel strip module is equipped optionally.
-const microbit_dal_ext_kit::AppMode kNeoPixel			= (1 << 6);
+/*
+	Manually configured hardware modules.
+*/
 
-/// Generic buzzer module is equipped optionally.
+/// Optional `microbit_dal_ext_kit::NeoPixel` is  available.
+const microbit_dal_ext_kit::AppMode kNeoPixel		= (1 << 6);
+
+/// Optional `microbit_dal_ext_kit::Buzzer` is  available.
 const microbit_dal_ext_kit::AppMode kBuzzer			= (1 << 7);
 
-/// Generic sonar module is equipped optionally.
+/// Optional `microbit_dal_ext_kit::Sonar` is  available.
 const microbit_dal_ext_kit::AppMode kSonar			= (1 << 8);
 
-/// Accelerometer.
-const microbit_dal_ext_kit::AppMode kAccelerometer	= (1 << 24);
+/*
+	Auto-detectable extension boards.
+*/
 
-/// Generic Servo Motors for L and R are equipped optionally.
-const microbit_dal_ext_kit::AppMode kServoMotorsLR	= (1 << 9);
+/// Auto-detection for the extension board is not available.
+const microbit_dal_ext_kit::AppMode kNoAutoDetection	= (1 << 10);
 
-/// ElecFreaks' Joystick:bit board is connected.
+/// `microbit_dal_ext_kit::JoystickBit` is available.
 const microbit_dal_ext_kit::AppMode kJoystickBit		= (1 << 11);
 
-/// SparkFun's moto:bit board is connected.
+/// `microbit_dal_ext_kit::MotoBit` is available.
 const microbit_dal_ext_kit::AppMode kMotoBit			= (1 << 12);
 
-/// Waveshare's Mini Piano Module for micro:bit also known as TouchPiano board is connected.
-const microbit_dal_ext_kit::AppMode kTouchPiano		= (1 << 13);
+/// `microbit_dal_ext_kit::TouchPiano` is available.
+const microbit_dal_ext_kit::AppMode kTouchPiano			= (1 << 13);
 
-/// Kitronik's Zip Halo board is connected.
+/*
+	Manually configured extension boards.
+*/
+
+/// `microbit_dal_ext_kit::ZipHalo` is  available.
 const microbit_dal_ext_kit::AppMode kZipHalo			= (1 << 14);
+
+/// `microbit_dal_app_kit::RingBitCar` is available.
+const microbit_dal_ext_kit::AppMode kRingBitCar			= (1 << 15);
 
 /// Check whether a feature is configured or not
 bool isConfigured(microbit_dal_ext_kit::AppMode feature);

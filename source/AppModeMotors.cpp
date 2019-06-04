@@ -37,7 +37,7 @@ AppModeMotors::AppModeMotors()
 		mMotorsLR = new MotoBit(false);
 		EXT_KIT_ASSERT_OR_PANIC(mMotorsLR, kPanicOutOfMemory);
 	}
-	else if(feature::isConfigured(feature::kServoMotorsLR)) {
+	else if(feature::isConfigured(feature::kRingBitCar)) {
 		mMotorsLR = new RingBitCar();
 		EXT_KIT_ASSERT_OR_PANIC(mMotorsLR, kPanicOutOfMemory);
 

@@ -125,7 +125,7 @@ static const AppMode kJoystickController =
 ///	App Mode `M` using `AppModeMotors`
 static const AppMode kMotoBit =
 	feature::kMotoBit |
-	feature::kInverted |
+	feature::kUpsideDown |
 	feature::kRemoteStateRx;
 
 /*
@@ -163,7 +163,7 @@ static const AppMode kGenericReceiver =
 /// App Mode `C?` using `AppModeMotors`
 static const AppMode kRingBitCar =
 	feature::kNoAutoDetection |
-	feature::kServoMotorsLR |
+	feature::kRingBitCar |
 	feature::kRemoteStateRx;
 
 ///	App Mode `Z?` using `AppModeNeoPixelRing`
