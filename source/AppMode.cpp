@@ -15,6 +15,26 @@
 using namespace microbit_dal_ext_kit;
 
 namespace microbit_dal_app_kit {
+
+bool feature::isConfigured(AppMode feature)
+{
+	return (appMode() & feature) == feature;
+}
+
+AppMode feature::checkAvaiableHardware()
+{
+	if(JoystickBit::isAvaiable()) {
+		return feature::kJoystickBit;
+	}
+	if(MotoBit::isAvaiable()) {
+		return feature::kMotoBit;
+	}
+	if(TouchPiano::isAvaiable()) {
+		return feature::kTouchPiano;
+	}
+	return feature::kNoAutoDetection;
+}
+
 namespace appMode {
 
 /**	@page	AppKit_AppMode	App Mode - the set of components specific to a micro:bit setup and usage
@@ -128,7 +148,7 @@ static const AppMode kPianoKeyController =
 ///	App Mode `GA` using `AppModeGenericAccelerometer`
 static const AppMode kGenericAccelerometer =
 	feature::kNoAutoDetection |
-	feature::kReservedForApp0;	// Use Accelerometer
+	feature::kAccelerometer;
 
 ///	App Mode `GT` using `AppModeGenericTransmitter`
 static const AppMode kGenericTransmitter =
@@ -281,7 +301,7 @@ static const char* const sHints[] = {
 	return p->description;
 }
 
-/* AppModeDescriberProtocol */ int /* count */ AppModeDescriber::appModesFor(Features condition, const char* menuKeyFilter, AppMode** /* OUT new[] */ outAppModes) const
+/* AppModeDescriberProtocol */ int /* count */ AppModeDescriber::appModesFor(AppMode condition, const char* menuKeyFilter, AppMode** /* OUT new[] */ outAppModes) const
 {
 	EXT_KIT_ASSERT(outAppModes);
 
@@ -304,20 +324,6 @@ static const char* const sHints[] = {
 	return count;
 }
 
-Features checkAvaiableHardware()
-{
-	if(JoystickBit::isAvaiable()) {
-		return feature::kJoystickBit;
-	}
-	if(MotoBit::isAvaiable()) {
-		return feature::kMotoBit;
-	}
-	if(TouchPiano::isAvaiable()) {
-		return feature::kTouchPiano;
-	}
-	return feature::kNoAutoDetection;
-}
-
 /* new */ AppModeBase* instantiateAppMode()
 {
 	AppModeBase* appMode = 0;
@@ -329,7 +335,7 @@ Features checkAvaiableHardware()
 		//	App Mode `M` using `AppModeMotors`
 		appMode = new AppModeMotors();
 	}
-	else if(feature::isConfigured(appMode::kPianoKeyController)) {	// Check `K` before `P`
+	else if(feature::isConfigured(appMode::kPianoKeyController)) {	// `K` should be checked before `P`
 		//	App Mode `K` using `AppModePianoKeyController`
 		appMode = new AppModePianoKeyController();
 	}

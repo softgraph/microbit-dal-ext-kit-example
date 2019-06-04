@@ -76,7 +76,7 @@ int main()
 	display::scrollString(APP_STRING_BOOTUP);
 
 	// Check Avaiable Hardware.
-	Features condition = checkAvaiableHardware();
+	AppMode condition = feature::checkAvaiableHardware();
 	EXT_KIT_ASSERT(condition);
 
 	// Repeat indefinitely.
@@ -84,7 +84,7 @@ int main()
 
 		// Select an App Mode automatically or manually. The display is cleared after this call.
 		selectAppModeFor(condition, sDescriber);
-		EXT_KIT_ASSERT(feature::configured());
+		EXT_KIT_ASSERT(appMode() != kAppModeNone);
 
 		// Set display rotation.
 		bool inverted = feature::isConfigured(feature::kInverted);
