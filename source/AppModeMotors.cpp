@@ -34,7 +34,7 @@ AppModeMotors::AppModeMotors()
 	, mSonar(0)
 {
 	if(feature::isConfigured(feature::kMotoBit)) {
-		mMotorsLR = new MotoBit();
+		mMotorsLR = new MotoBit(false);
 		EXT_KIT_ASSERT_OR_PANIC(mMotorsLR, kPanicOutOfMemory);
 	}
 	else if(feature::isConfigured(feature::kServoMotorsLR)) {
