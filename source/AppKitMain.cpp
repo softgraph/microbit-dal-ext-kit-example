@@ -77,7 +77,7 @@ int main()
 
 	// Check Avaiable Hardware.
 	AppMode condition = feature::checkAvaiableHardware();
-	EXT_KIT_ASSERT(condition);
+	EXT_KIT_ASSERT(condition != kAppModeNone);
 
 	// Repeat indefinitely.
 	while (true) {
