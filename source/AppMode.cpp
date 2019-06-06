@@ -55,7 +55,7 @@ namespace appMode {
 		- App Mode `K` (a transmitter using Waveshare's Mini Piano Module) using `AppModePianoKeyController`
 
 	# App Modes without auto-detection
-		The following App Modes are selectable if any auto-detection listed here is not available.
+		The following App Modes are selectable if any auto-detection listed above is not available.
 
 	## App Modes for micro:bit only
 		- App Mode `GA` (a generic accelerometer) using `AppModeGenericAccelerometer`
@@ -64,7 +64,8 @@ namespace appMode {
 		- App Mode `GR-` (a generic receiver) using `AppModeGenericReceiver`
 
 	## App Modes for ElecFreaks' ring:bit car (v2)
-		- App Mode `C` (a receiver using ElecFreaks' ring:bit car (v2)) using `AppModeMotors`
+		- App Mode `Cl` (a receiver using ElecFreaks' ring:bit car (v2) with optional 8 LEDs) using `AppModeMotors`
+		- App Mode `C-` (a receiver using ElecFreaks' ring:bit car (v2)) using `AppModeMotors`
 
 	## App Modes for Kitronik's Zip Halo
 		- App Mode `Zb` (a receiver using Kitronik's Zip Halo with a buzzer) using `AppModeNeoPixelRing`
@@ -86,7 +87,8 @@ namespace appMode {
 				App Mode `GT` (a generic transmitter)
 			</td><td>
 				App Mode `M` (a receiver using SparkFun's moto:bit)<br>
-				App Mode `C` (a receiver using ElecFreaks' ring:bit car (v2))<br>
+				App Mode `Cl` (a receiver using ElecFreaks' ring:bit car (v2) with optional 8 LEDs)<br>
+				App Mode `C-` (a receiver using ElecFreaks' ring:bit car (v2))<br>
 				App Mode `Zb` (a receiver using Kitronik's Zip Halo with a buzzer)<br>
 				App Mode `Z-` (a receiver using Kitronik's Zip Halo)<br>
 				App Mode `GRb` (a generic receiver with a buzzer)<br>
@@ -134,7 +136,8 @@ static const AppMode kMotoBit =
 
 ///	App Mode `P` using `AppModePianoPlayer`
 static const AppMode kPianoPlayer =
-	feature::kTouchPiano;
+	feature::kTouchPiano |
+	feature::kNoRemote;
 
 ///	App Mode `K` using `AppModePianoKeyController`
 static const AppMode kPianoKeyController =
@@ -148,25 +151,27 @@ static const AppMode kPianoKeyController =
 ///	App Mode `GA` using `AppModeGenericAccelerometer`
 static const AppMode kGenericAccelerometer =
 	feature::kNoAutoDetection |
-	feature::kAccelerometer;
+	feature::kAccelerometer |
+	feature::kNoRemote;
 
 ///	App Mode `GT` using `AppModeGenericTransmitter`
 static const AppMode kGenericTransmitter =
 	feature::kNoAutoDetection |
 	feature::kRemoteStateTx;
 
-///	App Mode `GR?` using `AppModeGenericReceiver`
+///	App Mode `GR` using `AppModeGenericReceiver`
 static const AppMode kGenericReceiver =
 	feature::kNoAutoDetection |
 	feature::kRemoteStateRx;
 
-/// App Mode `C?` using `AppModeMotors`
+/// App Mode `C` using `AppModeMotors`
 static const AppMode kRingBitCar =
 	feature::kNoAutoDetection |
 	feature::kRingBitCar |
+	feature::kBackToFront |
 	feature::kRemoteStateRx;
 
-///	App Mode `Z?` using `AppModeNeoPixelRing`
+///	App Mode `Z` using `AppModeNeoPixelRing`
 static const AppMode kZipHalo =
 	feature::kNoAutoDetection |
 	feature::kZipHalo |
@@ -335,13 +340,21 @@ static const char* const sHints[] = {
 		//	App Mode `M` using `AppModeMotors`
 		appMode = new AppModeMotors();
 	}
-	else if(feature::isConfigured(appMode::kPianoKeyController)) {	// `K` should be checked before `P`
-		//	App Mode `K` using `AppModePianoKeyController`
-		appMode = new AppModePianoKeyController();
+	else if(feature::isConfigured(appMode::kRingBitCar)) {
+		//	App Mode `C` using `AppModeMotors`
+		appMode = new AppModeMotors();
 	}
 	else if(feature::isConfigured(appMode::kPianoPlayer)) {
 		//	App Mode `P` using `AppModePianoPlayer`
 		appMode = new AppModePianoPlayer();
+	}
+	else if(feature::isConfigured(appMode::kPianoKeyController)) {
+		//	App Mode `K` using `AppModePianoKeyController`
+		appMode = new AppModePianoKeyController();
+	}
+	else if(feature::isConfigured(appMode::kZipHalo)) {
+		//	App Mode `Z` using `AppModeNeoPixelRing`
+		appMode = new AppModeNeoPixelRing();
 	}
 	else if(feature::isConfigured(appMode::kGenericAccelerometer)) {
 		//	App Mode `GA` using `AppModeGenericAccelerometer`
@@ -354,10 +367,6 @@ static const char* const sHints[] = {
 	else if(feature::isConfigured(appMode::kGenericReceiver)) {
 		//	App Mode `GR` using `AppModeGenericReceiver`
 		appMode = new AppModeGenericReceiver();
-	}
-	else if(feature::isConfigured(appMode::kZipHalo)) {
-		//	App Mode `Z` using `AppModeNeoPixelRing`
-		appMode = new AppModeNeoPixelRing();
 	}
 	else {
 		EXT_KIT_ASSERT(!"Invalid App Mode");

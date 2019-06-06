@@ -24,7 +24,10 @@ namespace feature {
 	Manually configured options.
 */
 
-/// The device is mounted upside down.
+/// The device is mounted back to front, i.e., left and right are inverted.
+const microbit_dal_ext_kit::AppMode kBackToFront	= (1 << 0);
+
+/// The device is mounted upside down, i.e. top and bottom are inverted.
 const microbit_dal_ext_kit::AppMode kUpsideDown		= (1 << 1);
 
 /// The device is an accelerometer.
@@ -35,6 +38,9 @@ const microbit_dal_ext_kit::AppMode kRemoteStateTx	= (1 << 3);
 
 /// The device is a remote state receiver.
 const microbit_dal_ext_kit::AppMode kRemoteStateRx	= (1 << 4);
+
+/// The device has no remote capability.
+const microbit_dal_ext_kit::AppMode kNoRemote		= (1 << 5);
 
 /*
 	Manually configured hardware modules.
