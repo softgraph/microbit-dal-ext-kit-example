@@ -88,6 +88,10 @@ AppModeMotors::AppModeMotors()
 	if(source == messageBusID::kLocalEvent) {
 		if(value == messageBusEvent::kLocalAppStarted) {
 			display::showButton(button::kNone);
+			if(mNeoPixel) {
+				mNeoPixel->fillColor(Color::white);
+				mNeoPixel->show();
+			}
 		}
 	}
 	else if(source == messageBusID::kRemoteEvent) {
@@ -246,17 +250,30 @@ RingBitCar::RingBitCar()
 
 /* MotorsLR */ int RingBitCar::setMotorSpeed(MotorsLR::Motor motor, MotorsLR::MotorDirection direction, int speedInPercent)	// returns MICROBIT_INVALID_PARAMETER, MICROBIT_NOT_SUPPORTED, MICROBIT_I2C_ERROR or MICROBIT_OK
 {
-	// range: 600-1400, 1500, 1600-2400
-	static const int kCenter = 1500;	// microseconds
-	static const int kOffset = 100;		// microseconds
-	static const int kRatio = 8;		// microseconds for 1 percent
+	static const int kServoCenter	= 1500;	// microseconds
+	static const int kServoRange	= 1800;	// microseconds
+	// Servo Value 0°	=  600 (1500 - 900) microseconds
+	// Servo Value 90°	= 1500 microseconds
+	// Servo Value 180°	= 2400 (1500 + 900) microseconds
 
-	int speed = kOffset + kRatio * speedInPercent;
+	static const int kCenter	= 90;	// °
+	static const int kOffset	= 10;	// °
+	static const int kRange		= 80;	// °
+	// Servo Value 0-80°	= rotate clockwise
+	// Servo Value 90°		= stop
+	// Servo Value 100-180°	= rotate anticlockwise
+
+	int speed =  speedInPercent ? (kOffset + speedInPercent * kRange / 100) : 0;
+	int value = kCenter;
 	if(motor == kLeft) {
-		return mServoL.setServoPulseUs(kCenter + (direction == kForward) ? speed : - speed);
+		value += (direction == kForward) ? speed : - speed;
+		debug_sendLine(EXT_KIT_DEBUG_ACTION "Left Servo Value: ", string::dec(value).toCharArray());
+		return mServoL.setServoValue(value, kServoRange, kServoCenter);
 	}
 	else {
-		return mServoR.setServoPulseUs(kCenter + (direction == kForward) ? - speed : speed);
+		value += (direction == kForward) ? - speed : speed;
+		debug_sendLine(EXT_KIT_DEBUG_ACTION "Right Servo Value: ", string::dec(value).toCharArray());
+		return mServoR.setServoValue(value, kServoRange, kServoCenter);
 	}
 }
 
