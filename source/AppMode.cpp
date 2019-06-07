@@ -192,7 +192,7 @@ static const AppModeDef sAppModeTable[] = {
 	{
 		appMode::kJoystickController,
 		"J",
-		"Joystick Controller"
+		"Joystick:bit"
 	},
 	{
 		appMode::kMotoBit,
@@ -235,9 +235,14 @@ static const AppModeDef sAppModeTable[] = {
 		"ring:bit Car with optional 8 LEDs"
 	},
 	{
+		appMode::kRingBitCar | feature::kSonar,
+		"Cs",
+		"ring:bit Car with a sonar"
+	},
+	{
 		appMode::kRingBitCar,
 		"C-",
-		"ring:bit Car with no options"
+		"ring:bit Car"
 	},
 	{
 		appMode::kZipHalo | feature::kBuzzer,
@@ -261,19 +266,20 @@ static const AppModeDef sAppModeTable[] = {
 };
 
 static const char* const sHints[] = {
-	"AAcc",
-	"CCar",
-	"GGen",
-	"JJoy",
-	"KKey",
-	"MMot",
-	"PPia",
-	"RRx",
-	"TTx",
-	"ZZip",
-	"bBuz",
-	"lLED",
-	"-Fin",
+	"AAcc",	// Accelerometer
+	"CCar",	// Car
+	"GGen",	// Generic
+	"JJoy",	// Joystick
+	"KKey",	// Keyboard
+	"MMot",	// Motor
+	"PPly",	// Player
+	"RRx",	// Receiver
+	"TTx",	// Transmitter
+	"ZZip",	// Zip Halo
+	"bBuz",	// Buzzer
+	"lLED",	// LED
+	"sSon",	// Sonar
+	"-Fin",	// Finish
 	0
 };
 

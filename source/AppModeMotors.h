@@ -104,15 +104,6 @@ private:
 
 };	// RingBitCar
 
-/// NeoPixel For RingBit Car
-class NeoPixelForRingBitCar : public microbit_dal_ext_kit::NeoPixel
-{
-public:
-	/// Constructor
-	NeoPixelForRingBitCar(int ledCount);
-
-};	// NeoPixelForRingBitCar
-
 }	// microbit_dal_app_kit
 
 #endif	// APP_MODE_MOTORS_H

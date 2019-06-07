@@ -42,20 +42,24 @@ AppModeMotors::AppModeMotors()
 		EXT_KIT_ASSERT_OR_PANIC(mMotorsLR, kPanicOutOfMemory);
 
 		if(feature::isConfigured(feature::kNeoPixel)) {
-			mNeoPixel = new NeoPixelForRingBitCar(10);
+			ExtKit& g = ExtKit::global();
+			mNeoPixel = new NeoPixel("NeoPixelForRingBitCar",
+									 /* ledPort */ g.p0(),
+									 /* ledCount */ 10);
 		}
-#if 0
 		else if(feature::isConfigured(feature::kSonar)) {
 			ExtKit& g = ExtKit::global();
 			mSonar = new Sonar("SonarForRingBitCar",
-							   /* triggerOutput */ g.p1(),
+							   /* triggerOutput */ g.p0(),
 							   /* echoInput */ g.p0(), MICROBIT_ID_IO_P0, *this,
 							   /* echoInputStabilizer */ 1);
 			EXT_KIT_ASSERT_OR_PANIC(mSonar, kPanicOutOfMemory);
 		}
-#endif
 		else {
-			mNeoPixel = new NeoPixelForRingBitCar(2);
+			ExtKit& g = ExtKit::global();
+			mNeoPixel = new NeoPixel("NeoPixelForRingBitCar",
+									 /* ledPort */ g.p0(),
+									 /* ledCount */ 2);
 		}
 	}
 
@@ -112,7 +116,7 @@ AppModeMotors::AppModeMotors()
 
 /* Sonar::HandlerProtocol */ void AppModeMotors::handleSonarEcho(uint32_t duration /* in microseconds*/)
 {
-	const uint32_t kSoundSpeed = 343;			// 343 m/s
+	const uint32_t kSoundSpeed = 343;	// 343 m/s
 	SonarDistance value /* in centimeters */ = (duration * kSoundSpeed) / 2 / 10000;
 	mSonarDistance.set(value);
 }
@@ -132,7 +136,7 @@ AppModeMotors::AppModeMotors()
 			else {
 				display::showNumber(value);
 			}
-			debug_sendLine(EXT_KIT_DEBUG_ACTION "Sonar Distance in centimeters: ", ManagedString((int) value).toCharArray());
+			//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Sonar Distance in centimeters: ", string::dec(value).toCharArray());
 		}
 		mSonar->trigger();
 	}
@@ -263,26 +267,30 @@ RingBitCar::RingBitCar()
 	// Servo Value 90°		= stop
 	// Servo Value 100-180°	= rotate anticlockwise
 
-	int speed =  speedInPercent ? (kOffset + speedInPercent * kRange / 100) : 0;
-	int value = kCenter;
-	if(motor == kLeft) {
-		value += (direction == kForward) ? speed : - speed;
-		debug_sendLine(EXT_KIT_DEBUG_ACTION "Left Servo Value: ", string::dec(value).toCharArray());
-		return mServoL.setServoValue(value, kServoRange, kServoCenter);
+	if(speedInPercent == 0) {
+		if(motor == kLeft) {
+			//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Servo Left: Brake");
+			return mServoL.setDigitalValue(0);
+		}
+		else {
+			//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Servo Right: Brake");
+			return mServoR.setDigitalValue(0);
+		}
 	}
 	else {
-		value += (direction == kForward) ? - speed : speed;
-		debug_sendLine(EXT_KIT_DEBUG_ACTION "Right Servo Value: ", string::dec(value).toCharArray());
-		return mServoR.setServoValue(value, kServoRange, kServoCenter);
+		int speed = kOffset + speedInPercent * kRange / 100;
+		int value = kCenter;
+		if(motor == kLeft) {
+			value += (direction == kForward) ? speed : - speed;
+			//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Servo Left: ", string::dec(value).toCharArray());
+			return mServoL.setServoValue(value, kServoRange, kServoCenter);
+		}
+		else {
+			value += (direction == kForward) ? - speed : speed;
+			//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Servo Right: ", string::dec(value).toCharArray());
+			return mServoR.setServoValue(value, kServoRange, kServoCenter);
+		}
 	}
-}
-
-/**	@class	NeoPixelForRingBitCar
-*/
-
-NeoPixelForRingBitCar::NeoPixelForRingBitCar(int ledCount)
-	: NeoPixel("NeoPixelForRingBitCar", /* ledPort */ ExtKit::global().p0(), ledCount)
-{
 }
 
 }	// microbit_dal_app_kit
