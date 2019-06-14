@@ -182,15 +182,15 @@ static const AppMode kZipHalo =
 // App Mode Definition
 struct AppModeDef {
 	AppMode mode;	// Full App Mode definition - one of main App Mode (`appMode::k...`) plus optional features
-	const char* menuKey;	// A short menu key string uniquely summarizes the mode
-	const char* description;	// A description for the mode
+	const char* menuKey;	// A short menu key string uniquely summarizes the App Mode
+	const char* description;	// A description for the App Mode
 };
 
 // Hints for Menu Keys
 /*	An array of hint strings terminated by a null pointer. A hint string consists of the following three parts.
-	- A character in any menu key
-	- A position ('0'-'9' or '*') of the character in any menu key
-	- the hint about the character
+	- A menu key character for an sub-menu item
+	- Available sub-menu depths: '0'-'9' or '*'
+	- The hint about the sub-menu item
 */
 static const char* const sHints[] = {
 	/*
