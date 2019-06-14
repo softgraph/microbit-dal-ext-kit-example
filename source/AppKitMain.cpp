@@ -77,14 +77,14 @@ int main()
 
 	// Check Avaiable Hardware.
 	AppMode condition = feature::checkAvaiableHardware();
-	EXT_KIT_ASSERT(condition != kAppModeNone);
+	EXT_KIT_ASSERT(condition);
 
 	// Repeat indefinitely.
 	while (true) {
 
 		// Select an App Mode automatically or manually. The display is cleared after this call.
 		selectAppModeFor(condition, sDescriber);
-		EXT_KIT_ASSERT(appMode() != kAppModeNone);
+		EXT_KIT_ASSERT(appMode());
 
 		// Set display rotation.
 		bool upsideDown = feature::isConfigured(feature::kUpsideDown);
