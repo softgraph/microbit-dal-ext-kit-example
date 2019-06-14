@@ -35,8 +35,6 @@ AppMode feature::checkAvaiableHardware()
 	return feature::kNoAutoDetection;
 }
 
-namespace appMode {
-
 /**	@page	AppKit_AppMode	App Mode - the set of components specific to a micro:bit setup and usage
 
 	# App Modes with auto-detection
@@ -60,17 +58,16 @@ namespace appMode {
 	## App Modes for micro:bit only
 		- App Mode `GA` (a generic accelerometer) using `AppModeGenericAccelerometer`
 		- App Mode `GT` (a generic transmitter) using `AppModeGenericTransmitter`
-		- App Mode `GRb` (a generic receiver with a buzzer) using `AppModeGenericReceiver`
+		- App Mode `GRB` (a generic receiver with a buzzer) using `AppModeGenericReceiver`
 		- App Mode `GR-` (a generic receiver) using `AppModeGenericReceiver`
 
 	## App Modes for ElecFreaks' ring:bit car (v2)
-		- App Mode `Cl` (a receiver using ElecFreaks' ring:bit car (v2) with optional 8 LEDs) using `AppModeMotors`
+		- App Mode `CL` (a receiver using ElecFreaks' ring:bit car (v2) with optional 8 LEDs) using `AppModeMotors`
 		- App Mode `C-` (a receiver using ElecFreaks' ring:bit car (v2)) using `AppModeMotors`
 
 	## App Modes for Kitronik's Zip Halo
-		- App Mode `Zb` (a receiver using Kitronik's Zip Halo with a buzzer) using `AppModeNeoPixelRing`
+		- App Mode `ZB` (a receiver using Kitronik's Zip Halo with a buzzer) using `AppModeNeoPixelRing`
 		- App Mode `Z-` (a receiver using Kitronik's Zip Halo) using `AppModeNeoPixelRing`
-
 */
 
 /**	@page	AppKit_RemoteStateCategory	Remote State Category - the set of remote states sent from the transmiiter to the reciver over radio
@@ -87,11 +84,11 @@ namespace appMode {
 				App Mode `GT` (a generic transmitter)
 			</td><td>
 				App Mode `M` (a receiver using SparkFun's moto:bit)<br>
-				App Mode `Cl` (a receiver using ElecFreaks' ring:bit car (v2) with optional 8 LEDs)<br>
+				App Mode `CL` (a receiver using ElecFreaks' ring:bit car (v2) with optional 8 LEDs)<br>
 				App Mode `C-` (a receiver using ElecFreaks' ring:bit car (v2))<br>
-				App Mode `Zb` (a receiver using Kitronik's Zip Halo with a buzzer)<br>
+				App Mode `ZB` (a receiver using Kitronik's Zip Halo with a buzzer)<br>
 				App Mode `Z-` (a receiver using Kitronik's Zip Halo)<br>
-				App Mode `GRb` (a generic receiver with a buzzer)<br>
+				App Mode `GRB` (a generic receiver with a buzzer)<br>
 				App Mode `GR-` (a generic receiver)
 			</td></tr></table>
 
@@ -106,10 +103,12 @@ namespace appMode {
 			<tr><td>
 				App Mode `K` (a transmitter using Waveshare's Mini Piano Module)
 			</td><td>
-				App Mode `Zb` (a receiver using Kitronik's Zip Halo with a buzzer)<br>
-				App Mode `GRb` (a generic receiver using micro:bit with a buzzer)
+				App Mode `ZB` (a receiver using Kitronik's Zip Halo with a buzzer)<br>
+				App Mode `GRB` (a generic receiver using micro:bit with a buzzer)
 			</td></tr></table>
 */
+
+namespace appMode {
 
 /*
 	App Modes with `feature::kJoystickBit`
@@ -127,7 +126,6 @@ static const AppMode kJoystickController =
 ///	App Mode `M` using `AppModeMotors`
 static const AppMode kMotoBit =
 	feature::kMotoBit |
-	feature::kUpsideDown |
 	feature::kRemoteStateRx;
 
 /*
@@ -168,7 +166,6 @@ static const AppMode kGenericReceiver =
 static const AppMode kRingBitCar =
 	feature::kNoAutoDetection |
 	feature::kRingBitCar |
-	feature::kBackToFront |
 	feature::kRemoteStateRx;
 
 ///	App Mode `Z` using `AppModeNeoPixelRing`
@@ -182,12 +179,44 @@ static const AppMode kZipHalo =
 /**	@class AppModeDescriber
 */
 
+// App Mode Definition
 struct AppModeDef {
-	AppMode mode;
-	const char* menuKey;
-	const char* description;
+	AppMode mode;	// Full App Mode definition - one of main App Mode (`appMode::k...`) plus optional features
+	const char* menuKey;	// A short menu key string uniquely summarizes the mode
+	const char* description;	// A description for the mode
 };
 
+// Hints for Menu Keys
+/*	An array of hint strings terminated by a null pointer. A hint string consists of the following three parts.
+	- A character in any menu key
+	- A position ('0'-'9' or '*') of the character in any menu key
+	- the hint about the character
+*/
+static const char* const sHints[] = {
+	/*
+		The first chracter in any menu key describes extension board.
+	*/
+	"C0Car",	// ring:bit Car
+	"G0Gen",	// Generic (no extension board)
+	"J0Joy",	// Joystick:bit
+	"K0Key",	// TouchPiano for Piano Keyboard Controller
+	"M0Mot",	// moto:bit
+	"P0Ply",	// TouchPiano for Piano Player
+	"Z0Zip",	// Zip Halo
+	/*
+		Other characters in any menu key describe optional features.
+	*/
+	"A*Acc",	// Accelerometer
+	"B*Buz",	// Buzzer
+	"L*Led",	// LED
+	"R*Rx",		// Receiver
+	"S*Son",	// Sonar
+	"T*Tx",		// Transmitter
+	"-*Fin",	// Finish (No more options)
+	0			// End of table
+};
+
+// App Mode Definition Table
 static const AppModeDef sAppModeTable[] = {
 	{
 		appMode::kJoystickController,
@@ -195,19 +224,19 @@ static const AppModeDef sAppModeTable[] = {
 		"Joystick:bit"
 	},
 	{
-		appMode::kMotoBit,
+		appMode::kMotoBit | feature::kUpsideDown,
 		"M",
 		"moto:bit"
 	},
 	{
 		appMode::kPianoPlayer,
 		"P",
-		"Piano Player"
+		"TouchPiano for Piano Player"
 	},
 	{
 		appMode::kPianoKeyController,
 		"K",
-		"Piano Keyboard Controller"
+		"TouchPiano for Piano Keyboard Controller"
 	},
 	{
 		appMode::kGenericAccelerometer,
@@ -221,7 +250,7 @@ static const AppModeDef sAppModeTable[] = {
 	},
 	{
 		appMode::kGenericReceiver | feature::kBuzzer,
-		"GRb",
+		"GRB",
 		"Generic Receiver with a buzzer"
 	},
 	{
@@ -230,23 +259,23 @@ static const AppModeDef sAppModeTable[] = {
 		"Generic Receiver"
 	},
 	{
-		appMode::kRingBitCar | feature::kNeoPixel,
-		"Cl",
+		appMode::kRingBitCar | feature::kBackToFront | feature::kNeoPixel,
+		"CL",
 		"ring:bit Car with optional 8 LEDs"
 	},
 	{
 		appMode::kRingBitCar | feature::kSonar,
-		"Cs",
+		"CS",
 		"ring:bit Car with a sonar"
 	},
 	{
-		appMode::kRingBitCar,
+		appMode::kRingBitCar | feature::kBackToFront,
 		"C-",
 		"ring:bit Car"
 	},
 	{
 		appMode::kZipHalo | feature::kBuzzer,
-		"Zb",
+		"ZB",
 		"Zip Halo with a buzzer"
 	},
 	{
@@ -254,33 +283,11 @@ static const AppModeDef sAppModeTable[] = {
 		"Z-",
 		"Zip Halo"
 	},
-
-	/*
-		Not yet selected
-	*/
 	{
 		0,
 		"-",
 		"Not yet selected"
 	}
-};
-
-static const char* const sHints[] = {
-	"AAcc",	// Accelerometer
-	"CCar",	// Car
-	"GGen",	// Generic
-	"JJoy",	// Joystick
-	"KKey",	// Keyboard
-	"MMot",	// Motor
-	"PPly",	// Player
-	"RRx",	// Receiver
-	"TTx",	// Transmitter
-	"ZZip",	// Zip Halo
-	"bBuz",	// Buzzer
-	"lLED",	// LED
-	"sSon",	// Sonar
-	"-Fin",	// Finish
-	0
 };
 
 /* AppModeDescriberProtocol */ const char * const * AppModeDescriber::hints() const
