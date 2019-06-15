@@ -187,10 +187,10 @@ struct AppModeDef {
 };
 
 // Hints for Menu Keys
-/*	An array of hint strings terminated by a null pointer. A hint string consists of the following three parts.
-	- A menu key character for an sub-menu item
+/*	An array of hint strings terminated by a null pointer. A hint string consists of the following three parts for an sub-menu item.
+	- A menu key character for the item
 	- Available sub-menu depths: '0'-'9' or '*'
-	- The hint about the sub-menu item
+	- A hint about the item
 */
 static const char* const sHints[] = {
 	/*
