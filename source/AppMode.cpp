@@ -186,15 +186,13 @@ struct AppModeDef {
 	const char* description;	// A description for the App Mode
 };
 
-// Hints for Menu Keys
-/*	An array of hint strings terminated by a null pointer. A hint string consists of the following three parts for an sub-menu item.
-	- A menu key character for the item
-	- Available sub-menu depths: '0'-'9' or '*'
-	- A hint about the item
+// Menu Key Hints
+/*
+	For the details, see also `microbit_dal_ext_kit::AppModeDescriberProtocol::hints()`.
 */
 static const char* const sHints[] = {
 	/*
-		The first chracter in any menu key describes extension board.
+		The following menu key characters intend to describe the main extension board used by the App Mode. They are only available at sub-menu depth 0, i.e., they should be placed at the first character of any menu key string.
 	*/
 	"C0Car",	// ring:bit Car
 	"G0Gen",	// Generic (no extension board)
@@ -204,7 +202,7 @@ static const char* const sHints[] = {
 	"P0Ply",	// TouchPiano for Piano Player
 	"Z0Zip",	// Zip Halo
 	/*
-		Other characters in any menu key describe optional features.
+		The following menu key characters intend to describe optional features used by the App Mode. They are available at any sub-menu depth.
 	*/
 	"A*Acc",	// Accelerometer
 	"B*Buz",	// Buzzer
