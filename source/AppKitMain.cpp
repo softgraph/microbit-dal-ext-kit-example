@@ -83,8 +83,8 @@ int main()
 	while (true) {
 
 		// Select an App Mode automatically or manually. The display is cleared after this call.
-		selectAppModeFor(condition, sDescriber);
-		EXT_KIT_ASSERT(appMode());
+		appMode::selectFor(condition, sDescriber);
+		EXT_KIT_ASSERT(appMode::activeMode());
 
 		// Set display rotation.
 		bool upsideDown = feature::isConfigured(feature::kUpsideDown);
@@ -93,7 +93,7 @@ int main()
 
 		// Start the corresponding App Mode Component.
 		AppModeBase* appMode = instantiateAppMode();
-		EXT_KIT_ASSERT_OR_PANIC(appMode, kPanicOutOfMemory);
+		EXT_KIT_ASSERT_OR_PANIC(appMode, panic::kOutOfMemory);
 		appMode->start();
 
 		// Fire the App Stared event.

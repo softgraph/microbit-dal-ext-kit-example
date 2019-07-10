@@ -90,20 +90,20 @@ microbit_dal_ext_kit::AppMode checkAvaiableHardware();
 }	// feature
 
 /// App Mode Describer
-class AppModeDescriber : public microbit_dal_ext_kit::AppModeDescriberProtocol
+class AppModeDescriber : public microbit_dal_ext_kit::appMode::DescriberProtocol
 {
 public:
 	/// Inherited
-	/* AppModeDescriberProtocol */ const char* const * hints() const;
+	/* appMode::DescriberProtocol */ const char* const * hints() const;
 
 	/// Inherited
-	/* AppModeDescriberProtocol */ const char* menuKeyFor(microbit_dal_ext_kit::AppMode appMode) const;
+	/* appMode::DescriberProtocol */ const char* menuKeyFor(microbit_dal_ext_kit::AppMode appMode) const;
 
 	/// Inherited
-	/* AppModeDescriberProtocol */ const char* descriptionFor(microbit_dal_ext_kit::AppMode appMode) const;
+	/* appMode::DescriberProtocol */ const char* descriptionFor(microbit_dal_ext_kit::AppMode appMode) const;
 
 	/// Inherited
-	/* AppModeDescriberProtocol */ int /* count */ appModesFor(microbit_dal_ext_kit::AppMode condition, const char* menuKeyFilter, microbit_dal_ext_kit::AppMode** /* OUT new[] */ outAppModes) const;
+	/* appMode::DescriberProtocol */ int /* count */ appModesFor(microbit_dal_ext_kit::AppMode condition, const char* menuKeyFilter, microbit_dal_ext_kit::AppMode** /* OUT new[] */ outAppModes) const;
 
 };	// AppModeDescriber
 

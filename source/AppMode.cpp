@@ -18,7 +18,7 @@ namespace microbit_dal_app_kit {
 
 bool feature::isConfigured(AppMode feature)
 {
-	return (appMode() & feature) == feature;
+	return (appMode::activeMode() & feature) == feature;
 }
 
 AppMode feature::checkAvaiableHardware()
@@ -188,7 +188,7 @@ struct AppModeDef {
 
 // Menu Key Hints
 /*
-	For the details, see also `microbit_dal_ext_kit::AppModeDescriberProtocol::hints()`.
+	For the details, see also `microbit_dal_ext_kit::appMode::DescriberProtocol::hints()`.
 */
 static const char* const sHints[] = {
 	/*
@@ -288,12 +288,12 @@ static const AppModeDef sAppModeTable[] = {
 	}
 };
 
-/* AppModeDescriberProtocol */ const char * const * AppModeDescriber::hints() const
+/* appMode::DescriberProtocol */ const char * const * AppModeDescriber::hints() const
 {
 	return sHints;
 }
 
-/* AppModeDescriberProtocol */ const char* AppModeDescriber::menuKeyFor(AppMode appMode) const
+/* appMode::DescriberProtocol */ const char* AppModeDescriber::menuKeyFor(AppMode appMode) const
 {
 	const AppModeDef* p = sAppModeTable;
 	while(p->mode) {
@@ -305,7 +305,7 @@ static const AppModeDef sAppModeTable[] = {
 	return p->menuKey;
 }
 
-/* AppModeDescriberProtocol */ const char* AppModeDescriber::descriptionFor(AppMode appMode) const
+/* appMode::DescriberProtocol */ const char* AppModeDescriber::descriptionFor(AppMode appMode) const
 {
 	const AppModeDef* p = sAppModeTable;
 	while(p->mode) {
@@ -317,7 +317,7 @@ static const AppModeDef sAppModeTable[] = {
 	return p->description;
 }
 
-/* AppModeDescriberProtocol */ int /* count */ AppModeDescriber::appModesFor(AppMode condition, const char* menuKeyFilter, AppMode** /* OUT new[] */ outAppModes) const
+/* appMode::DescriberProtocol */ int /* count */ AppModeDescriber::appModesFor(AppMode condition, const char* menuKeyFilter, AppMode** /* OUT new[] */ outAppModes) const
 {
 	EXT_KIT_ASSERT(outAppModes);
 
