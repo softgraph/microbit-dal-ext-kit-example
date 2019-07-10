@@ -35,11 +35,11 @@ AppModeMotors::AppModeMotors()
 {
 	if(feature::isConfigured(feature::kMotoBit)) {
 		mMotorsLR = new MotoBit(false);
-		EXT_KIT_ASSERT_OR_PANIC(mMotorsLR, kPanicOutOfMemory);
+		EXT_KIT_ASSERT_OR_PANIC(mMotorsLR, panic::kOutOfMemory);
 	}
 	else if(feature::isConfigured(feature::kRingBitCar)) {
 		mMotorsLR = new RingBitCar();
-		EXT_KIT_ASSERT_OR_PANIC(mMotorsLR, kPanicOutOfMemory);
+		EXT_KIT_ASSERT_OR_PANIC(mMotorsLR, panic::kOutOfMemory);
 
 		if(feature::isConfigured(feature::kNeoPixel)) {
 			ExtKit& g = ExtKit::global();
@@ -53,7 +53,7 @@ AppModeMotors::AppModeMotors()
 							   /* triggerOutput */ g.p0(),
 							   /* echoInput */ g.p0(), MICROBIT_ID_IO_P0, *this,
 							   /* echoInputStabilizer */ 1);
-			EXT_KIT_ASSERT_OR_PANIC(mSonar, kPanicOutOfMemory);
+			EXT_KIT_ASSERT_OR_PANIC(mSonar, panic::kOutOfMemory);
 		}
 		else {
 			ExtKit& g = ExtKit::global();

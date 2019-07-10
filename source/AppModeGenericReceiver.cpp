@@ -26,7 +26,7 @@ AppModeGenericReceiver::AppModeGenericReceiver()
 	if(feature::isConfigured(feature::kBuzzer)) {
 		ExtKit& g = ExtKit::global();
 		mBuzzer = new Buzzer("BuzzerForNeoPixelRing", /* analogPort */ g.p1());
-		EXT_KIT_ASSERT_OR_PANIC(mBuzzer, kPanicOutOfMemory);
+		EXT_KIT_ASSERT_OR_PANIC(mBuzzer, panic::kOutOfMemory);
 	}
 
 	static const EventDef events[] = {
