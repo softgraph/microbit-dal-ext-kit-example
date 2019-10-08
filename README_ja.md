@@ -4,6 +4,8 @@
 
 `microbit-dal-ext-kit` の利用例
 
+## 概要
+
 ### 構造
 
 <table>
