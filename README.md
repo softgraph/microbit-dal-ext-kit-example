@@ -57,4 +57,6 @@ The generated document contains both `microbit-dal-ext-kit-example` and `microbi
 
 Module                 | URL
 ---------------------- | ---
-`microbit-dal-ext-kit` | https://github.com/softgraph/microbit-dal-ext-kit
+`microbit-dal-ext-kit` | <https://github.com/softgraph/microbit-dal-ext-kit>
+
+© 2019 Softgraph, Inc.

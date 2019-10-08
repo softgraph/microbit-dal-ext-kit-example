@@ -61,3 +61,5 @@ MIT
 モジュール               | URL
 ---------------------- | ---
 `microbit-dal-ext-kit` | https://github.com/softgraph/microbit-dal-ext-kit
+
+© 2019 Softgraph, Inc.
