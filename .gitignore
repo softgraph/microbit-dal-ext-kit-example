@@ -2,6 +2,7 @@
 
 .brackets.json
 .DS_Store
+/_/
 /.vscode/ipch/
 /build/
 /doxygen/
