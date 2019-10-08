@@ -4,5 +4,6 @@ if(CMAKE_COMPILER_IS_GNUCC)
 	target_compile_options(microbit-dal
 		PRIVATE "-ftabstop=4"
 		PRIVATE "-Warray-bounds=0"
+		PRIVATE "-Wno-class-memaccess"
 	)
 endif()
