@@ -93,7 +93,7 @@ public:
 
 protected:
 	/// Inherited
-	/* MotorsLR */ int setMotorSpeed(microbit_dal_ext_kit::MotorsLR::Motor motor, microbit_dal_ext_kit::MotorsLR::MotorDirection direction, int speedInPercent);	// returns MICROBIT_INVALID_PARAMETER, MICROBIT_NOT_SUPPORTED, MICROBIT_I2C_ERROR or MICROBIT_OK
+	/* MotorsLR */ int /* ErrorCode */ setMotorSpeed(microbit_dal_ext_kit::MotorsLR::Motor motor, microbit_dal_ext_kit::MotorsLR::MotorDirection direction, int speedInPercent);
 
 private:
 	/// Servo Left

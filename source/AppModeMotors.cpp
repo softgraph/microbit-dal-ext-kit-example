@@ -252,7 +252,7 @@ RingBitCar::RingBitCar()
 {
 }
 
-/* MotorsLR */ int RingBitCar::setMotorSpeed(MotorsLR::Motor motor, MotorsLR::MotorDirection direction, int speedInPercent)	// returns MICROBIT_INVALID_PARAMETER, MICROBIT_NOT_SUPPORTED, MICROBIT_I2C_ERROR or MICROBIT_OK
+/* MotorsLR */ int /* ErrorCode */ RingBitCar::setMotorSpeed(MotorsLR::Motor motor, MotorsLR::MotorDirection direction, int speedInPercent)
 {
 	static const int kServoCenter	= 1500;	// microseconds
 	static const int kServoRange	= 1800;	// microseconds
