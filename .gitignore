@@ -2,10 +2,8 @@
 
 .DS_Store
 
-/.markdownlint.json
 /.vscode/c_cpp_properties.json
 /.vscode/ipch/
-/.vscode/settings.json
 /_/
 /build/
 /doxygen/
