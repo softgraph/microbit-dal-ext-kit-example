@@ -1,0 +1,65 @@
+{
+	// See https://go.microsoft.com/fwlink/?LinkId=733558 
+	// for the documentation about the tasks.json format
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "clean",
+			"type": "shell",
+			"command": "test -f $_ENV_YOTTA && source $_ENV_YOTTA; yotta clean",
+			"windows": {
+				"command": "yotta clean"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "build",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"type": "shell",
+			"command": "test -f $_ENV_YOTTA && source $_ENV_YOTTA; yotta build; ls -l build/bbc-microbit-classic-gcc/source/microbit-dal-ext-kit-example-combined.hex",
+			"windows": {
+				"command": "yotta build"
+			},
+			"problemMatcher": {
+				"base": "$gcc",
+				"fileLocation": "absolute"
+			}
+		},
+		{
+			"label": "flash",
+			"type": "shell",
+			"command": "test -d $_DEV_MICROBIT && cp build/bbc-microbit-classic-gcc/source/microbit-dal-ext-kit-example-combined.hex $_DEV_MICROBIT",
+			"windows": {
+				"command": "copy build¥¥bbc-microbit-classic-gcc¥¥source¥¥microbit-dal-ext-kit-example-combined.hex %_DEV_MICROBIT%"
+			},
+			"problemMatcher": []
+		},
+		{
+			"label": "attach screen",
+			"type": "shell",
+			"command": "ls $_DEV_SCREEN_PREFIX* && screen `ls $_DEV_SCREEN_PREFIX* | head -1` 115200",
+			"windows": {
+				"command": ""
+			},
+			"problemMatcher": [],
+			"presentation": {
+				"focus": true
+			}
+		},
+		{
+			"label": "resume detached screen",
+			"type": "shell",
+			"command": "screen -ls | grep '\\(Detached\\)' && screen -r",
+			"windows": {
+				"command": ""
+			},
+			"problemMatcher": [],
+			"presentation": {
+				"focus": true
+			}
+		}
+	]
+}
