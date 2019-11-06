@@ -30,6 +30,7 @@ StateChangeForSonarDistance::StateChangeForSonarDistance()
 AppModeMotors::AppModeMotors()
 	: AppModeBase("AppModeMotors")
 	, mMotorsLR(0)
+	, mMotorsPT(0)
 	, mNeoPixel(0)
 	, mSonar(0)
 {
@@ -46,6 +47,7 @@ AppModeMotors::AppModeMotors()
 			mNeoPixel = new NeoPixel("NeoPixelForRingBitCar",
 									 /* ledPort */ g.p0(),
 									 /* ledCount */ 10);
+			EXT_KIT_ASSERT_OR_PANIC(mNeoPixel, panic::kOutOfMemory);
 		}
 		else if(feature::isConfigured(feature::kSonar)) {
 			ExtKit& g = ExtKit::global();
@@ -60,7 +62,12 @@ AppModeMotors::AppModeMotors()
 			mNeoPixel = new NeoPixel("NeoPixelForRingBitCar",
 									 /* ledPort */ g.p0(),
 									 /* ledCount */ 2);
+			EXT_KIT_ASSERT_OR_PANIC(mNeoPixel, panic::kOutOfMemory);
 		}
+	}
+	else if(feature::isConfigured(feature::kPanTiltBracket)) {
+		mMotorsPT = new PanTiltBracket();
+		EXT_KIT_ASSERT_OR_PANIC(mMotorsPT, panic::kOutOfMemory);
 	}
 
 	static const EventDef events[] = {
@@ -75,6 +82,9 @@ AppModeMotors::AppModeMotors()
 
 	if(mMotorsLR) {
 		addChild(*mMotorsLR);
+	}
+	if(mMotorsPT) {
+		addChild(*mMotorsPT);
 	}
 	if(mNeoPixel) {
 		addChild(*mNeoPixel);
@@ -91,6 +101,7 @@ AppModeMotors::AppModeMotors()
 	uint16_t value = event.value;
 	if(source == messageBusID::kLocalEvent) {
 		if(value == messageBusEvent::kLocalAppStarted) {
+			controlMotorsPTUsingButtons(button::kF);
 			display::showButton(button::kNone);
 			if(mNeoPixel) {
 				mNeoPixel->fillColor(Color::white);
@@ -130,7 +141,7 @@ AppModeMotors::AppModeMotors()
 		if(mSonarDistance.read(/* OUT */ value)) {
 			if((value < 10) && (value < lastValue)) {
 				const Direction d = direction::kStop;
-				controlMotorsUsingDirection(d);
+				controlMotorsLRUsingDirection(d);
 				display::showDirection(d);
 			}
 			else {
@@ -143,10 +154,21 @@ AppModeMotors::AppModeMotors()
 
 	// Check Remote Buttons
 	{
+		const Buttons kTiltOrPan = button::kTiltU | button::kTiltD | button::kPanL | button::kPanR;
 		Buttons b;
 		if(mReceiverCategoryForButtons.buttons.read(/* OUT */ b)) {
+			mButtonPressedDuration100ms = 0;
+			controlMotorsPTUsingButtons(b);
 			display::showButton(b);
 		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Buttons: 0x", string::hex(b).toCharArray());
+		}
+		else if((b && kTiltOrPan) != 0) {
+			mButtonPressedDuration100ms++;
+			if(5 < mButtonPressedDuration100ms) {
+				controlMotorsPTUsingButtons(b);
+				debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Buttons: 0x", string::hex(b).toCharArray());
+				debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Buttons Pressed Duration: ", string::dec(mButtonPressedDuration100ms).toCharArray());
+			}
 		}
 	}
 
@@ -154,7 +176,7 @@ AppModeMotors::AppModeMotors()
 	{
 		Direction d;
 		if(mReceiverCategoryForButtons.direction.read(/* OUT */ d)) {
-			controlMotorsUsingDirection(d);
+			controlMotorsLRUsingDirection(d);
 			display::showDirection(d);
 		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Direction: 0x", string::hex(d).toCharArray());
 		}
@@ -174,68 +196,143 @@ AppModeMotors::AppModeMotors()
 			else if(b & button::kR) {
 				d = direction::kRF;
 			}
-			controlMotorsUsingDirection(d);
+			controlMotorsLRUsingDirection(d);
 			display::showDirection(d);
 		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Local Buttons: 0x", string::hex(b).toCharArray());
 		}
 	}
 }
 
-bool AppModeMotors::controlMotorsUsingDirection(Direction direction)
+bool AppModeMotors::controlMotorsLRUsingDirection(Direction direction)
 {
 	if(!mMotorsLR) {
 		return false;
 	}
 
+	//	debug_sendLine(EXT_KIT_DEBUG_TRACE "AppModeMotors::controlMotorsLRUsingDirection() with direction 0x", string::hex(direction).toCharArray());
 	const MotorsLR::MotorDirection	F = MotorsLR::kForward;
 	const MotorsLR::MotorDirection	B = MotorsLR::kBackward;
-	const int	H = 50;	// 50; // speedInPercent - high
-	const int	L = 25;	// 25; // speedInPercent - low
+	const int /* speedInPercent */	H = 100;
+	const int /* speedInPercent */	L = 70;
 	switch(direction) {
-		case direction::kCenter:
-			mMotorsLR->setMotorSpeed(F, F, 0, 0);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: -");
-			break;
-		case direction::kN:
-			mMotorsLR->setMotorSpeed(F, F, H, H);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: N");
-			break;
-		case direction::kE:
-			mMotorsLR->setMotorSpeed(F, B, H, H);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: E");
-			break;
-		case direction::kW:
-			mMotorsLR->setMotorSpeed(B, F, H, H);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: W");
-			break;
-		case direction::kS:
-			mMotorsLR->setMotorSpeed(B, B, H, H);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: S");
-			break;
-		case direction::kNE:
-			mMotorsLR->setMotorSpeed(F, F, H, L);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: NE");
-			break;
-		case direction::kNW:
-			mMotorsLR->setMotorSpeed(F, F, L, H);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: NW");
-			break;
-		case direction::kSE:
-			mMotorsLR->setMotorSpeed(B, B, H, L);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: SE");
-			break;
-		case direction::kSW:
-			mMotorsLR->setMotorSpeed(B, B, L, H);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: SW");
-			break;
-		case direction::kLF:
-			mMotorsLR->setMotorSpeed(F, F, H, 0);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: LF");
-			break;
-		case direction::kLB:
-			mMotorsLR->setMotorSpeed(B, B, H, 0);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: LB");
-			break;
-		case direction::kRF:
-			mMotorsLR->setMotorSpeed(F, F, 0, H);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: RF");
-			break;
-		case direction::kRB:
-			mMotorsLR->setMotorSpeed(B, B, 0, H);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: RB");
-			break;
-		case direction::kStop:
-			mMotorsLR->setMotorSpeed(F, F, 0, 0);	debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: Stop");
-			break;
+		case direction::kCenter: {
+			debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: -");
+			mMotorsLR->setMotorSpeed(F, F, 0, 0);
+			return true;
+		}
+		case direction::kN: {
+			debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: N");
+			mMotorsLR->setMotorSpeed(F, F, H, H);
+			return true;
+		}
+		case direction::kE: {
+			debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: E");
+			mMotorsLR->setMotorSpeed(F, B, H, H);
+			return true;
+		}
+		case direction::kW: {
+			debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: W");
+			mMotorsLR->setMotorSpeed(B, F, H, H);
+			return true;
+		}
+		case direction::kS: {
+			debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: S");
+			mMotorsLR->setMotorSpeed(B, B, H, H);
+			return true;
+		}
+		case direction::kNE: {
+			debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: NE");
+			mMotorsLR->setMotorSpeed(F, F, H, L);
+			return true;
+		}
+		case direction::kNW: {
+			debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: NW");
+			mMotorsLR->setMotorSpeed(F, F, L, H);
+			return true;
+		}
+		case direction::kSE: {
+			debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: SE");
+			mMotorsLR->setMotorSpeed(B, B, H, L);
+			return true;
+		}
+		case direction::kSW: {
+			debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: SW");
+			mMotorsLR->setMotorSpeed(B, B, L, H);
+			return true;
+		}
+		case direction::kLF: {
+			debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: LF");
+			mMotorsLR->setMotorSpeed(F, F, H, 0);
+			return true;
+		}
+		case direction::kLB: {
+			debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: LB");
+			mMotorsLR->setMotorSpeed(B, B, H, 0);
+			return true;
+		}
+		case direction::kRF: {
+			debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: RF");
+			mMotorsLR->setMotorSpeed(F, F, 0, H);
+			return true;
+		}
+		case direction::kRB: {
+			debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: RB");
+			mMotorsLR->setMotorSpeed(B, B, 0, H);
+			return true;
+		}
+		case direction::kStop: {
+			debug_sendLine(EXT_KIT_DEBUG_ACTION "Move: Stop");
+			mMotorsLR->setMotorSpeed(F, F, 0, 0);
+			return true;
+		}
+		default: {
+			// keep the current direction and speed
+			return true;
+		}
 	}
-	return true;
+	return false;
+}
+
+bool AppModeMotors::controlMotorsPTUsingButtons(Buttons buttons)
+{
+	if(!mMotorsPT) {
+		return false;
+	}
+
+	//	debug_sendLine(EXT_KIT_DEBUG_TRACE "AppModeMotors::controlMotorsPTUsingButtons() with buttons 0x", string::hex(buttons).toCharArray());
+	const Motors::Motor	P = MotorsPT::kPan;
+	const Motors::Motor	T = MotorsPT::kTilt;
+	const int /* angleInDegree */	Center = 90;
+	const int /* angleInDegree */	Inc = 10;
+	const int /* angleInDegree */	Dec = -10;
+	if(buttons & button::kTiltU) {
+		debug_sendLine(EXT_KIT_DEBUG_ACTION "Tilt: -");
+		mMotorsPT->incrementMotorAngle(T, Dec);
+		return true;
+	}
+	else  if(buttons & button::kTiltD) {
+		debug_sendLine(EXT_KIT_DEBUG_ACTION "Tilt: +");
+		mMotorsPT->incrementMotorAngle(T, Inc);	
+		return true;
+	}
+	else  if(buttons & button::kPanR) {
+		debug_sendLine(EXT_KIT_DEBUG_ACTION "Pan: -");
+		mMotorsPT->incrementMotorAngle(P, Dec);
+		return true;
+	}
+	else  if(buttons & button::kPanL) {
+		debug_sendLine(EXT_KIT_DEBUG_ACTION "Pan: +");
+		mMotorsPT->incrementMotorAngle(P, Inc);
+		return true;
+	}
+	else  if(buttons & button::kSelL) {
+		debug_sendLine(EXT_KIT_DEBUG_ACTION "Pan: Center");
+		mMotorsPT->updateMotorAngle(P, Center);
+		debug_sendLine(EXT_KIT_DEBUG_ACTION "Tilt: Center");
+		mMotorsPT->updateMotorAngle(T, Center);
+		return true;
+	}
+	return false;
 }
 
 /**	@class	RingBitCar
@@ -250,9 +347,10 @@ RingBitCar::RingBitCar()
 	, mServoL(ExtKit::global().p1())
 	, mServoR(ExtKit::global().p2())
 {
+	configureMotors();
 }
 
-/* MotorsLR */ int /* ErrorCode */ RingBitCar::setMotorSpeed(MotorsLR::Motor motor, MotorsLR::MotorDirection direction, int speedInPercent)
+/* Motors */ int /* ErrorCode */ RingBitCar::setMotorSpeed(Motors::Motor motor, Motors::MotorDirection direction, int speedInPercent)
 {
 	static const int kServoCenter	= 1500;	// microseconds
 	static const int kServoRange	= 1800;	// microseconds
@@ -268,29 +366,68 @@ RingBitCar::RingBitCar()
 	// Servo Value 100-180°	= rotate anticlockwise
 
 	if(speedInPercent == 0) {
-		if(motor == kLeft) {
-			//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Servo Left: Brake");
-			return mServoL.setDigitalValue(0);
-		}
-		else {
-			//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Servo Right: Brake");
-			return mServoR.setDigitalValue(0);
+		switch(motor) {
+			case kLeft: {
+				//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Left speed: 0");
+				return mServoL.setDigitalValue(0);
+			}
+			case kRight: {
+				//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Right speed: 0");
+				return mServoR.setDigitalValue(0);
+			}
 		}
 	}
 	else {
 		int speed = kOffset + speedInPercent * kRange / 100;
 		int value = kCenter;
-		if(motor == kLeft) {
-			value += (direction == kForward) ? speed : - speed;
-			//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Servo Left: ", string::dec(value).toCharArray());
-			return mServoL.setServoValue(value, kServoRange, kServoCenter);
-		}
-		else {
-			value += (direction == kForward) ? - speed : speed;
-			//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Servo Right: ", string::dec(value).toCharArray());
-			return mServoR.setServoValue(value, kServoRange, kServoCenter);
+		switch(motor) {
+			case kLeft: {
+				value += (direction == kForward) ? speed : - speed;
+				//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Left speed: ", string::dec(value).toCharArray());
+				return mServoL.setServoValue(value, kServoRange, kServoCenter);
+			}
+			case kRight: {
+				value += (direction == kForward) ? - speed : speed;
+				//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Right speed: ", string::dec(value).toCharArray());
+				return mServoR.setServoValue(value, kServoRange, kServoCenter);
+			}
 		}
 	}
+
+	return MICROBIT_NOT_SUPPORTED;
+}
+
+/**	@class	PanTiltBracket
+*/
+
+PanTiltBracket::PanTiltBracket()
+	: MotorsPT("PanTiltBracket")
+	, mServoP(ExtKit::global().p1())
+	, mServoT(ExtKit::global().p2())
+{
+	configureMotors();
+}
+
+/* Motors */ int /* ErrorCode */ PanTiltBracket::setMotorAngle(microbit_dal_ext_kit::Motors::Motor motor, int angleInDegree)
+{
+	static const int kServoCenter	= 1500;	// microseconds
+	static const int kServoRange	= 1000;	// microseconds
+	// Servo Value 0°	= 1000 (1500 - 500) microseconds
+	// Servo Value 90°	= 1500 microseconds
+	// Servo Value 180°	= 2000 (1500 + 500) microseconds
+
+	switch(motor) {
+		case kPan: {
+			debug_sendLine(EXT_KIT_DEBUG_ACTION "Pan angle: ", string::dec(angleInDegree).toCharArray());
+			return mServoP.setServoValue(angleInDegree, kServoRange, kServoCenter);
+		}
+		case kTilt: {
+			debug_sendLine(EXT_KIT_DEBUG_ACTION "Tilt angle: ", string::dec(angleInDegree).toCharArray());
+			return mServoT.setServoValue(angleInDegree, kServoRange, kServoCenter);
+		}
+	}
+
+	return MICROBIT_NOT_SUPPORTED;
 }
 
 }	// microbit_dal_app_kit

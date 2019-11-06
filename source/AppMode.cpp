@@ -168,6 +168,12 @@ static const AppMode kRingBitCar =
 	feature::kRingBitCar |
 	feature::kRemoteStateRx;
 
+/// App Mode `B` using `AppModeMotors`
+static const AppMode kPanTiltBracket =
+	feature::kNoAutoDetection |
+	feature::kPanTiltBracket |
+	feature::kRemoteStateRx;
+
 ///	App Mode `Z` using `AppModeNeoPixelRing`
 static const AppMode kZipHalo =
 	feature::kNoAutoDetection |
@@ -194,6 +200,7 @@ static const char* const sHints[] = {
 	/*
 		The following menu key characters intend to describe the main extension board used by the App Mode. They are only available at sub-menu depth 0, i.e., they should be placed at the first character of any menu key string.
 	*/
+	"B0Brc",	// Pan/Tilt Bracket
 	"C0Car",	// ring:bit Car
 	"G0Gen",	// Generic (no extension board)
 	"J0Joy",	// Joystick:bit
@@ -270,6 +277,11 @@ static const AppModeDef sAppModeTable[] = {
 		appMode::kRingBitCar | feature::kBackToFront,
 		"C-",
 		"ring:bit Car"
+	},
+	{
+		appMode::kPanTiltBracket,
+		"B",
+		"Pan/Tilt Bracket"
 	},
 	{
 		appMode::kZipHalo | feature::kBuzzer,
@@ -353,6 +365,10 @@ static const AppModeDef sAppModeTable[] = {
 	}
 	else if(feature::isConfigured(appMode::kRingBitCar)) {
 		//	App Mode `C` using `AppModeMotors`
+		appMode = new AppModeMotors();
+	}
+	else if(feature::isConfigured(appMode::kPanTiltBracket)) {
+		//	App Mode `B` using `AppModeMotors`
 		appMode = new AppModeMotors();
 	}
 	else if(feature::isConfigured(appMode::kPianoPlayer)) {

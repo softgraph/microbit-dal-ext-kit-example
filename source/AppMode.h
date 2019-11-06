@@ -81,6 +81,9 @@ const microbit_dal_ext_kit::AppMode kZipHalo			= (1 << 14);
 /// `microbit_dal_app_kit::RingBitCar` is available.
 const microbit_dal_ext_kit::AppMode kRingBitCar			= (1 << 15);
 
+/// `microbit_dal_app_kit::PanTiltBracket` is available.
+const microbit_dal_ext_kit::AppMode kPanTiltBracket		= (1 << 16);
+
 /// Check whether a feature is configured or not
 bool isConfigured(microbit_dal_ext_kit::AppMode feature);
 

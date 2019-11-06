@@ -14,6 +14,7 @@
 
 #include "ExtKitDirection.h"
 #include "ExtKitMotorsLR.h"
+#include "ExtKitMotorsPT.h"
 #include "ExtKitNeoPixel.h"
 #include "ExtKitRemoteState.h"
 #include "ExtKitSonar.h"
@@ -52,12 +53,18 @@ protected:
 	/// Inherited
 	/* Sonar::HandlerProtocol */ void handleSonarEcho(uint32_t duration /* in microseconds*/);
 
-private:
-	/// Control Motors Using Direction
-	bool controlMotorsUsingDirection(microbit_dal_ext_kit::Direction direction);
+	/// Control Motors LR Using Direction
+	bool controlMotorsLRUsingDirection(microbit_dal_ext_kit::Direction direction);
 
+	/// Control Motors PT Using Direction
+	bool controlMotorsPTUsingButtons(microbit_dal_ext_kit::Buttons buttons);
+
+protected:
 	/// Motors LR
 	microbit_dal_ext_kit::MotorsLR*	mMotorsLR;
+
+	/// Motors PT
+	microbit_dal_ext_kit::MotorsPT*	mMotorsPT;
 
 	/// NeoPixel
 	microbit_dal_ext_kit::NeoPixel*	mNeoPixel;
@@ -71,6 +78,9 @@ private:
 	/// Remote State Receiver Category For Buttons
 	RemoteStateReceiverCategoryForButtons	mReceiverCategoryForButtons;
 
+	/// Button pressed duration in 100 milliseconds
+	int mButtonPressedDuration100ms;
+
 	/// State For Local Buttons
 	microbit_dal_ext_kit::StateForButtons	mButtons;
 
@@ -79,10 +89,11 @@ private:
 
 };	// AppModeMotors
 
-/// An Component which provides the support for ElecFreaks' ring:bit car (v2) board
+/// An Component which implements two speed motors for left and right with continuous-rotation servo motors included in ElecFreaks' kit of ring:bit car (v2) for micro:bit
 /**
 	@reference	ElecFreaks ring:bit car (v2) for micro:bit
 		- https://www.elecfreaks.com/estore/elecfreaks-ring-bit-car-v2-for-micro-bit-without-micro-bit.html
+		- https://www.elecfreaks.com/estore/elecfreaks-ring-bit-v2-for-micro-bit.html
 		- https://www.elecfreaks.com/learn-en/microbitKit/ring_bit_v2/index.html
 */
 class RingBitCar : public microbit_dal_ext_kit::MotorsLR
@@ -93,16 +104,40 @@ public:
 
 protected:
 	/// Inherited
-	/* MotorsLR */ int /* ErrorCode */ setMotorSpeed(microbit_dal_ext_kit::MotorsLR::Motor motor, microbit_dal_ext_kit::MotorsLR::MotorDirection direction, int speedInPercent);
+	/* Motors */ int /* ErrorCode */ setMotorSpeed(microbit_dal_ext_kit::Motors::Motor motor, microbit_dal_ext_kit::Motors::MotorDirection direction, int speedInPercent);
 
-private:
-	/// Servo Left
-	MicroBitPin&	mServoL;
+protected:
+	/// Left servo
+	MicroBitPin& mServoL;
 
-	/// Servo Right
-	MicroBitPin&	mServoR;
+	/// Right servo
+	MicroBitPin& mServoR;
 
 };	// RingBitCar
+
+/// An Component which implements two angle motors for pan and tilt with standard, non-continuous rotation, servo motors included in Sparkfun's Pan/Tilt Bracket Kit
+/**
+	@reference	Sparkfun Pan/Tilt Bracket Kit 
+		- https://www.sparkfun.com/products/14391
+*/
+class PanTiltBracket : public microbit_dal_ext_kit::MotorsPT
+{
+public:
+	/// Constructor
+	PanTiltBracket();
+
+protected:
+	/// Inherited
+	/* Motors */ int /* ErrorCode */ setMotorAngle(microbit_dal_ext_kit::Motors::Motor motor, int angleInDegree);
+
+protected:
+	/// Pan servo
+	MicroBitPin& mServoP;
+
+	/// Tilt servo
+	MicroBitPin& mServoT;
+
+};	// PanTiltBracket
 
 }	// microbit_dal_app_kit
 
