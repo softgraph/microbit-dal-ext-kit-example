@@ -23,7 +23,13 @@ AppModeBase::AppModeBase(const char* name)
 	: CompositeComponent(name)
 	, mEvents(0)
 	, mRadioEvents(0)
+	, mPeriodicObservers(0)
 {
+	static const PeriodDef defaulPeriodicObservers[] = {
+		{ PeriodicObserver::kUnit100ms, PeriodicObserver::kPriorityMedium },
+		{ PeriodicObserver::kUnitNever, PeriodicObserver::kPriorityVeryLow }	// END OF TABLE
+	};
+	mPeriodicObservers = defaulPeriodicObservers;
 }
 
 void AppModeBase::selectEvents(const EventDef* def)
@@ -34,6 +40,11 @@ void AppModeBase::selectEvents(const EventDef* def)
 void AppModeBase::selectRadioEvents(const EventDef* def)
 {
 	mRadioEvents = def;
+}
+
+void AppModeBase::selectPeriodicObservers(const PeriodDef* def)
+{
+	mPeriodicObservers = def;
 }
 
 /* CompositeComponent */ void AppModeBase::doHandleComponentAction(Action action)
@@ -60,12 +71,24 @@ void AppModeBase::selectRadioEvents(const EventDef* def)
 			}
 		}
 
-		// Listen Periodic Observer
-		PeriodicObserver::listen(PeriodicObserver::kUnit100ms, *this);
+		// Listen Periodic Observers
+		if(mPeriodicObservers) {
+			const PeriodDef* p = mPeriodicObservers;
+			while(p->unit != PeriodicObserver::kUnitNever) {
+				PeriodicObserver::listen(p->unit, *this, p->priority);
+				p++;
+			}
+		}
 	}
 	else if(action == kStop) {
-		// Ignore Periodic Observer
-		PeriodicObserver::ignore(PeriodicObserver::kUnit100ms, *this);
+		// Ignore Periodic Observers
+		if(mPeriodicObservers) {
+			const PeriodDef* p = mPeriodicObservers;
+			while(p->unit != PeriodicObserver::kUnitNever) {
+				PeriodicObserver::ignore(p->unit, *this);
+				p++;
+			}
+		}
 
 		// Ignore Radio Events
 		if(mRadioEvents) {
@@ -202,13 +225,25 @@ void AppModeBase::handleEvent(MicroBitEvent event)
 	/* virtual */ doHandleEvent(event);
 }
 
-/* PeriodicObserver::HandlerProtocol */ void AppModeBase::handlePeriodicEvent(uint32_t count, PeriodicObserver::PeriodUnit /* unit */)
+/* PeriodicObserver::HandlerProtocol */ void AppModeBase::handlePeriodicEvent(uint32_t count, PeriodicObserver::PeriodUnit unit)
 {
-	/* virtual */ doHandlePeriodic100ms(count);
+	switch(unit) {
+		case PeriodicObserver::kUnit20ms: {
+			/* virtual */ doHandlePeriodic20ms(count);
+			break;
+		}
+		case PeriodicObserver::kUnit100ms: {
+			/* virtual */ doHandlePeriodic100ms(count);
 
-	if((count & 0x7f) == 0) {
-		// approx. every 12.8 seconds
-		Statistics::debug_sendItems();
+			if((count & 0x7f) == 0) {
+				// approx. every 12.8 seconds
+				Statistics::debug_sendItems();
+			}
+			break;
+		}
+		case PeriodicObserver::kUnitNever: {
+			break;
+		}
 	}
 }
 

@@ -37,11 +37,24 @@ protected:
 		uint16_t	value;
 	};
 
-	/// Select Events
+	/// Period Definition
+	struct PeriodDef {
+	public:
+		/// Unit
+		microbit_dal_ext_kit::PeriodicObserver::PeriodUnit	unit;
+
+		/// Priority
+		microbit_dal_ext_kit::PeriodicObserver::HandlerPriority	priority;
+	};
+
+	/// Select Events to be received
 	void selectEvents(const EventDef* def);
 
-	/// Select Radio Events
+	/// Select Radio Events to be forwarded
 	void selectRadioEvents(const EventDef* def);
+
+	/// Select Periodic Observers to be notified
+	void selectPeriodicObservers(const PeriodDef* def);
 
 	/// Inherited
 	/* CompositeComponent */ void doHandleComponentAction(Action action);
@@ -50,7 +63,12 @@ protected:
 	virtual /* AppModeBase */ void doHandleEvent(const MicroBitEvent& /* event */)	{ /* nothing to do */ }
 
 	/// Do Handle Periodic 100 ms
+	/** This handler is enabled by default. */
 	virtual /* AppModeBase */ void doHandlePeriodic100ms(uint32_t /* count */)	{ /* nothing to do */ }
+
+	/// Do Handle Periodic 20 ms
+	/** This handler is disabled by default. You need to call selectPeriodicObservers() to enable it. */
+	virtual /* AppModeBase */ void doHandlePeriodic20ms(uint32_t /* count */)	{ /* nothing to do */ }
 
 private:
 	void listen(int id, int value);
@@ -64,6 +82,8 @@ private:
 	const EventDef*	mEvents;
 
 	const EventDef*	mRadioEvents;
+
+	const PeriodDef* mPeriodicObservers;
 
 };	// AppModeBase
 
