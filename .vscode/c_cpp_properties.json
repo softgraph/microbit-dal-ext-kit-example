@@ -1,11 +1,13 @@
 {
-	"configurations": [{
-		"name": "Mac",
-		"includePath": [
-			"${workspaceFolder}/**"
-		],
-		"compilerPath": "/usr/local/bin/arm-none-eabi-gcc",
-		"cppStandard": "c++11"
-	}],
+	"configurations": [
+		{
+			"name": "Mac",
+			"includePath": [
+				"${workspaceFolder}/**"
+			],
+			"compilerPath": "/usr/local/bin/arm-none-eabi-gcc",
+			"cppStandard": "c++11"
+		}
+	],
 	"version": 4
 }
