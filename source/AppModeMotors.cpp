@@ -80,6 +80,15 @@ AppModeMotors::AppModeMotors()
 	};
 	selectEvents(events);
 
+	if(mMotorsPT) {
+		static const PeriodDef periodicObservers[] = {
+			{ PeriodicObserver::kUnit20ms, PeriodicObserver::kPriorityMedium },
+			{ PeriodicObserver::kUnit100ms, PeriodicObserver::kPriorityMedium },
+			{ PeriodicObserver::kUnitNever, PeriodicObserver::kPriorityVeryLow }	// END OF TABLE
+		};
+		selectPeriodicObservers(periodicObservers);
+	}
+
 	if(mMotorsLR) {
 		addChild(*mMotorsLR);
 	}
@@ -101,7 +110,7 @@ AppModeMotors::AppModeMotors()
 	uint16_t value = event.value;
 	if(source == messageBusID::kLocalEvent) {
 		if(value == messageBusEvent::kLocalAppStarted) {
-			controlMotorsPTUsingButtons(button::kF);
+			controlMotorsPTUsingButtons(button::kStart);
 			display::showButton(button::kNone);
 			if(mNeoPixel) {
 				mNeoPixel->fillColor(Color::white);
@@ -152,26 +161,6 @@ AppModeMotors::AppModeMotors()
 		mSonar->trigger();
 	}
 
-	// Check Remote Buttons
-	{
-		const Buttons kTiltOrPan = button::kTiltU | button::kTiltD | button::kPanL | button::kPanR;
-		Buttons b;
-		if(mReceiverCategoryForButtons.buttons.read(/* OUT */ b)) {
-			mButtonPressedDuration100ms = 0;
-			controlMotorsPTUsingButtons(b);
-			display::showButton(b);
-			//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Buttons: 0x", string::hex(b).toCharArray());
-		}
-		else if((b && kTiltOrPan) != 0) {
-			mButtonPressedDuration100ms++;
-			if(5 < mButtonPressedDuration100ms) {
-				controlMotorsPTUsingButtons(b);
-				//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Buttons: 0x", string::hex(b).toCharArray());
-				//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Buttons Pressed Duration: ", string::dec(mButtonPressedDuration100ms).toCharArray());
-			}
-		}
-	}
-
 	// Check Remote Direction
 	{
 		Direction d;
@@ -199,6 +188,30 @@ AppModeMotors::AppModeMotors()
 			controlMotorsLRUsingDirection(d);
 			display::showDirection(d);
 			//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Local Buttons: 0x", string::hex(b).toCharArray());
+		}
+	}
+}
+
+/* AppModeBase */ void AppModeMotors::doHandlePeriodic20ms(uint32_t /* count */)
+{
+	// Check Remote Buttons
+	{
+		const Buttons kTiltOrPan = button::kTiltU | button::kTiltD | button::kPanL | button::kPanR;
+		Buttons b;
+		if(mReceiverCategoryForButtons.buttons.read(/* OUT */ b)) {
+			mButtonPressedDuration20ms = 0;
+			controlMotorsPTUsingButtons(b);
+			display::showButton(b);
+			//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Buttons: 0x", string::hex(b).toCharArray());
+		}
+		else if((b && kTiltOrPan) != 0) {
+			const int kLongPressedDuration20ms = 25;	// 500 ms
+			mButtonPressedDuration20ms++;
+			if(kLongPressedDuration20ms < mButtonPressedDuration20ms) {
+				controlMotorsPTUsingButtons(b);
+				//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Buttons: 0x", string::hex(b).toCharArray());
+				//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Buttons Pressed Duration: ", string::dec(mButtonPressedDuration20ms).toCharArray());
+			}
 		}
 	}
 }
@@ -303,8 +316,8 @@ bool AppModeMotors::controlMotorsPTUsingButtons(Buttons buttons)
 	const Motors::Motor	P = MotorsPT::kPan;
 	const Motors::Motor	T = MotorsPT::kTilt;
 	const int /* angleInDegree */	Center = 90;
-	const int /* angleInDegree */	Inc = 10;
-	const int /* angleInDegree */	Dec = -10;
+	const int /* angleInDegree */	Inc = 3;
+	const int /* angleInDegree */	Dec = -3;
 	if(buttons & button::kTiltU) {
 		debug_sendLine(EXT_KIT_DEBUG_ACTION "Tilt: -");
 		mMotorsPT->incrementMotorAngle(T, Dec);
@@ -325,7 +338,7 @@ bool AppModeMotors::controlMotorsPTUsingButtons(Buttons buttons)
 		mMotorsPT->incrementMotorAngle(P, Inc);
 		return true;
 	}
-	else if(buttons & button::kSelR) {
+	else if(buttons & button::kStart) {
 		debug_sendLine(EXT_KIT_DEBUG_ACTION "Pan: Center");
 		mMotorsPT->updateMotorAngle(P, Center);
 		debug_sendLine(EXT_KIT_DEBUG_ACTION "Tilt: Center");
@@ -410,18 +423,24 @@ PanTiltBracket::PanTiltBracket()
 
 /* Motors */ int /* ErrorCode */ PanTiltBracket::setMotorAngle(microbit_dal_ext_kit::Motors::Motor motor, int angleInDegree)
 {
-	static const int kServoCenter	= 1500;	// microseconds
-	static const int kServoRange	= 1000;	// microseconds
-	// Servo Value 0°	= 1000 (1500 - 500) microseconds
-	// Servo Value 90°	= 1500 microseconds
-	// Servo Value 180°	= 2000 (1500 + 500) microseconds
-
 	switch(motor) {
 		case kPan: {
+			static const int kServoCenter	= 1500;	// microseconds
+			static const int kServoRange	= 2000;	// microseconds
+			// Servo Value 0°	=  500 (1500 - 1000) microseconds
+			// Servo Value 90°	= 1500 microseconds
+			// Servo Value 180°	= 2500 (1500 + 1000) microseconds
+
 			//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Pan angle: ", string::dec(angleInDegree).toCharArray());
 			return mServoP.setServoValue(angleInDegree, kServoRange, kServoCenter);
 		}
 		case kTilt: {
+			static const int kServoCenter	= 1500;	// microseconds
+			static const int kServoRange	= 1600;	// microseconds
+			// Servo Value 0°	=  700 (1500 - 800) microseconds
+			// Servo Value 90°	= 1500 microseconds
+			// Servo Value 180°	= 2300 (1500 + 800) microseconds
+
 			//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Tilt angle: ", string::dec(angleInDegree).toCharArray());
 			return mServoT.setServoValue(angleInDegree, kServoRange, kServoCenter);
 		}

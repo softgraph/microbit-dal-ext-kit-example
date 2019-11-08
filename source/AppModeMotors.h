@@ -51,6 +51,9 @@ protected:
 	/* AppModeBase */ void doHandlePeriodic100ms(uint32_t count);
 
 	/// Inherited
+	/* AppModeBase */ void doHandlePeriodic20ms(uint32_t count);
+
+	/// Inherited
 	/* Sonar::HandlerProtocol */ void handleSonarEcho(uint32_t duration /* in microseconds*/);
 
 	/// Control Motors LR Using Direction
@@ -78,8 +81,8 @@ protected:
 	/// Remote State Receiver Category For Buttons
 	RemoteStateReceiverCategoryForButtons	mReceiverCategoryForButtons;
 
-	/// Button pressed duration in 100 milliseconds
-	int mButtonPressedDuration100ms;
+	/// Button pressed duration in 20 milliseconds
+	int mButtonPressedDuration20ms;
 
 	/// State For Local Buttons
 	microbit_dal_ext_kit::StateForButtons	mButtons;
