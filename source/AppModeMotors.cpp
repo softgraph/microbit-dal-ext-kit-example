@@ -160,14 +160,14 @@ AppModeMotors::AppModeMotors()
 			mButtonPressedDuration100ms = 0;
 			controlMotorsPTUsingButtons(b);
 			display::showButton(b);
-		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Buttons: 0x", string::hex(b).toCharArray());
+			//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Buttons: 0x", string::hex(b).toCharArray());
 		}
 		else if((b && kTiltOrPan) != 0) {
 			mButtonPressedDuration100ms++;
 			if(5 < mButtonPressedDuration100ms) {
 				controlMotorsPTUsingButtons(b);
-				debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Buttons: 0x", string::hex(b).toCharArray());
-				debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Buttons Pressed Duration: ", string::dec(mButtonPressedDuration100ms).toCharArray());
+				//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Buttons: 0x", string::hex(b).toCharArray());
+				//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Buttons Pressed Duration: ", string::dec(mButtonPressedDuration100ms).toCharArray());
 			}
 		}
 	}
@@ -178,7 +178,7 @@ AppModeMotors::AppModeMotors()
 		if(mReceiverCategoryForButtons.direction.read(/* OUT */ d)) {
 			controlMotorsLRUsingDirection(d);
 			display::showDirection(d);
-		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Direction: 0x", string::hex(d).toCharArray());
+			//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Remote Direction: 0x", string::hex(d).toCharArray());
 		}
 	}
 
@@ -198,7 +198,7 @@ AppModeMotors::AppModeMotors()
 			}
 			controlMotorsLRUsingDirection(d);
 			display::showDirection(d);
-		//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Local Buttons: 0x", string::hex(b).toCharArray());
+			//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Local Buttons: 0x", string::hex(b).toCharArray());
 		}
 	}
 }
@@ -310,22 +310,22 @@ bool AppModeMotors::controlMotorsPTUsingButtons(Buttons buttons)
 		mMotorsPT->incrementMotorAngle(T, Dec);
 		return true;
 	}
-	else  if(buttons & button::kTiltD) {
+	else if(buttons & button::kTiltD) {
 		debug_sendLine(EXT_KIT_DEBUG_ACTION "Tilt: +");
 		mMotorsPT->incrementMotorAngle(T, Inc);	
 		return true;
 	}
-	else  if(buttons & button::kPanR) {
+	else if(buttons & button::kPanR) {
 		debug_sendLine(EXT_KIT_DEBUG_ACTION "Pan: -");
 		mMotorsPT->incrementMotorAngle(P, Dec);
 		return true;
 	}
-	else  if(buttons & button::kPanL) {
+	else if(buttons & button::kPanL) {
 		debug_sendLine(EXT_KIT_DEBUG_ACTION "Pan: +");
 		mMotorsPT->incrementMotorAngle(P, Inc);
 		return true;
 	}
-	else  if(buttons & button::kSelL) {
+	else if(buttons & button::kSelR) {
 		debug_sendLine(EXT_KIT_DEBUG_ACTION "Pan: Center");
 		mMotorsPT->updateMotorAngle(P, Center);
 		debug_sendLine(EXT_KIT_DEBUG_ACTION "Tilt: Center");
@@ -418,11 +418,11 @@ PanTiltBracket::PanTiltBracket()
 
 	switch(motor) {
 		case kPan: {
-			debug_sendLine(EXT_KIT_DEBUG_ACTION "Pan angle: ", string::dec(angleInDegree).toCharArray());
+			//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Pan angle: ", string::dec(angleInDegree).toCharArray());
 			return mServoP.setServoValue(angleInDegree, kServoRange, kServoCenter);
 		}
 		case kTilt: {
-			debug_sendLine(EXT_KIT_DEBUG_ACTION "Tilt angle: ", string::dec(angleInDegree).toCharArray());
+			//	debug_sendLine(EXT_KIT_DEBUG_ACTION "Tilt angle: ", string::dec(angleInDegree).toCharArray());
 			return mServoT.setServoValue(angleInDegree, kServoRange, kServoCenter);
 		}
 	}
