@@ -1,8 +1,8 @@
 {
   "microbit-dal": {
     "bluetooth": {
-        "enabled": 0,
-        "pairing_mode": 0
+      "enabled": 0,
+      "pairing_mode": 0
     },
     "debug": 0,
     "heap_debug": 0
