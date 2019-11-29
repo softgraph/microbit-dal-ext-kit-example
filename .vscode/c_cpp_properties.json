@@ -3,7 +3,18 @@
 		{
 			"name": "Mac",
 			"includePath": [
-				"${workspaceFolder}/**"
+				"${workspaceFolder}/source",
+				"${workspaceFolder}/yotta_modules/ble",
+				"${workspaceFolder}/yotta_modules/mbed-classic/api",
+				"${workspaceFolder}/yotta_modules/mbed-classic/hal",
+				"${workspaceFolder}/yotta_modules/mbed-classic/targets/cmsis",
+				"${workspaceFolder}/yotta_modules/mbed-classic/targets/cmsis/TARGET_NORDIC/TARGET_MCU_NRF51822",
+				"${workspaceFolder}/yotta_modules/mbed-classic/targets/hal/TARGET_NORDIC/TARGET_MCU_NRF51822",
+				"${workspaceFolder}/yotta_modules/mbed-classic/targets/hal/TARGET_NORDIC/TARGET_MCU_NRF51822/TARGET_NRF51_MICROBIT",
+				"${workspaceFolder}/yotta_modules/microbit/inc",
+				"${workspaceFolder}/yotta_modules/microbit-dal/inc/**",
+				"${workspaceFolder}/yotta_modules/microbit-dal-ext-kit/inc",
+				"${workspaceFolder}/yotta_modules/nrf51-sdk/source/nordic_sdk/components/softdevice/s130/headers/"
 			],
 			"compilerPath": "/usr/local/bin/arm-none-eabi-gcc",
 			"cppStandard": "c++11"
