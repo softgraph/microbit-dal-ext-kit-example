@@ -349,8 +349,9 @@ bool AppModeMotors::controlMotorsPTUsingButtons(Buttons buttons)
 }
 
 /**	@class	RingBitCar
-	@reference	Tinkertanker pxt-ringbitcar ringbitcar.ts (MIT license)
+	@reference	Ring:bit Car Package
 		- https://makecode.microbit.org/pkg/tinkertanker/pxt-ringbitcar
+	@reference	Tinkertanker/pxt-ringbitcar/ringbitcar.ts (MIT license)
 		- https://github.com/Tinkertanker/pxt-ringbitcar
 		- https://github.com/Tinkertanker/pxt-ringbitcar/blob/master/ringbitcar.ts
 */
