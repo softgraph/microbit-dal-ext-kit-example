@@ -14,6 +14,7 @@
 				"${workspaceFolder}/yotta_modules/microbit/inc",
 				"${workspaceFolder}/yotta_modules/microbit-dal/inc/**",
 				"${workspaceFolder}/yotta_modules/microbit-dal-ext-kit/inc",
+				"${workspaceFolder}/yotta_modules/nrf51-sdk/source/nordic_sdk/components/device/",
 				"${workspaceFolder}/yotta_modules/nrf51-sdk/source/nordic_sdk/components/softdevice/s130/headers/"
 			],
 			"compilerPath": "/usr/local/bin/arm-none-eabi-gcc",
