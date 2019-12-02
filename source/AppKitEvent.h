@@ -31,16 +31,16 @@ namespace messageBusEvent {
 /// Local Event: App Started
 const int kLocalAppStarted		= 1;
 
-/// Remote Event: Tilt Left
+/// Remote Event: Tilt to the Left
 const int kRemoteTiltLeft		= 1;
 
-/// Remote Event: Tilt Down (= Tilt Top)
+/// Remote Event: Tilt Down (= Tilt to the Top)
 const int kRemoteTiltTop		= 2;
 
-/// Remote Event: Tilt Right
+/// Remote Event: Tilt to the Right
 const int kRemoteTiltRight		= 3;
 
-/// Remote Event: Tilt Up (= Tilt Botttom)
+/// Remote Event: Tilt Up (= Tilt to the Botttom)
 const int kRemoteTiltBottom		= 4;
 
 }	// messageBusEvent
