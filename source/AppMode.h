@@ -84,6 +84,16 @@ const microbit_dal_ext_kit::AppMode kRingBitCar			= (1 << 15);
 /// `microbit_dal_app_kit::PanTiltBracket` is available.
 const microbit_dal_ext_kit::AppMode kPanTiltBracket		= (1 << 16);
 
+/*
+	Variants
+*/
+
+/// Variant 1
+const microbit_dal_ext_kit::AppMode kVariant1		= (1 << 22);
+
+/// Original
+const microbit_dal_ext_kit::AppMode kOriginal		= (1 << 23);
+
 /// Check whether a feature is configured or not
 bool isConfigured(microbit_dal_ext_kit::AppMode feature);
 

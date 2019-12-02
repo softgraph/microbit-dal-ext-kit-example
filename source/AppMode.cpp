@@ -18,13 +18,13 @@ namespace microbit_dal_app_kit {
 
 bool feature::isConfigured(AppMode feature)
 {
-	return (appMode::activeMode() & feature) == feature;
+	return (microbit_dal_ext_kit::appMode::activeMode() & feature) == feature;
 }
 
 AppMode feature::checkAvaiableHardware()
 {
 	if(JoystickBit::isAvaiable()) {
-		return feature::kJoystickBit;
+		return feature::kJoystickBit | feature::kOriginal;
 	}
 	if(MotoBit::isAvaiable()) {
 		return feature::kMotoBit;
@@ -117,6 +117,13 @@ namespace appMode {
 ///	App Mode `J` using `AppModeJoystickController`
 static const AppMode kJoystickController =
 	feature::kJoystickBit |
+	feature::kOriginal |
+	feature::kRemoteStateTx;
+
+static const AppMode kJoystickControllerV2 =
+	feature::kNoAutoDetection |
+	feature::kJoystickBit |
+	feature::kVariant1 |
 	feature::kRemoteStateTx;
 
 /*
@@ -211,6 +218,7 @@ static const char* const sHints[] = {
 	/*
 		The following menu key characters intend to describe optional features used by the App Mode. They are available at any sub-menu depth.
 	*/
+	"2*2",		// 2
 	"A*Acc",	// Accelerometer
 	"B*Buz",	// Buzzer
 	"L*Led",	// LED
@@ -225,8 +233,8 @@ static const char* const sHints[] = {
 static const AppModeDef sAppModeTable[] = {
 	{
 		appMode::kJoystickController,
-		"J",
-		"Joystick:bit"
+		"J1",
+		"Joystick:bit V1"
 	},
 	{
 		appMode::kMotoBit | feature::kUpsideDown,
@@ -262,6 +270,11 @@ static const AppModeDef sAppModeTable[] = {
 		appMode::kGenericReceiver,
 		"GR-",
 		"Generic Receiver"
+	},
+	{
+		appMode::kJoystickControllerV2,
+		"J2",
+		"Joystick:bit V2"
 	},
 	{
 		appMode::kRingBitCar | feature::kBackToFront | feature::kNeoPixel,
@@ -356,7 +369,11 @@ static const AppModeDef sAppModeTable[] = {
 {
 	AppModeBase* appMode = 0;
 	if(feature::isConfigured(appMode::kJoystickController)) {
-		//	App Mode `J` using `AppModeJoystickController`
+		//	App Mode `J1` using `AppModeJoystickController`
+		appMode = new AppModeJoystickController();
+	}
+	else if(feature::isConfigured(appMode::kJoystickControllerV2)) {
+		//	App Mode `J2` using `AppModeJoystickController`
 		appMode = new AppModeJoystickController();
 	}
 	else if(feature::isConfigured(appMode::kMotoBit)) {

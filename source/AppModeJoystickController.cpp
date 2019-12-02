@@ -21,6 +21,7 @@ namespace microbit_dal_app_kit {
 
 AppModeJoystickController::AppModeJoystickController()
 	: AppModeBase("AppModeJoystickController")
+	, mJoystickBit(feature::isConfigured(feature::kVariant1) ? JoystickBit::V2 : JoystickBit::V1)
 {
 	static const EventDef events[] = {
 		{ messageBusID::kLocalEvent, messageBusEvent::kLocalAppStarted },
