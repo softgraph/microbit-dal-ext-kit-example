@@ -3,7 +3,6 @@
 		{
 			"name": "Mac",
 			"includePath": [
-				"${workspaceFolder}/source",
 				"${workspaceFolder}/yotta_modules/ble",
 				"${workspaceFolder}/yotta_modules/mbed-classic/api",
 				"${workspaceFolder}/yotta_modules/mbed-classic/hal",
