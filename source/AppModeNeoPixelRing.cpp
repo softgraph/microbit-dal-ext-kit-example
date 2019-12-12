@@ -73,22 +73,22 @@ AppModeNeoPixelRing::~AppModeNeoPixelRing()
 		if(value == messageBusEvent::kRemoteTiltLeft) {
 			mNeoPixel.rotateLeft();
 			mNeoPixel.show();
-			display::flashChar('<');
+			display::showDirection(direction::kW, display::kSolidTriangle, 500 /* milliseconds */);
 		}
 		else if(value == messageBusEvent::kRemoteTiltTop) {
 			mNeoPixel.rotateLeft();
 			mNeoPixel.show();
-			display::flashChar('^');
+			display::showDirection(direction::kN, display::kSolidTriangle, 500 /* milliseconds */);
 		}
 		else if(value == messageBusEvent::kRemoteTiltRight) {
 			mNeoPixel.rotateRight();
 			mNeoPixel.show();
-			display::flashChar('>');
+			display::showDirection(direction::kE, display::kSolidTriangle, 500 /* milliseconds */);
 		}
 		else if(value == messageBusEvent::kRemoteTiltBottom) {
 			mNeoPixel.rotateRight();
 			mNeoPixel.show();
-			display::flashChar('v');
+			display::showDirection(direction::kS, display::kSolidTriangle, 500 /* milliseconds */);
 		}
 	}
 }

@@ -63,19 +63,19 @@ AppModePianoKeyController::AppModePianoKeyController()
 	else if(source == MICROBIT_ID_GESTURE) {
 		if(value == gesture::microBitGestureEventTiltLeft()) {
 			MicroBitEvent(messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltLeft);	// CREATE_AND_FIRE
-			display::flashChar('<');
+			display::showDirection(direction::kW, display::kSolidTriangle, 500 /* milliseconds */);
 		}
 		else if(value == gesture::microBitGestureEventTiltTop()) {
 			MicroBitEvent(messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltTop);	// CREATE_AND_FIRE
-			display::flashChar('^');
+			display::showDirection(direction::kN, display::kSolidTriangle, 500 /* milliseconds */);
 		}
 		else if(value == gesture::microBitGestureEventTiltRight()) {
 			MicroBitEvent(messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltRight);	// CREATE_AND_FIRE
-			display::flashChar('>');
+			display::showDirection(direction::kE, display::kSolidTriangle, 500 /* milliseconds */);
 		}
 		else if(value == gesture::microBitGestureEventTiltBottom()) {
 			MicroBitEvent(messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltBottom);	// CREATE_AND_FIRE
-			display::flashChar('v');
+			display::showDirection(direction::kS, display::kSolidTriangle, 500 /* milliseconds */);
 		}
 	}
 }

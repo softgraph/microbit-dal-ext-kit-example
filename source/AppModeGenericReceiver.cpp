@@ -61,16 +61,16 @@ AppModeGenericReceiver::~AppModeGenericReceiver()
 	}
 	else if(source == messageBusID::kRemoteEvent) {
 		if(value == messageBusEvent::kRemoteTiltLeft) {
-			display::flashChar('<');
+			display::showDirection(direction::kW, display::kSolidTriangle, 500 /* milliseconds */);
 		}
 		else if(value == messageBusEvent::kRemoteTiltTop) {
-			display::flashChar('^');
+			display::showDirection(direction::kN, display::kSolidTriangle, 500 /* milliseconds */);
 		}
 		else if(value == messageBusEvent::kRemoteTiltRight) {
-			display::flashChar('>');
+			display::showDirection(direction::kE, display::kSolidTriangle, 500 /* milliseconds */);
 		}
 		else if(value == messageBusEvent::kRemoteTiltBottom) {
-			display::flashChar('v');
+			display::showDirection(direction::kS, display::kSolidTriangle, 500 /* milliseconds */);
 		}
 	}
 }
