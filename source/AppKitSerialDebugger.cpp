@@ -74,7 +74,7 @@ AppSerialDebugger::AppSerialDebugger()
 {
 	/* super */ SerialDebugger::debug_sendDeviceInfo();
 
-	debug_sendLine("microbit_dal_ext_kit-example version: " YOTTA_MICROBIT_DAL_EXT_KIT_EXAMPLE_VERSION_STRING, false);
+	debug_sendLine("- microbit-dal-ext-kit-example version: " YOTTA_MICROBIT_DAL_EXT_KIT_EXAMPLE_VERSION_STRING, false);
 }
 
 }	// microbit_dal_app_kit
