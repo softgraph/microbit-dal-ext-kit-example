@@ -9,8 +9,15 @@
 	@note	Run Doxygen (http://www.doxygen.nl) with `Doxyfile` in the project root to generate the documentation.
 */
 
-using namespace microbit_dal_app_kit;
+namespace microbit_dal_ext_kit {
+}	// microbit_dal_ext_kit
+
 using namespace microbit_dal_ext_kit;
+
+namespace microbit_dal_app_kit {
+}	// microbit_dal_app_kit
+
+using namespace microbit_dal_app_kit;
 
 /**	@mainpage	Introduction
 
