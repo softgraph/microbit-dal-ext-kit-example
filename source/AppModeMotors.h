@@ -27,7 +27,7 @@ namespace microbit_dal_app_kit {
 ///	%Sonar Distance in centimeters
 typedef uint16_t	SonarDistance;
 
-/// `StateChange` specialization for `#SonarDistance`
+/// StateChange specialization for #SonarDistance
 class StateChangeForSonarDistance : public microbit_dal_ext_kit::StateChange<SonarDistance>
 {
 public:
