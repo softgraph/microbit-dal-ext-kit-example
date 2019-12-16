@@ -27,14 +27,14 @@ namespace microbit_dal_app_kit {
 /**	@page	AppKit_Main	Main Flow
 		@dontinclude	AppKitMain.cpp
 		The following steps are excerpts of the main flow. See <a href=_app_kit_main_8cpp_source.html>AppKitMain.cpp</a> for the complete source code.
-		-# Create a device class instance of `MicroBitExtKit` or `PrimitiveExtKit`.
+		-# Create a device class instance of MicroBitExtKit or PrimitiveExtKit.
 			The instance should not be created in stack memory (like local variables).
 			-	@skipline	#define
-			- If ENABLE_ALL_MICROBIT_FEATURES is true, an instance of `MicroBitExtKit` is created as variabe `uBit`.
+			- If ENABLE_ALL_MICROBIT_FEATURES is true, an instance of MicroBitExtKit is created as variabe `uBit`.
 				@skipline	#if
 			-	@skip		//
 				@until		static
-			- If ENABLE_ALL_MICROBIT_FEATURES is not true, an instance of `AppExtKit`, which inherits `PrimitiveExtKit`, is created as variabe `uBit`.
+			- If ENABLE_ALL_MICROBIT_FEATURES is not true, an instance of AppExtKit, which inherits PrimitiveExtKit, is created as variabe `uBit`.
 				@skipline	#else
 			-	@skip		class
 				@until		};

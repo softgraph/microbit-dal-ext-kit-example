@@ -41,46 +41,48 @@ AppMode feature::checkAvaiableHardware()
 
 	## App Mode for ElecFreaks' Joystick:bit
 		The following App Mode is selected automatically if Joystick:bit board is connected to the micro:bit.
-		- App Mode `J` (a transmitter using ElecFreaks' Joystick:bit) using `AppModeJoystickController`
+		- App Mode `J1` (a transmitter using ElecFreaks' Joystick:bit) using AppModeJoystickController
+		- App Mode `J2` (a transmitter using ElecFreaks' Joystick:bit v2) using AppModeJoystickController
 
 	## App Mode for SparkFun's moto:bit
 		The following App Mode is selected automatically if moto:bit board is connected to the micro:bit.
-		- App Mode `M` (a receiver using SparkFun's moto:bit) using `AppModeMotors`
+		- App Mode `M` (a receiver using SparkFun's moto:bit) using AppModeMotors
 
 	## App Modes for Waveshare's Mini Piano Module
 		The following App Modes are selectable if Mini Piano Module is connected to the micro:bit.
-		- App Mode `P` (a stand-alone piano player using Waveshare's Mini Piano Module) using `AppModePianoPlayer`
-		- App Mode `K` (a transmitter using Waveshare's Mini Piano Module) using `AppModePianoKeyController`
+		- App Mode `P` (a stand-alone piano player using Waveshare's Mini Piano Module) using AppModePianoPlayer
+		- App Mode `K` (a transmitter using Waveshare's Mini Piano Module) using AppModePianoKeyController
 
 	# App Modes without auto-detection
 		The following App Modes are selectable if any auto-detection listed above is not available.
 
 	## App Modes for micro:bit only
-		- App Mode `GA` (a generic accelerometer) using `AppModeGenericAccelerometer`
-		- App Mode `GT` (a generic transmitter) using `AppModeGenericTransmitter`
-		- App Mode `GRB` (a generic receiver with a buzzer) using `AppModeGenericReceiver`
-		- App Mode `GR-` (a generic receiver) using `AppModeGenericReceiver`
+		- App Mode `GA` (a generic accelerometer) using AppModeGenericAccelerometer
+		- App Mode `GT` (a generic transmitter) using AppModeGenericTransmitter
+		- App Mode `GRB` (a generic receiver with a buzzer) using AppModeGenericReceiver
+		- App Mode `GR-` (a generic receiver) using AppModeGenericReceiver
 
 	## App Modes for ElecFreaks' ring:bit car (v2)
-		- App Mode `CL` (a receiver using ElecFreaks' ring:bit car (v2) with optional 8 LEDs) using `AppModeMotors`
-		- App Mode `C-` (a receiver using ElecFreaks' ring:bit car (v2)) using `AppModeMotors`
+		- App Mode `CL` (a receiver using ElecFreaks' ring:bit car (v2) with optional 8 LEDs) using AppModeMotors
+		- App Mode `C-` (a receiver using ElecFreaks' ring:bit car (v2)) using AppModeMotors
 
 	## App Modes for Kitronik's Zip Halo
-		- App Mode `ZB` (a receiver using Kitronik's Zip Halo with a buzzer) using `AppModeNeoPixelRing`
-		- App Mode `Z-` (a receiver using Kitronik's Zip Halo) using `AppModeNeoPixelRing`
+		- App Mode `ZB` (a receiver using Kitronik's Zip Halo with a buzzer) using AppModeNeoPixelRing
+		- App Mode `Z-` (a receiver using Kitronik's Zip Halo) using AppModeNeoPixelRing
 */
 
 /**	@page	AppKit_RemoteStateCategory	Remote State Category - the set of remote states sent from the transmiiter to the reciver over radio
 
 	# Remote State Category For Buttons
-		The category sends and receives states of `Buttons` and `Direction`. <br>
-		The following App Modes support the category using `RemoteStateTransmitterCategoryForButtons` and `RemoteStateReceiverCategoryForButtons`.
+		The category sends and receives states of #microbit_dal_ext_kit::Buttons and #microbit_dal_ext_kit::Direction. <br>
+		The following App Modes support the category using RemoteStateTransmitterCategoryForButtons and RemoteStateReceiverCategoryForButtons.
 			<table><tr><td>
 				Transmitter
 			</td><td>
 				Receiver
 			</td></tr><tr><td>
-				App Mode `J` (a transmitter using ElecFreaks' Joystick:bit)<br>
+				App Mode `J1` (a transmitter using ElecFreaks' Joystick:bit)<br>
+				App Mode `J2` (a transmitter using ElecFreaks' Joystick:bit v2)<br>
 				App Mode `GT` (a generic transmitter)
 			</td><td>
 				App Mode `M` (a receiver using SparkFun's moto:bit)<br>
@@ -93,8 +95,8 @@ AppMode feature::checkAvaiableHardware()
 			</td></tr></table>
 
 	# Remote State Category For PianoKeys
-		The category sends and receives states of `PianoKeys` and `Octave`. <br>
-		The following App Modes support the category using `RemoteStateTransmitterCategoryForPianoKeys` and `RemoteStateReceiverCategoryForPianoKeys`.
+		The category sends and receives states of #microbit_dal_ext_kit::PianoKeys and #microbit_dal_ext_kit::Octave. <br>
+		The following App Modes support the category using RemoteStateTransmitterCategoryForPianoKeys and RemoteStateReceiverCategoryForPianoKeys.
 			<table><tr><td>
 				Transmitter
 			</td><td>
@@ -111,15 +113,16 @@ AppMode feature::checkAvaiableHardware()
 namespace appMode {
 
 /*
-	App Modes with `feature::kJoystickBit`
+	App Modes with feature::kJoystickBit
 */
 
-///	App Mode `J` using `AppModeJoystickController`
+///	App Mode `J1` using AppModeJoystickController
 static const AppMode kJoystickController =
 	feature::kJoystickBit |
 	feature::kOriginal |
 	feature::kRemoteStateTx;
 
+///	App Mode `J2` using AppModeJoystickController
 static const AppMode kJoystickControllerV2 =
 	feature::kNoAutoDetection |
 	feature::kJoystickBit |
@@ -127,61 +130,61 @@ static const AppMode kJoystickControllerV2 =
 	feature::kRemoteStateTx;
 
 /*
-	App Modes with `feature::kMotoBit`
+	App Modes with feature::kMotoBit
 */
 
-///	App Mode `M` using `AppModeMotors`
+///	App Mode `M` using AppModeMotors
 static const AppMode kMotoBit =
 	feature::kMotoBit |
 	feature::kRemoteStateRx;
 
 /*
-	App Modes with `feature::kTouchPiano`
+	App Modes with feature::kTouchPiano
 */
 
-///	App Mode `P` using `AppModePianoPlayer`
+///	App Mode `P` using AppModePianoPlayer
 static const AppMode kPianoPlayer =
 	feature::kTouchPiano |
 	feature::kNoRemote;
 
-///	App Mode `K` using `AppModePianoKeyController`
+///	App Mode `K` using AppModePianoKeyController
 static const AppMode kPianoKeyController =
 	feature::kTouchPiano |
 	feature::kRemoteStateTx;
 
 /*
-	App Modes with `feature::kNoAutoDetection`
+	App Modes with feature::kNoAutoDetection
 */
 
-///	App Mode `GA` using `AppModeGenericAccelerometer`
+///	App Mode `GA` using AppModeGenericAccelerometer
 static const AppMode kGenericAccelerometer =
 	feature::kNoAutoDetection |
 	feature::kAccelerometer |
 	feature::kNoRemote;
 
-///	App Mode `GT` using `AppModeGenericTransmitter`
+///	App Mode `GT` using AppModeGenericTransmitter
 static const AppMode kGenericTransmitter =
 	feature::kNoAutoDetection |
 	feature::kRemoteStateTx;
 
-///	App Mode `GR` using `AppModeGenericReceiver`
+///	App Mode `GR` using AppModeGenericReceiver
 static const AppMode kGenericReceiver =
 	feature::kNoAutoDetection |
 	feature::kRemoteStateRx;
 
-/// App Mode `C` using `AppModeMotors`
+/// App Mode `C` using AppModeMotors
 static const AppMode kRingBitCar =
 	feature::kNoAutoDetection |
 	feature::kRingBitCar |
 	feature::kRemoteStateRx;
 
-/// App Mode `B` using `AppModeMotors`
+/// App Mode `B` using AppModeMotors
 static const AppMode kPanTiltBracket =
 	feature::kNoAutoDetection |
 	feature::kPanTiltBracket |
 	feature::kRemoteStateRx;
 
-///	App Mode `Z` using `AppModeNeoPixelRing`
+///	App Mode `Z` using AppModeNeoPixelRing
 static const AppMode kZipHalo =
 	feature::kNoAutoDetection |
 	feature::kZipHalo |

@@ -22,7 +22,7 @@ class ManagedString;
 
 namespace microbit_dal_app_kit {
 
-/// Remote State Transmitter Category For Buttons
+/// Remote State Transmitter Category For Buttons and Direction
 class RemoteStateTransmitterCategoryForButtons : public microbit_dal_ext_kit::remoteState::Transmitter::CategoryBase
 {
 public:
@@ -43,7 +43,7 @@ public:
 
 };	// RemoteStateTransmitterCategoryForButtons
 
-/// Remote State Transmitter Category For Piano Keys
+/// Remote State Transmitter Category For PianoKeys and Octave
 class RemoteStateTransmitterCategoryForPianoKeys : public microbit_dal_ext_kit::remoteState::Transmitter::CategoryBase
 {
 public:
@@ -64,7 +64,7 @@ public:
 
 };	// RemoteStateTransmitterCategoryForPianoKeys
 
-/// Remote State Receiver Category For Buttons
+/// Remote State Receiver Category For Buttons and Direction
 class RemoteStateReceiverCategoryForButtons : public microbit_dal_ext_kit::remoteState::Receiver::CategoryBase
 {
 public:
@@ -82,7 +82,7 @@ public:
 
 };	// RemoteStateReceiverCategoryForButtons
 
-/// Remote State Receiver Category For PianoKeys
+/// Remote State Receiver Category For PianoKeys and Octave
 class RemoteStateReceiverCategoryForPianoKeys : public microbit_dal_ext_kit::remoteState::Receiver::CategoryBase
 {
 public:
