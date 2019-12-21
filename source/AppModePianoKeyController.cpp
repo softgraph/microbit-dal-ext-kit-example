@@ -35,10 +35,10 @@ AppModePianoKeyController::AppModePianoKeyController()
 		{ MICROBIT_ID_ANY, MICROBIT_EVT_ANY }	// END OF TABLE
 	};
 	static const EventDef radioEvents[] = {
-		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltLeft },
-		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltTop },
-		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltRight },
-		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltBottom },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltBase + direction::kN },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltBase + direction::kE },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltBase + direction::kW },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltBase + direction::kS },
 		{ MICROBIT_ID_ANY, MICROBIT_EVT_ANY }	// END OF TABLE
 	};
 	selectEvents(events);
@@ -61,21 +61,13 @@ AppModePianoKeyController::AppModePianoKeyController()
 		}
 	}
 	else if(source == MICROBIT_ID_GESTURE) {
-		if(value == gesture::microBitGestureEventTiltLeft()) {
-			MicroBitEvent(messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltLeft);	// CREATE_AND_FIRE
-			display::showDirection(direction::kW, display::kSolidTriangle, 500 /* milliseconds */);
-		}
-		else if(value == gesture::microBitGestureEventTiltTop()) {
-			MicroBitEvent(messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltTop);	// CREATE_AND_FIRE
-			display::showDirection(direction::kN, display::kSolidTriangle, 500 /* milliseconds */);
-		}
-		else if(value == gesture::microBitGestureEventTiltRight()) {
-			MicroBitEvent(messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltRight);	// CREATE_AND_FIRE
-			display::showDirection(direction::kE, display::kSolidTriangle, 500 /* milliseconds */);
-		}
-		else if(value == gesture::microBitGestureEventTiltBottom()) {
-			MicroBitEvent(messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltBottom);	// CREATE_AND_FIRE
-			display::showDirection(direction::kS, display::kSolidTriangle, 500 /* milliseconds */);
+		for(int i = 0; i < 4; i++) {
+			Direction d = direction::kFour[i];
+			if(value == gesture::microBitGestureEventTilt(d)) {
+				MicroBitEvent(messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltBase + d, CREATE_AND_FIRE);
+				display::showDirection(d, display::kSolidTriangle, 500 /* milliseconds */);
+				break;
+			}
 		}
 	}
 }

@@ -31,17 +31,15 @@ namespace messageBusEvent {
 /// Local Event: App Started
 const int kLocalAppStarted		= 1;
 
-/// Remote Event: Tilt to the Left
-const int kRemoteTiltLeft		= 1;
-
-/// Remote Event: Tilt Down (= Tilt to the Top)
-const int kRemoteTiltTop		= 2;
-
-/// Remote Event: Tilt to the Right
-const int kRemoteTiltRight		= 3;
-
-/// Remote Event: Tilt Up (= Tilt to the Botttom)
-const int kRemoteTiltBottom		= 4;
+/// Remote Event: Tilt direction (0x100 - 0x1FF)
+/**
+ * The following combinations are avaialble.
+ * - kRemoteTiltBase + microbit_dal_ext_kit::direction::kN (0x101)
+ * - kRemoteTiltBase + microbit_dal_ext_kit::direction::kE (0x102)
+ * - kRemoteTiltBase + microbit_dal_ext_kit::direction::kW (0x104)
+ * - kRemoteTiltBase + microbit_dal_ext_kit::direction::kS (0x108)
+ */
+const int kRemoteTiltBase		= 0x100;
 
 }	// messageBusEvent
 }	// microbit_dal_app_kit

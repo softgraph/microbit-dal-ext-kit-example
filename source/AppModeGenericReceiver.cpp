@@ -31,10 +31,10 @@ AppModeGenericReceiver::AppModeGenericReceiver()
 
 	static const EventDef events[] = {
 		{ messageBusID::kLocalEvent,  messageBusEvent::kLocalAppStarted },
-		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltLeft },
-		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltTop },
-		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltRight },
-		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltBottom },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltBase + direction::kN },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltBase + direction::kE },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltBase + direction::kW },
+		{ messageBusID::kRemoteEvent, messageBusEvent::kRemoteTiltBase + direction::kS },
 		{ MICROBIT_ID_ANY, MICROBIT_EVT_ANY }	// END OF TABLE
 	};
 	selectEvents(events);
@@ -60,17 +60,12 @@ AppModeGenericReceiver::~AppModeGenericReceiver()
 		}
 	}
 	else if(source == messageBusID::kRemoteEvent) {
-		if(value == messageBusEvent::kRemoteTiltLeft) {
-			display::showDirection(direction::kW, display::kSolidTriangle, 500 /* milliseconds */);
-		}
-		else if(value == messageBusEvent::kRemoteTiltTop) {
-			display::showDirection(direction::kN, display::kSolidTriangle, 500 /* milliseconds */);
-		}
-		else if(value == messageBusEvent::kRemoteTiltRight) {
-			display::showDirection(direction::kE, display::kSolidTriangle, 500 /* milliseconds */);
-		}
-		else if(value == messageBusEvent::kRemoteTiltBottom) {
-			display::showDirection(direction::kS, display::kSolidTriangle, 500 /* milliseconds */);
+		for(int i = 0; i < 4; i++) {
+			Direction d = direction::kFour[i];
+			if(value == messageBusEvent::kRemoteTiltBase + d) {
+				display::showDirection(d, display::kSolidTriangle, 500 /* milliseconds */);
+				break;
+			}
 		}
 	}
 }

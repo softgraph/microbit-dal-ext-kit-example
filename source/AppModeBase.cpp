@@ -129,7 +129,7 @@ void AppModeBase::listen(int id, int value)
 	//	debug_sendLine(EXT_KIT_DEBUG_TRACE "AppModeBase::listen() MICROBIT_ID_GESTURE");
 	}
 	else {
-	//	debug_sendLine(EXT_KIT_DEBUG_TRACE "AppModeBase::listen() Others");
+	//	debug_sendLine(EXT_KIT_DEBUG_TRACE "AppModeBase::listen() Unknown");
 	}
 }
 
@@ -147,7 +147,7 @@ void AppModeBase::ignore(int id, int value)
 	//	debug_sendLine(EXT_KIT_DEBUG_TRACE "AppModeBase::ignore() MICROBIT_ID_GESTURE");
 	}
 	else {
-	//	debug_sendLine(EXT_KIT_DEBUG_TRACE "AppModeBase::ignore() Others");
+	//	debug_sendLine(EXT_KIT_DEBUG_TRACE "AppModeBase::ignore() Unknown");
 	}
 }
 
@@ -164,43 +164,43 @@ void AppModeBase::handleEvent(MicroBitEvent event)
 		}
 	}
 	else if(source == messageBusID::kRemoteEvent) {
-		if(value == messageBusEvent::kRemoteTiltLeft) {
-			debug_sendLine(EXT_KIT_DEBUG_EVENT "Remote Event: Tilt Left");
+		if(value == messageBusEvent::kRemoteTiltBase + direction::kN) {
+			debug_sendLine(EXT_KIT_DEBUG_EVENT "Remote Event: Tilt to N");
 		}
-		else if(value == messageBusEvent::kRemoteTiltTop) {
-			debug_sendLine(EXT_KIT_DEBUG_EVENT "Remote Event: Tilt Down (= Tilt Top)");
+		else if(value == messageBusEvent::kRemoteTiltBase + direction::kE) {
+			debug_sendLine(EXT_KIT_DEBUG_EVENT "Remote Event: Tilt to E");
 		}
-		else if(value == messageBusEvent::kRemoteTiltRight) {
-			debug_sendLine(EXT_KIT_DEBUG_EVENT "Remote Event: Tilt Right");
+		else if(value == messageBusEvent::kRemoteTiltBase + direction::kW) {
+			debug_sendLine(EXT_KIT_DEBUG_EVENT "Remote Event: Tilt to W");
 		}
-		else if(value == messageBusEvent::kRemoteTiltBottom) {
-			debug_sendLine(EXT_KIT_DEBUG_EVENT "Remote Event: Tilt Up (= Tilt Bottom)");
+		else if(value == messageBusEvent::kRemoteTiltBase + direction::kS) {
+			debug_sendLine(EXT_KIT_DEBUG_EVENT "Remote Event: Tilt to S");
 		}
 		else {
 			debug_sendLine(EXT_KIT_DEBUG_EVENT "Remote Event: Unknown");
 		}
 	}
 	else if(source == MICROBIT_ID_GESTURE) {
-		if(value == gesture::microBitGestureEventTiltLeft()) {
-			debug_sendLine(EXT_KIT_DEBUG_EVENT "Gesture: Tilt Left");
+		if(value == gesture::microBitGestureEventTilt(direction::kN)) {
+			debug_sendLine(EXT_KIT_DEBUG_EVENT "Gesture: Tilt to N");
 		}
-		else if(value == gesture::microBitGestureEventTiltTop()) {
-			debug_sendLine(EXT_KIT_DEBUG_EVENT "Gesture: Tilt Down (= Tilt Top)");
+		else if(value == gesture::microBitGestureEventTilt(direction::kE)) {
+			debug_sendLine(EXT_KIT_DEBUG_EVENT "Gesture: Tilt to E");
 		}
-		else if(value == gesture::microBitGestureEventTiltRight()) {
-			debug_sendLine(EXT_KIT_DEBUG_EVENT "Gesture: Tilt Right");
+		else if(value == gesture::microBitGestureEventTilt(direction::kW)) {
+			debug_sendLine(EXT_KIT_DEBUG_EVENT "Gesture: Tilt to W");
 		}
-		else if(value == gesture::microBitGestureEventTiltBottom()) {
-			debug_sendLine(EXT_KIT_DEBUG_EVENT "Gesture: Tilt Up (= Tilt Bottom)");
+		else if(value == gesture::microBitGestureEventTilt(direction::kS)) {
+			debug_sendLine(EXT_KIT_DEBUG_EVENT "Gesture: Tilt to S");
 		}
 		else if(value == MICROBIT_ACCELEROMETER_EVT_FACE_UP) {
-			debug_sendLine(EXT_KIT_DEBUG_EVENT "Gesture: Faced Up");
+			debug_sendLine(EXT_KIT_DEBUG_EVENT "Gesture: Face Up");
 		}
 		else if(value == MICROBIT_ACCELEROMETER_EVT_FACE_DOWN) {
-			debug_sendLine(EXT_KIT_DEBUG_EVENT "Gesture: Faced Down");
+			debug_sendLine(EXT_KIT_DEBUG_EVENT "Gesture: Face Down");
 		}
 		else if(value == MICROBIT_ACCELEROMETER_EVT_FREEFALL) {
-			debug_sendLine(EXT_KIT_DEBUG_EVENT "Gesture: Fallen Free");
+			debug_sendLine(EXT_KIT_DEBUG_EVENT "Gesture: Freefall");
 		}
 		else if(value == MICROBIT_ACCELEROMETER_EVT_3G) {
 			debug_sendLine(EXT_KIT_DEBUG_EVENT "Gesture: 3G");

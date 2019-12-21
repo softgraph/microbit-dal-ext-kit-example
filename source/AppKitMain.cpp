@@ -32,7 +32,8 @@ public:
 private:
 	MicroBitAccelerometer&	accelerometer;
 	MicroBitRadio	radio;
-};
+
+};	// AppExtKit
 
 AppExtKit::AppExtKit()
 	: PrimitiveExtKit()
@@ -68,10 +69,10 @@ int main()
 	uBit.init();
 
 	// Start the Serial Debugger service first. After this call, the debugger is prepared but not yet activated.
-	// To acivate it, you need to press any key on the terminal conected to the USB seria port.
+	// To activate it, you need to press any key on the terminal conected to the USB seria port.
 	sDebugger.start();
 
-	// Show the bootup string and give a chance to acivate the debugger via the USB serial port.
+	// Show the bootup string and give a chance to activate the debugger via the USB serial port.
 	display::setScrollSpeed(100);
 	display::scrollString(APP_STRING_BOOTUP);
 
@@ -97,7 +98,7 @@ int main()
 		appMode->start();
 
 		// Fire the App Stared event.
-		MicroBitEvent(messageBusID::kLocalEvent, messageBusEvent::kLocalAppStarted);	// CREATE_AND_FIRE
+		MicroBitEvent(messageBusID::kLocalEvent, messageBusEvent::kLocalAppStarted, CREATE_AND_FIRE);
 
 		// Start the Periodic Observer and wait for the completion.
 		sPeriodicObserver.start();
